@@ -13,4 +13,5 @@ Color(0xff430815),
   static Color blackColor = const Color(0xff000000);
   static Color blackColor1=Colors.black38;
   static Color greycolor= const Color(0xff666666);
+  static Color redshadeColor=const Color(0xff430210);
 }

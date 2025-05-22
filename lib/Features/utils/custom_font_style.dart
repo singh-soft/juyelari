@@ -10,7 +10,9 @@ class FontStyle {
       color: CustomColor.blackColor, fontSize: 16, fontWeight: FontWeight.w400);
   static final white18 = GoogleFonts.lato(
       color: CustomColor.white, fontSize: 18, fontWeight: FontWeight.w700);
-      static final greycolor16=GoogleFonts.lato(
-        color: CustomColor.greycolor,fontSize: 14,fontWeight: FontWeight.w400
-      );
+  static final greycolor16 = GoogleFonts.lato(
+      color: CustomColor.greycolor, fontSize: 14, fontWeight: FontWeight.w400);
+      static final redshade16=GoogleFonts.lato(color: CustomColor.redshadeColor,fontWeight: FontWeight.w400,fontSize: 16);
+       static final redshade17=GoogleFonts.lato( color: CustomColor.redshadeColor,fontWeight: FontWeight.w700,fontSize: 17);
 }
+

@@ -1,2 +1,10 @@
-const String loginjellewerypic="assets/images/jellewery.png";
-const String signupjellwpic= "assets/images/signupjellwpic.png";
+const String loginjewellerypic="assets/images/jellewery.png";
+const String signupjewwpic= "assets/images/signupjellwpic.png";
+const String earingpic="assets/images/earringpic.png";
+const String ringpic="assets/images/ringpic.png";
+const String necklacepic="assets/images/necklacepic.png";
+const String diamondring="assets/images/diamondring.png";
+const String thumbring="assets/images/thumbring.png";
+const String onboardingpic='assets/images/onboardingpic.png';
+const String onboardinglogo='assets/images/onboardinglogo.png';
+const String loginpic='assets/images/loginpic.png';
