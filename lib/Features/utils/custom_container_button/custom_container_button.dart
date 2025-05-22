@@ -9,6 +9,7 @@ class CustomContainerButton extends StatelessWidget {
   final void Function()? onTap;
   final Color?gradientColors;
   final BorderRadius? borderRadius;
+  final double? width;
   final EdgeInsetsGeometry? padding;
 
   const CustomContainerButton(
@@ -17,13 +18,15 @@ class CustomContainerButton extends StatelessWidget {
        this.gradientColors,
       this.borderRadius,
       this.onTap,
-      this.padding});
+      this.padding,
+      this.width});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
         child: Container(
       padding: padding,
+      width: width,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
             begin: Alignment.centerLeft,
