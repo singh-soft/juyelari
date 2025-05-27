@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:juyelari/Features/Custom_widgets/colors.dart';
+import 'package:juyelari/Features/utils/custom_font_style.dart';
+
+class CustomWidgets{
+  AppBar customAppBar({
+  required String title,
+  required IconData leadingIcon,
+  required VoidCallback onLeadingPressed,
+  List<Widget>? actions, 
+}) {
+  return AppBar(
+    backgroundColor: Colors.white,
+    elevation: 0,
+    leading: IconButton(
+      onPressed: onLeadingPressed,
+      icon: Icon(
+        leadingIcon,
+        color: CustomColor.blackColor,
+        size: 16,
+      ),
+    ),
+    leadingWidth: 40,
+    title: Text(
+      title,
+      style: FontStyle.balck20,
+    ),
+    centerTitle: false,
+    actions: actions?.isNotEmpty == true ? actions : null, 
+  );
+}
+
+}
+

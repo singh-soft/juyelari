@@ -8,3 +8,4 @@ const String thumbring="assets/images/thumbring.png";
 const String onboardingpic='assets/images/onboardingpic.png';
 const String onboardinglogo='assets/images/onboardinglogo.png';
 const String loginpic='assets/images/loginpic.png';
+const String forgotpasspic='assets/images/forgotpasspic.png';
