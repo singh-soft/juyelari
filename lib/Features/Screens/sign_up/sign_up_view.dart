@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
+import 'package:juyelari/Features/Screens/otp_verification/otp_verification_screen.dart';
 import 'package:juyelari/Features/Screens/sign_up/sign_up_controller.dart';
 import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
@@ -23,149 +24,158 @@ class SignUpView extends GetView<SignUpController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => SignUpController());
     final screenWidth = MediaQuery.of(context).size.width;
-
-    final verticalPadding = screenWidth > 600 ? 250.0 : 200.0;
-    final horizontalPadding = screenWidth * 0.07;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            Image.asset(
-              signupjewwpic,
-              fit: BoxFit.cover,
-              height: 200,
-              width: double.infinity,
-            ),
-            Positioned(
-              top: 100,
-              left: screenWidth * 0.01,
-              child: RotatingCircleAvatar(
-                controller: controller.rotateController,
-                imagePath: earingpic,
-                radius: 27,
-                backgroundColor: Colors.white,
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
+          color: Colors.transparent,
+          child: Stack(
+            children: [
+              Image.asset(
+                signupjewwpic,
+                fit: BoxFit.cover,
+                height: 200,
+                width: double.infinity,
               ),
-            ),
-            Positioned(
-              top: 150,
-              left: screenWidth * 0.15,
-              child: RotatingCircleAvatar(
-                controller: controller.rotateController,
-                imagePath: ringpic,
-                radius: 35,
-                backgroundColor: Colors.white,
+              Positioned(
+                top: 100,
+                left: screenWidth * 0.01,
+                child: RotatingCircleAvatar(
+                  controller: controller.rotateController,
+                  imagePath: earingpic,
+                  radius: 27,
+                  backgroundColor: Colors.white,
+                ),
               ),
-            ),
-            Positioned(
-              top: 170,
-              left: screenWidth * 0.4,
-              child: RotatingCircleAvatar(
-                controller: controller.rotateController,
-                imagePath: necklacepic,
-                radius: 40,
-                backgroundColor: Colors.white,
+              Positioned(
+                top: 150,
+                left: screenWidth * 0.15,
+                child: RotatingCircleAvatar(
+                  controller: controller.rotateController,
+                  imagePath: ringpic,
+                  radius: 35,
+                  backgroundColor: Colors.white,
+                ),
               ),
-            ),
-            Positioned(
-              top: 150,
-              left: screenWidth * 0.65,
-              child: RotatingCircleAvatar(
-                controller: controller.rotateController,
-                imagePath: thumbring,
-                radius: 36,
-                backgroundColor: Colors.white,
+              Positioned(
+                top: 170,
+                left: screenWidth * 0.4,
+                child: RotatingCircleAvatar(
+                  controller: controller.rotateController,
+                  imagePath: necklacepic,
+                  radius: 40,
+                  backgroundColor: Colors.white,
+                ),
               ),
-            ),
-            Positioned(
-              top: 100,
-              right: screenWidth * 0.01,
-              child: RotatingCircleAvatar(
-                controller: controller.rotateController,
-                imagePath: diamondring,
-                radius: 27,
-                backgroundColor: Colors.white,
+              Positioned(
+                top: 150,
+                left: screenWidth * 0.65,
+                child: RotatingCircleAvatar(
+                  controller: controller.rotateController,
+                  imagePath: thumbring,
+                  radius: 36,
+                  backgroundColor: Colors.white,
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: horizontalPadding,
-                vertical: verticalPadding,
+              Positioned(
+                top: 100,
+                right: screenWidth * 0.01,
+                child: RotatingCircleAvatar(
+                  controller: controller.rotateController,
+                  imagePath: diamondring,
+                  radius: 27,
+                  backgroundColor: Colors.white,
+                ),
               ),
-              child: Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      height50,
-                      Text(
-                        "Register Now",
-                        style: FontStyle.black18.copyWith(
-                          fontSize: screenWidth > 600 ? 24 : 18,
-                        ),
+              Positioned(
+                top: 260,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  color: Colors.transparent,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Register Now",
+                            style: FontStyle.black18.copyWith(
+                              fontSize: screenWidth > 600 ? 24 : 18, 
+                            ),
+                          ),
+                          height25,
+                          CustomTextFormField(
+                            hintText: 'Name',
+                            topLabelText: 'Name',
+                            isMandatory: true,
+                            controller: controller.nameController,
+                            hintStyle: FontStyle.black16.copyWith(
+                              fontSize: screenWidth > 600 ? 20 : 16,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                          ),
+                          height15,
+                          CustomTextFormField(
+                            hintText: 'Email',
+                            topLabelText: 'Email',
+                            isMandatory: true,
+                            controller: controller.emailController,
+                            hintStyle: FontStyle.black16.copyWith(
+                              fontSize: screenWidth > 600 ? 20 : 16,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                          ),
+                          height15,
+                          CustomTextFormField(
+                            hintText: 'Password',
+                            topLabelText: 'Password',
+                            isMandatory: true,
+                            controller: controller.passwordController,
+                            hintStyle: FontStyle.black16.copyWith(
+                              fontSize: screenWidth > 600 ? 20 : 16,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                          ),
+                          height15,
+                          CustomTextFormField(
+                            hintText: 'Confirm Password',
+                            topLabelText: 'Confirm Password',
+                            isMandatory: true,
+                            controller: controller.confrmPasswordController,
+                            hintStyle: FontStyle.black16.copyWith(
+                              fontSize: screenWidth > 600 ? 20 : 16,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                          ),
+                          height15,
+                          CustomContainerButton(
+                            onTap: () {
+                             
+                              Get.to(() => const OtpVerificationScreen());
+                            },
+                            padding: const EdgeInsets.all(12.0),
+                            text: 'Register',
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          height10,
+                        ],
                       ),
-                      height25,
-                      CustomTextFormField(
-                        hintText: 'Name',
-                        topLabelText: 'Name',
-                        isMandatory: true,
-                        controller: controller.nameController,
-                        hintStyle: FontStyle.black16.copyWith(
-                          fontSize: screenWidth > 600 ? 20 : 16,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 5),
-                      ),
-                      height15,
-                      CustomTextFormField(
-                        hintText: 'Email',
-                        topLabelText: 'Email',
-                        isMandatory: true,
-                        controller: controller.emailController,
-                        hintStyle: FontStyle.black16.copyWith(
-                          fontSize: screenWidth > 600 ? 20 : 16,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 5),
-                      ),
-                      height15,
-                      CustomTextFormField(
-                        hintText: 'Password',
-                        topLabelText: 'Password',
-                        isMandatory: true,
-                        controller: controller.passwordController,
-                        hintStyle: FontStyle.black16.copyWith(
-                          fontSize: screenWidth > 600 ? 20 : 16,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 5),
-                      ),
-                      height15,
-                      CustomTextFormField(
-                        hintText: 'Confirm Password',
-                        topLabelText: 'Confirm Password',
-                        isMandatory: true,
-                        controller: controller.confrmPasswordController,
-                        hintStyle: FontStyle.black16.copyWith(
-                          fontSize: screenWidth > 600 ? 20 : 16,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 5),
-                      ),
-                      height15,
-                      CustomContainerButton(
-                        padding: const EdgeInsets.all(12.0),
-                        text: 'Register',
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      height10,
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

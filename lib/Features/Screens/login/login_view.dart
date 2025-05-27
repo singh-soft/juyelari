@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
@@ -16,24 +17,28 @@ class LoginView extends GetView<LoginController> {
   final customHeight20 = height20;
   final customHeight30 = height30;
   final customHeight50 = height50;
-   final customHeight100 = height100;
+  final customHeight100 = height100;
 
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => LoginController());
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final verticalPadding = screenWidth > 600 ? 250.0 : 200.0;
-    final horizontalPadding = screenWidth * 0.07;
+    // final verticalPadding = screenWidth > 600 ? 250.0 : 200.0;
+    // final horizontalPadding = screenWidth * 0.07;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
               Image.asset(
                 loginpic,
+                height: 310,
                 fit: BoxFit.cover,
                 width: double.infinity,
               ),
@@ -87,76 +92,93 @@ class LoginView extends GetView<LoginController> {
                   backgroundColor: Colors.white,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: horizontalPadding, vertical: verticalPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    height100,
-                    height100,
-                    Text("Welcome", style: FontStyle.black18),
-                    height25,
-                    CustomTextFormField(
-                      hintText: 'Email/Phone',
-                      topLabelText: 'Email/Phone',
-                      controller: controller.emailController,
-                      hintStyle: FontStyle.black16.copyWith(
-                        fontSize: screenWidth > 600 ? 20 : 16,
+              Positioned(
+                top: 370,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  color: Colors.transparent,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Welcome", style: FontStyle.black18.copyWith(
+                              fontSize: screenWidth > 600 ? 24 : 18,
+                            ),),
+                          height25,
+                          CustomTextFormField(
+                            hintText: 'Email/Phone',
+                            topLabelText: 'Email/Phone',
+                            controller: controller.emailController,
+                            hintStyle: FontStyle.black16.copyWith(
+                              fontSize: screenWidth > 600 ? 24 : 18,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                          ),
+                          height15,
+                          CustomTextFormField(
+                            hintText: 'Password',
+                            topLabelText: 'Password',
+                            controller: controller.passwordController,
+                            hintStyle: FontStyle.black16.copyWith(
+                              fontSize: screenWidth > 600 ? 24 : 18,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                          ),
+                          height20,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              CustomContainerButton(
+                                width: screenWidth * 0.42,
+                                padding: const EdgeInsets.all(12.0),
+                                text: 'Login',
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              Text(
+                                "Forgot Password ?",
+                                style: FontStyle.redshade16.copyWith(
+                              fontSize: screenWidth > 600 ? 24 : 18,
+                            ),
+                              )
+                            ],
+                          ),
+                          height20,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: 'Don’t have an account?',
+                                  style: FontStyle.black16.copyWith(
+                              fontSize: screenWidth > 600 ? 24 : 18,
+                            ),
+                                  children: [
+                                    TextSpan(
+                                      text: '  Register',
+                                      style: FontStyle.redshade17,
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Get.to(() => const SignUpView());
+                                        },
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        ],
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 5),
                     ),
-                    height15,
-                    CustomTextFormField(
-                      hintText: 'Password',
-                      topLabelText: 'Password',
-                      controller: controller.passwordController,
-                      hintStyle: FontStyle.black16.copyWith(
-                        fontSize: screenWidth > 600 ? 20 : 16,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 5),
-                    ),
-                    height20,
-                      Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CustomContainerButton(
-                          width: screenWidth*0.4,
-                          
-                        padding: const EdgeInsets.all(12.0),
-                        text: 'Login',
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      Text("Forgot Password ?",style: FontStyle.redshade16,)
-
-                      ],
-                    ),
-                    height20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                            RichText(
-                      text: TextSpan(
-                      text: 'Don’t have an account?',style: FontStyle.black16,
-                      children: [
-                       
-                        
-                        TextSpan(text: '      Register',style: FontStyle.redshade17)
-                      ]
-                    ),
-                    
-                    )
-                      ],
-                    )
-                    
-                   
-                      
-                  ],
+                  ),
                 ),
-              ),
-             
+              )
             ],
           ),
         ),
