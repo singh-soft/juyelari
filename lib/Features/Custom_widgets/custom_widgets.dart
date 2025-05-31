@@ -23,7 +23,7 @@ class CustomWidgets{
     leadingWidth: 40,
     title: Text(
       title,
-      style: FontStyle.balck20,
+      style: FontStyle.redshade20w600,
     ),
     centerTitle: false,
     actions: actions?.isNotEmpty == true ? actions : null, 

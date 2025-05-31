@@ -7,25 +7,27 @@ class DashboardController extends GetxController {
   
   RxInt currentIndex = 0.obs;
   RxList<String> imageUrls = <String>[
-    'assets/images/dashgoldring.png',
-    'assets/images/dashgoldearring.png',
-     'assets/images/dashgoldring.png',
-    'assets/images/dashgoldearring.png',
+    'assets/images/tanishqear.webp',
+    'assets/images/tanishq2.webp',
+     'assets/images/tanishqneck1.webp',
+    'assets/images/tanishqring2.webp',
   ].obs;
   List<Map<String,dynamic>> listimage=[
-    {'image':"assets/images/ringpic.png","name":"Ring","index":0},
-    {"image":"assets/images/thumbring.png","name":"Ring","index":1},
-    {"image":"assets/images/necklacepic.png","name":"Necklace","index":2},
+    {'image':"assets/images/tanishqear.webp","name":"Earring","index":0},
+    {"image":"assets/images/tanishqring2.webp","name":"Diamond","index":1},
+    {"image":"assets/images/tanishqneck2.webp","name":"Necklace","index":2},
     {"image":"assets/images/thumbring.png","name":"Bracelet","index":3},
     {"image":"assets/images/earringpic.png","name":"Earrings","index":4},
     ];
     List<Map<String,dynamic>> gridimage=[
-    {'image':"assets/images/dashgoldearring.png","name":"Ringfgfhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"},
-    {"image":"assets/images/dashgoldchain.png","name":"Ring"},
-    {"image":"assets/images/dashgoldchain.png","name":"Necklace"},
-    {"image":"assets/images/dashgoldring.png","name":"Ring"},
-    {"image":"assets/images/dashgoldring.png","name":"Ring"},
-     {"image":"assets/images/dashgoldring.png","name":"Ring"},
+    {'image':"assets/images/tanishqear.webp","name":"Ring"},
+    {"image":"assets/images/tanishqear1.webp","name":"Earring"},
+    {"image":"assets/images/tanishqear1.webp","name":"Necklace"},
+    {"image":"assets/images/tanishqring1.webp","name":"Ring"},
+    {"image":"assets/images/tanishqring2.webp","name":"Diamond Ring"},
+     {"image":"assets/images/tanishqear.webp","name":" Diamond Ring"},
+      {"image":"assets/images/tanishqneck2.webp","name":"Pendant"},
+       {"image":"assets/images/tanishqneck2.webp","name":"Pendant"},
     
     ];
 

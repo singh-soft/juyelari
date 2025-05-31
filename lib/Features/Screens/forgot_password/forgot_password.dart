@@ -27,17 +27,21 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
           child: Stack(
             children: [
               Image.asset(
-                onboardingpic,
+                loginpic,
+                height: 310,
                 fit: BoxFit.cover,
                 width: double.infinity,
               ),
               Positioned(
-                top: 360,
-                left: screenWidth * 0.007,
+                top: 200,
+                left: screenWidth * 0.008,
                 child: RotatingCircleAvatar(
                   controller: controller.rotateController,
                   imagePath: earingpic,
@@ -46,7 +50,7 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
                 ),
               ),
               Positioned(
-                top: 420,
+                top: 260,
                 left: screenWidth * 0.15,
                 child: RotatingCircleAvatar(
                   controller: controller.rotateController,
@@ -56,8 +60,8 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
                 ),
               ),
               Positioned(
-                top: 420,
-                left: screenWidth * 0.42,
+                top: 280,
+                left: screenWidth * 0.4,
                 child: RotatingCircleAvatar(
                   controller: controller.rotateController,
                   imagePath: necklacepic,
@@ -66,8 +70,8 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
                 ),
               ),
               Positioned(
-                top: 420,
-                left: screenWidth * 0.69,
+                top: 260,
+                left: screenWidth * 0.66,
                 child: RotatingCircleAvatar(
                   controller: controller.rotateController,
                   imagePath: thumbring,
@@ -76,7 +80,7 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
                 ),
               ),
               Positioned(
-                top: 360,
+                top: 210,
                 right: screenWidth * 0.01,
                 child: RotatingCircleAvatar(
                   controller: controller.rotateController,
@@ -85,39 +89,48 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
                   backgroundColor: Colors.white,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: horizontalPadding, vertical: verticalPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    height100,
-                    height100,
-                    height100,
-                    Text("Forgot Password", style: FontStyle.black18),
-                    height10,
-                    Text("Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",style: FontStyle.black16,),
-                    height25,
-                    CustomTextFormField(
-                      contentPadding:
-                          const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                      hintText: 'Email/Phone',
-                      topLabelText: 'Email/Phone',
-                      controller: controller.forgotPaawordController,
-                      hintStyle: FontStyle.black16.copyWith(
-                        fontSize: screenWidth > 600 ? 20 : 16,
+              Positioned(
+                  top: 370,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    color: Colors.transparent,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Forgot Password", style: FontStyle.black18),
+                            height10,
+                            Text(
+                              "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
+                              style: FontStyle.black16,
+                            ),
+                            height25,
+                            CustomTextFormField(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              hintText: 'Email/Phone',
+                              topLabelText: 'Email/Phone',
+                              controller: controller.forgotPaawordController,
+                              hintStyle: FontStyle.black16.copyWith(
+                                fontSize: screenWidth > 600 ? 20 : 16,
+                              ),
+                            ),
+                            height30,
+                            CustomContainerButton(
+                              // width: screenWidth * 0.6,
+                              padding: const EdgeInsets.all(12.0),
+                              text: 'Email Password Reset Link',
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    height20,
-                    CustomContainerButton(
-                      // width: screenWidth * 0.6,
-                      padding: const EdgeInsets.all(12.0),
-                      text: 'Email Password Reset Link',
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ],
-                ),
-              )
+                  )),
             ],
           ),
         ),

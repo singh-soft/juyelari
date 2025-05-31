@@ -119,3 +119,50 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
     );
   }
 }
+class RotatingCircleAvatar extends StatelessWidget {
+  final AnimationController controller;
+  final String imagePath;
+  final double radius;
+  final Color backgroundColor;
+
+  const RotatingCircleAvatar({
+    super.key,
+    required this.controller,
+    required this.imagePath,
+    required this.radius,
+    required this.backgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RotationTransition(
+      turns: controller,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0.1,
+              blurRadius: 0.1,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: CircleAvatar(
+          radius: radius,
+          backgroundColor: backgroundColor,
+          child: ClipOval(
+            child: Image.asset(
+              imagePath,
+              width: radius * 2,
+              height: radius * 2,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
