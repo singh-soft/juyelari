@@ -29,7 +29,8 @@ class OtpVerificationScreen extends GetView<OtpVerficationController> {
       child: SafeArea(
         child: Column(
           children: [
-            Stack(children: [
+            Stack(
+              children: [
               Image.asset(
                 forgotpasspic,
                 fit: BoxFit.cover,

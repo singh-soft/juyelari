@@ -1,8 +1,5 @@
-import 'package:carousel_slider/carousel_controller.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 
 class CustomImageSlider extends StatelessWidget {
   final List imageList;
@@ -38,13 +35,14 @@ class CustomImageSlider extends StatelessWidget {
           items: List.generate(
             imageList.length,
             (index) => Container(
+              alignment: Alignment.center,
               margin: const EdgeInsets.only(top: 3),
               width: width,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6),
                 child: Image.asset(
                   imageList[index],
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   width: double.infinity,
                 ),
                 // FadeInImage.assetNetwork(
@@ -57,7 +55,7 @@ class CustomImageSlider extends StatelessWidget {
             ),
           ),
         ),
-        height10
+        
       ],
     );
   }

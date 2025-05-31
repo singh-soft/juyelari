@@ -1,0 +1,489 @@
+import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
+import 'package:juyelari/Features/Custom_widgets/colors.dart';
+import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Screens/product_screen/product_details/product_details_controller.dart';
+import 'package:juyelari/Features/utils/custom_font_style.dart';
+import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
+
+class ProductDetailScreen extends GetView<ProductDetailsController> {
+  const ProductDetailScreen({super.key});
+  final customHeight10 = height10;
+  final customHeight15 = height15;
+  final customHeight25 = height25;
+  final customHeight20 = height20;
+  final customHeight30 = height30;
+  final customHeight50 = height50;
+  final customwidth5 = width5;
+  final customwidth10 = width5;
+  final customwidth20 = width20;
+
+
+  @override
+  Widget build(BuildContext context) {
+    Get.lazyPut(() => ProductDetailsController());
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: CustomWidgets().customAppBar(
+        title: '',
+        leadingIcon: Icons.arrow_back_ios,
+        onLeadingPressed: () {
+          Get.back();
+        },
+        actions: [
+          Icon(Icons.favorite_outline,
+              size: 25, color: CustomColor.yellowshade),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              radius: 18,
+              backgroundColor: CustomColor.redshadeColor,
+              child: Icon(
+                Icons.shopping_cart,
+                color: CustomColor.white,
+                size: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: ListView(
+          children: [
+            Container(
+                height: 250,
+                // width: double.infinity,
+                decoration: const BoxDecoration(
+                    // image: DecorationImage(image: Image.asset(controller.getimage?['image'],height: double.infinity,).image)
+                    ),
+                child: Image.asset(
+                  controller.getimage?['image'],
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                )),
+            Container(
+              height: 380,
+              color: Colors.white,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            controller.gettitle?['title'],
+                            style: FontStyle.black17w400,
+                            maxLines: 2,
+                            softWrap: true,
+                          ),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 12,
+                              backgroundColor: CustomColor.pinkfavcolor,
+                              child: Icon(
+                                Icons.favorite_border_outlined,
+                                color: CustomColor.redshadeColor,
+                                size: 16,
+                              ),
+                            ),
+                            customwidth10,
+                            CircleAvatar(
+                              radius: 12,
+                              backgroundColor: CustomColor.pinkfavcolor,
+                              child: Image.asset('assets/images/iconshare.png'),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "'₹ 1799",
+                          style: FontStyle.redshadew600,
+                        ),
+                        Text(
+                          "'₹ 2500",
+                          style: FontStyle.greycolor16,
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Hurry up! Offer ends in:",
+                          style: FontStyle.redshade14,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(6.0),
+                          decoration: BoxDecoration(
+                            color: CustomColor.pinkfavcolor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            "02h : 23m : 44s",
+                            style: FontStyle.redshade12,
+                          ),
+                        )
+                      ],
+                    ),
+                    Text(
+                      "Product Details",
+                      style: FontStyle.balck20,
+                    ),
+                    height10,
+                    buildbullettext('Material : 22K Hallmarked Gold'),
+                    buildbullettext(
+                        'Design: Intricate leaf pattern with a smooth,polished finish'),
+                    buildbullettext(
+                        'Weight: Approx. 18 grams (varies by size)'),
+                    buildbullettext(
+                        'Size Options: Available in 2.4, 2.6, and 2.8 inches'),
+                    buildbullettext('Closure: Screw-type clasp for secure fit'),
+                    buildbullettext(
+                        'Style: Suitable for everyday wear or special occasion'),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "you Might also like",
+                    style: FontStyle.black18,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "See All",
+                        style: FontStyle.black16,
+                      ),
+                      customwidth5,
+                      CircleAvatar(
+                        radius: 16,
+                        backgroundColor: CustomColor.redshadeColor,
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: CustomColor.white,
+                          size: 18,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: 300,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.similaritemdetails.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.all(8.0),
+                        width: 180,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 190,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 1,
+                                    blurRadius: 1,
+                                    offset: const Offset(1, 3),
+                                  )
+                                ],
+                              ),
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.asset(
+                                      controller.similaritemdetails[index]
+                                          ['image'],
+                                      height: 190,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 12,
+                                    right: 10,
+                                    child: CircleAvatar(
+                                      radius: 12,
+                                      backgroundColor: CustomColor.pinkfavcolor,
+                                      child: Icon(
+                                        Icons.favorite_border_outlined,
+                                        color: CustomColor.redshadeColor,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.7),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            controller.similaritemdetails[index]
+                                                    ['rating'] ??
+                                                '4.5',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          width5,
+                                          const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                            size: 14,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            height10,
+                            Expanded(
+                              child: Text(
+                                controller.similaritemdetails[index]['title'],
+                                style: FontStyle.black16w400,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0),
+                              child: Text(
+                                '₹${controller.similaritemdetails[index]['rate']}',
+                                style: FontStyle.redshadew600,
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+            customHeight10,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                // height: 230,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: CustomColor.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 3,
+                      blurRadius: 3,
+                      offset: const Offset(2, 3),
+                    )
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Rating & Reviews",
+                      style: FontStyle.black18,
+                    ),
+                    height10,
+                    RatingBarIndicator(
+                      rating: 4.2,
+                      itemBuilder: (context, index) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      itemCount: 5,
+                      itemSize: 30,
+                      direction: Axis.horizontal,
+                    ),
+                    customHeight20,
+                    SizedBox(
+                      height: 100,
+                      child: Obx(
+                        () => ListView.builder(
+                          itemCount: controller.showAllReviews.value ? 5 : 1,
+                          itemBuilder: (context, index) {
+                            return Container(
+                                color: Colors.white,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: Image.asset(
+                                                  "assets/images/pinkearring.jpg")
+                                              .image,
+                                        ),
+                                      ],
+                                    ),
+                                    customwidth20,
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Veronika",
+                                            style: FontStyle.black18,
+                                          ),
+                                          RatingBar.builder(
+                                            itemSize: 25,
+                                            initialRating: 4.5,
+
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: false,
+                                            itemCount: 5,
+                                            // itemPadding:const  EdgeInsets.symmetric(
+                                            //     horizontal: 4.0),
+                                            itemBuilder: (context, _) =>
+                                                const Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                              size: 2,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              print("User rated: $rating");
+                                            },
+                                          ),
+                                          Text(
+                                            "Lorem ipsum dolor sit amet, consetetur sadipscinelitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed ...",
+                                            style: FontStyle.greytext14,
+                                            maxLines: 6,
+                                            softWrap: true,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ));
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            customHeight10,
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        controller.toggleReviews();
+                      },
+                      child: Text(
+                        controller.showAllReviews.value
+                            ? "Hide Reviews"
+                            : "View All Reviews",
+                        style: FontStyle.redshadew600,
+                      ))
+                ],
+              ),
+            ),
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: CustomColor.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 3,
+                    blurRadius: 3,
+                    offset: const Offset(2, 3),
+                  )
+                ],
+              ),
+              child: Column    (
+                children: [
+                 ExpansionTileCard(
+                  baseColor: Colors.white,
+                  title:  Text(
+                  "Write a Review",
+                    style: FontStyle.black17w400,
+                  ),
+                  children: [
+                    Text( controller.similaritemdetails[1]['title'],)
+
+
+
+                  ],
+                
+                 ),
+                 
+                 
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildbullettext(String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          "•    ",
+          style: FontStyle.greytext14,
+        ),
+        height10,
+        Expanded(
+          child: Text(
+            title,
+            style: FontStyle.greytext14,
+          ),
+        ),
+      ],
+    );
+  }
+}

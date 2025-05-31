@@ -105,9 +105,7 @@ class SignUpView extends GetView<SignUpController> {
                         children: [
                           Text(
                             "Register Now",
-                            style: FontStyle.black18.copyWith(
-                              fontSize: screenWidth > 600 ? 24 : 18, 
-                            ),
+                            style: FontStyle.black18,
                           ),
                           height25,
                           CustomTextFormField(
@@ -115,9 +113,7 @@ class SignUpView extends GetView<SignUpController> {
                             topLabelText: 'Name',
                             isMandatory: true,
                             controller: controller.nameController,
-                            hintStyle: FontStyle.black16.copyWith(
-                              fontSize: screenWidth > 600 ? 20 : 16,
-                            ),
+                            hintStyle: FontStyle.black16,
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 5),
                           ),
@@ -127,9 +123,7 @@ class SignUpView extends GetView<SignUpController> {
                             topLabelText: 'Email',
                             isMandatory: true,
                             controller: controller.emailController,
-                            hintStyle: FontStyle.black16.copyWith(
-                              fontSize: screenWidth > 600 ? 20 : 16,
-                            ),
+                            hintStyle: FontStyle.black16,
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 5),
                           ),
@@ -139,9 +133,7 @@ class SignUpView extends GetView<SignUpController> {
                             topLabelText: 'Password',
                             isMandatory: true,
                             controller: controller.passwordController,
-                            hintStyle: FontStyle.black16.copyWith(
-                              fontSize: screenWidth > 600 ? 20 : 16,
-                            ),
+                            hintStyle: FontStyle.black16,
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 5),
                           ),
@@ -151,17 +143,16 @@ class SignUpView extends GetView<SignUpController> {
                             topLabelText: 'Confirm Password',
                             isMandatory: true,
                             controller: controller.confrmPasswordController,
-                            hintStyle: FontStyle.black16.copyWith(
-                              fontSize: screenWidth > 600 ? 20 : 16,
-                            ),
+                            hintStyle: FontStyle.black16,
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 5),
                           ),
-                          height15,
+                          height50,
                           CustomContainerButton(
                             onTap: () {
+                           controller.signupApi();
                              
-                              Get.to(() => const OtpVerificationScreen());
+                              // Get.to(() => const OtpVerificationScreen());
                             },
                             padding: const EdgeInsets.all(12.0),
                             text: 'Register',

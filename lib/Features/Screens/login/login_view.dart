@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
+import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_screen.dart';
+import 'package:juyelari/Features/Screens/forgot_password/forgot_password.dart';
 import 'package:juyelari/Features/Screens/login/login_controller.dart';
 import 'package:juyelari/Features/Screens/sign_up/sign_up_view.dart';
 import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
@@ -106,17 +109,16 @@ class LoginView extends GetView<LoginController> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Welcome", style: FontStyle.black18.copyWith(
-                              fontSize: screenWidth > 600 ? 24 : 18,
-                            ),),
+                          Text(
+                            "Welcome",
+                            style: FontStyle.black18,
+                          ),
                           height25,
                           CustomTextFormField(
                             hintText: 'Email/Phone',
                             topLabelText: 'Email/Phone',
                             controller: controller.emailController,
-                            hintStyle: FontStyle.black16.copyWith(
-                              fontSize: screenWidth > 600 ? 24 : 18,
-                            ),
+                            hintStyle: FontStyle.black16,
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 5),
                           ),
@@ -125,40 +127,44 @@ class LoginView extends GetView<LoginController> {
                             hintText: 'Password',
                             topLabelText: 'Password',
                             controller: controller.passwordController,
-                            hintStyle: FontStyle.black16.copyWith(
-                              fontSize: screenWidth > 600 ? 24 : 18,
-                            ),
+                            hintStyle: FontStyle.black16,
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 5),
                           ),
-                          height20,
+                          height30,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               CustomContainerButton(
+                                onTap: (){
+                                  Get.to(()=> const DashboardScreen());
+                                },
                                 width: screenWidth * 0.42,
                                 padding: const EdgeInsets.all(12.0),
                                 text: 'Login',
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              Text(
-                                "Forgot Password ?",
-                                style: FontStyle.redshade16.copyWith(
-                              fontSize: screenWidth > 600 ? 24 : 18,
-                            ),
-                              )
+                              TextButton(
+                                  onPressed: () {
+                                    Get.to(()=> const ForgotPassword());
+                                  },
+                                  child: Text("Forgot Password ?",
+                                      style: TextStyle(
+                                        color: CustomColor.redshadeColor,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        decoration: TextDecoration.underline,
+                                      )))
                             ],
                           ),
-                          height20,
+                          height30,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               RichText(
                                 text: TextSpan(
                                   text: 'Don’t have an account?',
-                                  style: FontStyle.black16.copyWith(
-                              fontSize: screenWidth > 600 ? 24 : 18,
-                            ),
+                                  style: FontStyle.black16,
                                   children: [
                                     TextSpan(
                                       text: '  Register',
@@ -180,6 +186,52 @@ class LoginView extends GetView<LoginController> {
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+class RotatingCircleAvatar extends StatelessWidget {
+  final AnimationController controller;
+  final String imagePath;
+  final double radius;
+  final Color backgroundColor;
+
+  const RotatingCircleAvatar({
+    super.key,
+    required this.controller,
+    required this.imagePath,
+    required this.radius,
+    required this.backgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RotationTransition(
+      turns: controller,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 0.1,
+              blurRadius: 0.1,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: CircleAvatar(
+          radius: radius,
+          backgroundColor: backgroundColor,
+          child: ClipOval(
+            child: Image.asset(
+              imagePath,
+              width: radius * 2,
+              height: radius * 2,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),

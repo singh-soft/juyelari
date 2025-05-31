@@ -19,4 +19,5 @@ Color(0xff430815),
  static Color whiteshade=const Color(0xffF4F4F4);
  static Color yellowshade= const Color(0xffE1AD24);
  static Color greyshadewtext=const Color(0xff707070);
+ static Color pinkfavcolor=const Color(0xffFFEBEB);
 }

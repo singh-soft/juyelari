@@ -7,7 +7,7 @@ class FontStyle {
   static final black18 = GoogleFonts.poppins(
       color: CustomColor.blackColor, fontSize: 18, fontWeight: FontWeight.w600);
   static final black16 = GoogleFonts.lato(
-      color: CustomColor.blackColor, fontSize: 16, fontWeight: FontWeight.w400);
+      color: CustomColor.blackColor, fontSize: 15, fontWeight: FontWeight.w400);
   static final white18 = GoogleFonts.lato(
       color: CustomColor.white, fontSize: 18, fontWeight: FontWeight.w700);
   static final greycolor16 = GoogleFonts.lato(
@@ -22,11 +22,11 @@ class FontStyle {
       fontSize: 17);
   static final greyshade14 = GoogleFonts.openSans(
       color: CustomColor.greyshade, fontWeight: FontWeight.w400, fontSize: 14);
-  static final redshade14 = GoogleFonts.openSans(
+  static final redshade14 = GoogleFonts.lato(
       color: CustomColor.redshadeColor,
-      fontWeight: FontWeight.w700,
-      fontSize: 14);
-  static final balck20 = GoogleFonts.poppins(
+      fontWeight: FontWeight.bold,
+      fontSize: 16);
+  static final balck20 = GoogleFonts.playpenSans(
       color: CustomColor.blackColor, fontWeight: FontWeight.w600, fontSize: 20);
   static final greytext14 = GoogleFonts.poppins(
       color: CustomColor.greytext, fontWeight: FontWeight.w400, fontSize: 14);
@@ -44,6 +44,20 @@ class FontStyle {
       color: CustomColor.white, fontSize: 11, fontWeight: FontWeight.w500);
   static final redshadew600 = GoogleFonts.poppins(
       color: CustomColor.redshadeColor,
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.w600);
+       static final redshade20w600 = GoogleFonts.overlock(
+      color: CustomColor.redshadeColor, fontWeight: FontWeight.w600, fontSize: 25);
+      static final redshad16 = GoogleFonts.poppins(
+      color: CustomColor.redshadeColor, fontSize: 18, fontWeight: FontWeight.w600);
+      static final greytextw400 = GoogleFonts.lato(
+      color: CustomColor.greycolor, fontSize: 15, fontWeight: FontWeight.w400);
+      static final black16w400 = GoogleFonts.aBeeZee(
+      color: CustomColor.blackColor, fontWeight: FontWeight.w500, fontSize: 15);
+       static final black17w400 = GoogleFonts.aBeeZee(
+      color: CustomColor.blackColor, fontWeight: FontWeight.w500, fontSize: 17);
+      static final redshade12 = GoogleFonts.lato(
+      color: CustomColor.redshadeColor,
+      fontWeight: FontWeight.bold,
+      fontSize: 12);
 }
