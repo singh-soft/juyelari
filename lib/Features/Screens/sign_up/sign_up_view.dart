@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:juyelari/Features/Custom_widgets/colors.dart';
+import 'package:juyelari/Features/Custom_widgets/field_validator.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
-import 'package:juyelari/Features/Screens/otp_verification/otp_verification_screen.dart';
 import 'package:juyelari/Features/Screens/sign_up/sign_up_controller.dart';
 import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfield.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SignUpView extends GetView<SignUpController> {
-  const SignUpView({super.key});
+  SignUpView({super.key});
 
   double relativeX(BuildContext context, double fraction) =>
       MediaQuery.of(context).size.width * fraction;
@@ -19,6 +22,10 @@ class SignUpView extends GetView<SignUpController> {
   final customHeight20 = height20;
   final customHeight30 = height30;
   final customHeight50 = height50;
+
+  final RegExp emailRegExp = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -100,66 +107,172 @@ class SignUpView extends GetView<SignUpController> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Register Now",
-                            style: FontStyle.black18,
-                          ),
-                          height25,
-                          CustomTextFormField(
-                            hintText: 'Name',
-                            topLabelText: 'Name',
-                            isMandatory: true,
-                            controller: controller.nameController,
-                            hintStyle: FontStyle.black16,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 5),
-                          ),
-                          height15,
-                          CustomTextFormField(
-                            hintText: 'Email',
-                            topLabelText: 'Email',
-                            isMandatory: true,
-                            controller: controller.emailController,
-                            hintStyle: FontStyle.black16,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 5),
-                          ),
-                          height15,
-                          CustomTextFormField(
-                            hintText: 'Password',
-                            topLabelText: 'Password',
-                            isMandatory: true,
-                            controller: controller.passwordController,
-                            hintStyle: FontStyle.black16,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 5),
-                          ),
-                          height15,
-                          CustomTextFormField(
-                            hintText: 'Confirm Password',
-                            topLabelText: 'Confirm Password',
-                            isMandatory: true,
-                            controller: controller.confrmPasswordController,
-                            hintStyle: FontStyle.black16,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 5),
-                          ),
-                          height50,
-                          CustomContainerButton(
-                            onTap: () {
-                           controller.signupApi();
-                             
-                              // Get.to(() => const OtpVerificationScreen());
-                            },
-                            padding: const EdgeInsets.all(12.0),
-                            text: 'Register',
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          height10,
-                        ],
+                      child: Form(
+                        key: controller.signUpKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Register Now",
+                              style: FontStyle.black18,
+                            ),
+                            height25,
+                            CustomTextFormField(
+                              hintText: 'Name',
+                              topLabelText: 'Name',
+                              isMandatory: true,
+                              controller: controller.nameController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              validator: (value) =>
+                                  FieldValidator(context).nameValidate(value),
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Email',
+                              topLabelText: 'Email',
+                              isMandatory: true,
+                              controller: controller.emailController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              validator: (value) =>
+                                  FieldValidator(context).emailValidate(value),
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Phone Number',
+                              topLabelText: 'Phone Number',
+                              isMandatory: true,
+                              controller: controller.mobileController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(10),
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              validator: (value) =>
+                                  FieldValidator(context).mobileValidate(value),
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Password',
+                              topLabelText: 'Password',
+                              isMandatory: true,
+                              controller: controller.passwordController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              validator: (value) => FieldValidator(context)
+                                  .passwordValidate(value),
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Confirm Password',
+                              topLabelText: 'Confirm Password',
+                              isMandatory: true,
+                              controller: controller.confrmPasswordController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              validator: (value) => FieldValidator(context)
+                                  .confirmPasswordValidate1(value,
+                                      controller.passwordController.text),
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Address Line 1',
+                              topLabelText: 'Address Line 1',
+                              isMandatory: true,
+                              controller: controller.addressOneController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              validator: (value) =>
+                                  FieldValidator(context).addressLine1(value),
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Address Line 2',
+                              topLabelText: 'Address Line 2',
+                              isMandatory: false,
+                              controller: controller.addressTwoController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Postal Code',
+                              topLabelText: 'Postal Code',
+                              isMandatory: true,
+                              controller: controller.postalCodeController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              validator: (value) =>
+                                  FieldValidator(context).postalCode(value),
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(6),
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Area',
+                              topLabelText: 'Area',
+                              isMandatory: true,
+                              controller: controller.areaController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              validator: (value) =>
+                                  FieldValidator(context).area(value),
+                            ),
+                            height15,
+                            CustomTextFormField(
+                              hintText: 'Flat No',
+                              topLabelText: 'Flat No',
+                              isMandatory: true,
+                              controller: controller.flatNoController,
+                              hintStyle: FontStyle.black16,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              validator: (value) =>
+                                  FieldValidator(context).flat(value),
+                            ),
+                            height50,
+                            Center(
+                                child: CustomContainerButton(
+                                  width: double.infinity,
+                                  onTap: () {
+                                    if (controller.signUpKey.currentState!
+                                        .validate()) {
+                                      controller.signupApi();
+                                    }
+                                  },
+                                  padding: const EdgeInsets.all(12.0),
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Obx(()=>
+                                     controller.isLoading.value
+                                        ? Center(
+                                          child: LoadingAnimationWidget.flickr(
+                                               size: 30, leftDotColor: Colors.white, rightDotColor: Colors.pink),
+                                        )
+                                        : Center(
+                                            child: Text(
+                                            'Register',
+                                            style: FontStyle.white18,
+                                          )),
+                                  ),
+                                ),
+                              ),
+                            
+                            height10,
+                          ],
+                        ),
                       ),
                     ),
                   ),

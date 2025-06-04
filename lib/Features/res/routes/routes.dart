@@ -18,7 +18,7 @@ class Routes{
       page: () => const LoginView()),
        GetPage(
       name: RoutesName.signupview,
-      page: () => const SignUpView()),
+      page: () =>  SignUpView()),
        GetPage(
       name: RoutesName.forgotpassword,
       page: () => const ForgotPassword()),

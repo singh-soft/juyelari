@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
+import 'package:juyelari/Features/Custom_widgets/field_validator.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_screen.dart';
 import 'package:juyelari/Features/Screens/forgot_password/forgot_password.dart';
@@ -11,6 +12,7 @@ import 'package:juyelari/Features/utils/custom_container_button/custom_container
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfield.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
@@ -106,80 +108,99 @@ class LoginView extends GetView<LoginController> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Welcome",
-                            style: FontStyle.black18,
-                          ),
-                          height25,
-                          CustomTextFormField(
-                            hintText: 'Email/Phone',
-                            topLabelText: 'Email/Phone',
-                            controller: controller.emailController,
-                            hintStyle: FontStyle.black16,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 5),
-                          ),
-                          height15,
-                          CustomTextFormField(
-                            hintText: 'Password',
-                            topLabelText: 'Password',
-                            controller: controller.passwordController,
-                            hintStyle: FontStyle.black16,
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 5),
-                          ),
-                          height30,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              CustomContainerButton(
-                                onTap: (){
-                                  Get.to(()=> const DashboardScreen());
-                                },
-                                width: screenWidth * 0.42,
-                                padding: const EdgeInsets.all(12.0),
-                                text: 'Login',
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              TextButton(
-                                  onPressed: () {
-                                    Get.to(()=> const ForgotPassword());
-                                  },
-                                  child: Text("Forgot Password ?",
-                                      style: TextStyle(
-                                        color: CustomColor.redshadeColor,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                        decoration: TextDecoration.underline,
-                                      )))
-                            ],
-                          ),
-                          height30,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Don’t have an account?',
-                                  style: FontStyle.black16,
-                                  children: [
-                                    TextSpan(
-                                      text: '  Register',
-                                      style: FontStyle.redshade17,
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Get.to(() => const SignUpView());
-                                        },
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          )
-                        ],
+                      child: Form(
+                        key: controller.loginKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Welcome",
+                              style: FontStyle.black18,
+                            ),
+                            height25,
+                            CustomTextFormField(
+                                hintText: 'Email/Phone',
+                                topLabelText: 'Email/Phone',
+                                keyboardType: TextInputType.emailAddress,
+                                controller: controller.emailController,
+                                hintStyle: FontStyle.black16,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 5),
+                                validator: (value) => FieldValidator(context)
+                                    .emailValidate(value)),
+                            height15,
+                            CustomTextFormField(
+                                hintText: 'Password',
+                                topLabelText: 'Password',
+                                controller: controller.passwordController,
+                                hintStyle: FontStyle.black16,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 5),
+                                validator: (value) => FieldValidator(context)
+                                    .passwordValidate(value)),
+                            height30,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CustomContainerButton(
+                                    onTap: () {
+                                      if (controller.loginKey.currentState!
+                                          .validate()) {
+                                        controller.loginApi();
+                                      }
+                                    // Get.to(() => const DashboardScreen());
+                                   },
+                                    width: screenWidth * 0.42,
+                                    padding: const EdgeInsets.all(12.0),
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: Center(
+                                      child:
+                                      Obx(()=>
+                                         controller.isLoading.value?Center(
+                                          child: LoadingAnimationWidget.flickr( size: 30, leftDotColor: Colors.white, rightDotColor: Colors.pink)): Text(
+                                          'Login',
+                                          style: FontStyle.white18,
+                                        ),
+                                      ),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Get.to(() => const ForgotPassword());
+                                    },
+                                    child:
+                                     Text("Forgot Password ?",
+                                        style: TextStyle(
+                                          color: CustomColor.redshadeColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                          decoration: TextDecoration.underline,
+                                        )))
+                              ],
+                            ),
+                            height30,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    text: 'Don’t have an account?',
+                                    style: FontStyle.black16,
+                                    children: [
+                                      TextSpan(
+                                        text: '  Register',
+                                        style: FontStyle.redshade17,
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Get.to(() => SignUpView());
+                                          },
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -192,6 +213,7 @@ class LoginView extends GetView<LoginController> {
     );
   }
 }
+
 class RotatingCircleAvatar extends StatelessWidget {
   final AnimationController controller;
   final String imagePath;

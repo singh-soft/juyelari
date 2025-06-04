@@ -98,7 +98,8 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
                     color: Colors.transparent,
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -121,11 +122,15 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
                             ),
                             height30,
                             CustomContainerButton(
-                              // width: screenWidth * 0.6,
-                              padding: const EdgeInsets.all(12.0),
-                              text: 'Email Password Reset Link',
-                              borderRadius: BorderRadius.circular(50),
-                            ),
+                                // width: screenWidth * 0.6,
+                                padding: const EdgeInsets.all(12.0),
+                                borderRadius: BorderRadius.circular(50),
+                                child: Center(
+                                  child: Text(
+                                    'Email Password Reset Link',
+                                    style: FontStyle.white18,
+                                  ),
+                                )),
                           ],
                         ),
                       ),

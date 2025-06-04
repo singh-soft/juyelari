@@ -19,31 +19,37 @@ class ApiProvider {
     try {
       final response = await _dio.get(apiUrl);
 
-      if (response.statusCode == 200) {
-        return response.data;
-      } else {
-        return Future.error(response.data);
-      }
+      return _handleResponse(response);
     } on DioException catch (e) {
       return Future.error(_handleDioError(e));
     }
   }
 
-      
   Future<dynamic> postRequest({
     required String apiUrl,
     Map<String, dynamic> data = const {},
   }) async {
     try {
       final response = await _dio.post(apiUrl, data: data);
-
-      if (response.statusCode == 200) {
-        return response.data;
-      } else {
-        return Future.error(response.data);
-      }
+      return _handleResponse(response);
     } on DioException catch (e) {
       return Future.error(_handleDioError(e));
+    }
+  }
+
+  dynamic _handleResponse(Response response) {
+    switch (response.statusCode) {
+      case 200:
+      case 201:
+        return response.data;
+      case 401:
+        return Future.error('Unauthorized access');
+      case 404:
+        return Future.error('Resource not found');
+      case 500:
+        return Future.error('Internal server error');
+      default:
+        return Future.error('Unexpected error: ${response.statusCode}');
     }
   }
 
@@ -55,7 +61,11 @@ class ApiProvider {
       case DioExceptionType.receiveTimeout:
         return 'Connection timed out';
       case DioExceptionType.badResponse:
-        return 'Server error: ${e.response?.statusCode}';
+        final statusCode = e.response?.statusCode;
+        if (statusCode == 401) return 'Unauthorized';
+        if (statusCode == 404) return 'Not Found';
+        if (statusCode == 500) return 'Internal Server Error';
+        return 'Server error: $statusCode';
       case DioExceptionType.cancel:
         return 'Request cancelled';
       case DioExceptionType.unknown:
@@ -64,3 +74,9 @@ class ApiProvider {
     }
   }
 }
+
+
+
+
+
+
