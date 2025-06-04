@@ -29,8 +29,7 @@ class OtpVerificationScreen extends GetView<OtpVerficationController> {
       child: SafeArea(
         child: Column(
           children: [
-            Stack(
-              children: [
+            Stack(children: [
               Image.asset(
                 forgotpasspic,
                 fit: BoxFit.cover,
@@ -120,11 +119,13 @@ class OtpVerificationScreen extends GetView<OtpVerficationController> {
                     ),
                     height50,
                     CustomContainerButton(
-                      // width: screenWidth * 0.6,
-                      padding: const EdgeInsets.all(12.0),
-                      text: 'Verify Code',
-                      borderRadius: BorderRadius.circular(50),
-                    ),
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(12.0),
+                        borderRadius: BorderRadius.circular(50),
+                        child: Text(
+                          'Verify Code',
+                          style: FontStyle.white18,textAlign:TextAlign.center ,
+                        )),
                     height20,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_screen.dart';
+import 'package:juyelari/Features/Screens/otp_verification/otp_verification_screen.dart';
+import 'package:juyelari/Features/provider/api_provider.dart';
+import 'package:juyelari/Features/provider/auth.dart';
 
 class LoginController extends GetxController with GetTickerProviderStateMixin{
   late final AnimationController rotateController;
   final TextEditingController emailController=TextEditingController();
   final TextEditingController passwordController=TextEditingController();
+  var loginKey=GlobalKey<FormState>();
+  RxBool isLoading=false.obs;
  @override
    void onInit() {
     super.onInit();
@@ -18,5 +25,31 @@ class LoginController extends GetxController with GetTickerProviderStateMixin{
     rotateController.dispose();
    
     super.onClose();
+  }
+  void loginApi()async{
+    try{
+      isLoading.value=true;
+      Map<String,dynamic> data={
+        "email":emailController.value.text,
+        "password":passwordController.value.text,
+        "device_token":deviceToken().toString(),
+        "device_type":deviceName().toString()
+      };
+      var response= await ApiProvider().postRequest(apiUrl:'login',data: data);
+      if(response['status']==true){
+        Get.to(()=> const DashboardScreen());
+        CustomWidgets().toast(response['message'], Colors.green);
+        isLoading.value=false;
+      }else{
+        CustomWidgets().toast(response['message'], Colors.red);
+         isLoading.value=false;
+      }
+    
+    } 
+    catch(e){
+       CustomWidgets().toast(e.toString(), Colors.red);
+        isLoading.value=false;
+
+    }
   }
 }

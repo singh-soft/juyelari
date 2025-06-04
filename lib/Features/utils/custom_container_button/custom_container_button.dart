@@ -5,21 +5,23 @@ import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 
 class CustomContainerButton extends StatelessWidget {
-  final String text;
+ 
   final void Function()? onTap;
   final Color?gradientColors;
   final BorderRadius? borderRadius;
   final double? width;
   final EdgeInsetsGeometry? padding;
+  final Widget? child;
 
   const CustomContainerButton(
       {super.key,
-      required this.text,
+    
        this.gradientColors,
       this.borderRadius,
       this.onTap,
       this.padding,
-      this.width});
+      this.width,
+      this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +42,7 @@ class CustomContainerButton extends StatelessWidget {
             ]),
         borderRadius: borderRadius,
       ),
-      child: Center(
-          child: Text(
-        text,
-        style: FontStyle.white18,
-      )),
+      child:child
     ));
   }
 }
