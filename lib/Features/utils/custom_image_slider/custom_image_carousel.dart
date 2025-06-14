@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:juyelari/Features/Custom_widgets/images.dart';
 
 class CustomImageSlider extends StatelessWidget {
   final List imageList;
@@ -8,17 +9,19 @@ class CustomImageSlider extends StatelessWidget {
   final double? width;
   final dynamic Function(int, CarouselPageChangedReason)? onPageChanged;
   final String imageUrl;
-  const CustomImageSlider(
-      {super.key,
-      required this.imageList,
-      required this.imageController,
-      required this.imageUrl,
-      this.height,
-      required this.onPageChanged,
-      this.width});
+  const CustomImageSlider({
+    super.key,
+    required this.imageList, 
+    required this.imageController,
+    required this.imageUrl,
+    this.height,
+    required this.onPageChanged,
+    this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
+    
     return Column(
       children: [
         CarouselSlider(
@@ -40,10 +43,12 @@ class CustomImageSlider extends StatelessWidget {
               width: width,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6),
-                child: Image.asset(
-                  imageList[index],
-                  fit: BoxFit.fill,
+                child: FadeInImage.assetNetwork(
+                  placeholder: loginpic,
+                  image: imageList[index].toString(),
+                  fit: BoxFit.cover,
                   width: double.infinity,
+                  height: double.infinity,
                 ),
                 // FadeInImage.assetNetwork(
                 //   placeholder: loginpic,
@@ -55,7 +60,6 @@ class CustomImageSlider extends StatelessWidget {
             ),
           ),
         ),
-        
       ],
     );
   }

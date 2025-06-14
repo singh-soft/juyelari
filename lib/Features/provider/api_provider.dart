@@ -12,6 +12,9 @@ class ApiProvider {
         'Authorization': token().toString(),
         'Content-Type': 'application/json',
       },
+      validateStatus: (status) {
+        return status != null && status < 500;
+      },
     ),
   );
 
@@ -21,7 +24,11 @@ class ApiProvider {
 
       return _handleResponse(response);
     } on DioException catch (e) {
-      return Future.error(_handleDioError(e));
+      if (e.response != null) {
+        return _handleResponse(e.response!);
+      } else {
+        rethrow;
+      }
     }
   }
 
@@ -33,7 +40,11 @@ class ApiProvider {
       final response = await _dio.post(apiUrl, data: data);
       return _handleResponse(response);
     } on DioException catch (e) {
-      return Future.error(_handleDioError(e));
+      if (e.response != null) {
+        return _handleResponse(e.response!);
+      } else {
+        rethrow;
+      }
     }
   }
 
@@ -41,6 +52,7 @@ class ApiProvider {
     switch (response.statusCode) {
       case 200:
       case 201:
+      case 400:
         return response.data;
       case 401:
         return Future.error('Unauthorized access');
@@ -53,7 +65,6 @@ class ApiProvider {
     }
   }
 
-  /// Error handler
   String _handleDioError(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
@@ -74,9 +85,3 @@ class ApiProvider {
     }
   }
 }
-
-
-
-
-
-

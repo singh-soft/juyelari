@@ -60,8 +60,7 @@ class FieldValidator {
   String? addressLine1(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please  Enter Address 1 Name';
-    } 
-    else {
+    } else {
       return null;
     }
   }
@@ -69,10 +68,9 @@ class FieldValidator {
   String? postalCode(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please Enter Postal Code Name';
-    }else if (value.length <6) {
+    } else if (value.length < 6) {
       return 'The password must be at least 6 characters.';
-    }
-     else {
+    } else {
       return null;
     }
   }

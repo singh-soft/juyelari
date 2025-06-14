@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:juyelari/Features/Custom_widgets/field_validator.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
 import 'package:juyelari/Features/Screens/forgot_password/forgot_password_controller.dart';
 import 'package:juyelari/Features/Screens/sign_up/sign_up_view.dart';
@@ -7,6 +8,7 @@ import 'package:juyelari/Features/utils/custom_container_button/custom_container
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfield.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ForgotPassword extends GetView<ForgotPasswordController> {
   const ForgotPassword({super.key});
@@ -22,8 +24,8 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => ForgotPasswordController());
     final screenWidth = MediaQuery.of(context).size.width;
-    final verticalPadding = screenWidth > 600 ? 250.0 : 200.0;
-    final horizontalPadding = screenWidth * 0.07;
+    // final verticalPadding = screenWidth > 600 ? 250.0 : 200.0;
+    // final horizontalPadding = screenWidth * 0.07;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -100,38 +102,50 @@ class ForgotPassword extends GetView<ForgotPasswordController> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 30, vertical: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Forgot Password", style: FontStyle.black18),
-                            height10,
-                            Text(
-                              "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
-                              style: FontStyle.black16,
-                            ),
-                            height25,
-                            CustomTextFormField(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 5),
-                              hintText: 'Email/Phone',
-                              topLabelText: 'Email/Phone',
-                              controller: controller.forgotPaawordController,
-                              hintStyle: FontStyle.black16.copyWith(
-                                fontSize: screenWidth > 600 ? 20 : 16,
+                        child: Form(
+                          key: controller.forgotpasswordKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Forgot Password", style: FontStyle.black18),
+                              height10,
+                              Text(
+                                "Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
+                                style: FontStyle.black16,
                               ),
-                            ),
-                            height30,
-                            CustomContainerButton(
-                                // width: screenWidth * 0.6,
-                                padding: const EdgeInsets.all(12.0),
-                                borderRadius: BorderRadius.circular(50),
-                                child: Center(
-                                  child: Text(
-                                    'Email Password Reset Link',
-                                    style: FontStyle.white18,
-                                  ),
-                                )),
-                          ],
+                              height25,
+                              CustomTextFormField(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 5),
+                                hintText: 'Email/Phone',
+                                topLabelText: 'Email/Phone',
+                                controller: controller.emailController,
+                                hintStyle: FontStyle.black16.copyWith(
+                                  fontSize: screenWidth > 600 ? 20 : 16,
+                                ),
+                                validator: (value) =>FieldValidator(context).emailValidate(value) ,
+                              ),
+                              height30,
+                              CustomContainerButton(
+                                onTap: (){
+                                  if(controller.forgotpasswordKey.currentState!.validate()){
+                                     controller.forgotPasswordSendOtpApi();
+                                  }
+                                 
+                                },
+                                width: double.infinity,
+                                  padding: const EdgeInsets.all(12.0),
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Center(
+                                    child: Obx(()=>
+                                      controller.isLoading.value?Center(child: LoadingAnimationWidget.flickr(size: 30, leftDotColor: Colors.white, rightDotColor: Colors.pink)) :Text(
+                                        'Email Password Reset Link',
+                                        style: FontStyle.white18,
+                                      ),
+                                    ),
+                                  )),
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
@@ -20,10 +21,10 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
   final customwidth10 = width5;
   final customwidth20 = width20;
 
-
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => ProductDetailsController());
+    controller.productDetailsApi();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomWidgets().customAppBar(
@@ -58,8 +59,8 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                 decoration: const BoxDecoration(
                     // image: DecorationImage(image: Image.asset(controller.getimage?['image'],height: double.infinity,).image)
                     ),
-                child: Image.asset(
-                  controller.getimage?['image'],
+                child: Image.network(
+                  controller.allData['image_url'],
                   width: double.infinity,
                   fit: BoxFit.cover,
                 )),
@@ -78,7 +79,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                       children: [
                         Expanded(
                           child: Text(
-                            controller.gettitle?['title'],
+                            controller.allData['name'].toString(),
                             style: FontStyle.black17w400,
                             maxLines: 2,
                             softWrap: true,
@@ -109,50 +110,61 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                     Row(
                       children: [
                         Text(
-                          "'₹ 1799",
+                          ' ₹ ${controller.allData['price'].toString()}',
                           style: FontStyle.redshadew600,
                         ),
-                        Text(
-                          "'₹ 2500",
-                          style: FontStyle.greycolor16,
-                        )
+                        // Text(
+                        //   "'₹ 2500",
+                        //   style: FontStyle.greycolor16,
+                        // )
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Hurry up! Offer ends in:",
-                          style: FontStyle.redshade14,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(6.0),
-                          decoration: BoxDecoration(
-                            color: CustomColor.pinkfavcolor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            "02h : 23m : 44s",
-                            style: FontStyle.redshade12,
-                          ),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Text(
+                    //       "Hurry up! Offer ends in:",
+                    //       style: FontStyle.redshade14,
+                    //     ),
+                    //     Container(
+                    //       padding: const EdgeInsets.all(6.0),
+                    //       decoration: BoxDecoration(
+                    //         color: CustomColor.pinkfavcolor,
+                    //         borderRadius: BorderRadius.circular(10),
+                    //       ),
+                    //       child: Text(
+                    //         "02h : 23m : 44s",
+                    //         style: FontStyle.redshade12,
+                    //       ),
+                    //     )
+                    //   ],
+                    // ),
                     Text(
                       "Product Details",
                       style: FontStyle.balck20,
                     ),
-                    height10,
-                    buildbullettext('Material : 22K Hallmarked Gold'),
-                    buildbullettext(
-                        'Design: Intricate leaf pattern with a smooth,polished finish'),
-                    buildbullettext(
-                        'Weight: Approx. 18 grams (varies by size)'),
-                    buildbullettext(
-                        'Size Options: Available in 2.4, 2.6, and 2.8 inches'),
-                    buildbullettext('Closure: Screw-type clasp for secure fit'),
-                    buildbullettext(
-                        'Style: Suitable for everyday wear or special occasion'),
+                    // height10,
+                    Expanded(
+                      child: Html(
+                          anchorKey: controller.staticAnchorKey,
+                          data: controller.allData['long_description'].toString(),
+                          style: {
+                            "table": Style(
+                              backgroundColor:
+                                  const Color.fromARGB(0x50, 0xee, 0xee, 0xee),
+                            ),
+                          }),
+                    ),
+                    // buildbullettext('Material : 22K Hallmarked Gold'),
+                    // buildbullettext(
+                    //     'Design: Intricate leaf pattern with a smooth,polished finish'),
+                    // buildbullettext(
+                    //     'Weight: Approx. 18 grams (varies by size)'),
+                    // buildbullettext(
+                    //     'Size Options: Available in 2.4, 2.6, and 2.8 inches'),
+                    // buildbullettext('Closure: Screw-type clasp for secure fit'),
+                    // buildbullettext(
+                    //     'Style: Suitable for everyday wear or special occasion'),
                   ],
                 ),
               ),
@@ -194,10 +206,12 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: controller.similaritemdetails.length,
+                    itemCount: controller.multipleImage.length,
                     itemBuilder: (context, index) {
+                      
                       return Container(
-                        margin: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(left: 16, top: 10),
+                        // margin: const EdgeInsets.all(2.0),
                         width: 180,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,9 +233,8 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
-                                    child: Image.asset(
-                                      controller.similaritemdetails[index]
-                                          ['image'],
+                                    child: Image.network(
+                                      controller.multipleImage[index],
                                       height: 190,
                                       width: double.infinity,
                                       fit: BoxFit.cover,
@@ -284,13 +297,9 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 0),
-                              child: Text(
-                                '₹${controller.similaritemdetails[index]['rate']}',
-                                style: FontStyle.redshadew600,
-                              ),
+                            Text(
+                              '₹${controller.similaritemdetails[index]['rate']}',
+                              style: FontStyle.redshadew600,
                             )
                           ],
                         ),
@@ -428,7 +437,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
               ),
             ),
             Container(
-              height: 200,
+              // height: 270,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: CustomColor.white,
@@ -441,25 +450,50 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                   )
                 ],
               ),
-              child: Column    (
-                children: [
-                 ExpansionTileCard(
-                  baseColor: Colors.white,
-                  title:  Text(
-                  "Write a Review",
-                    style: FontStyle.black17w400,
-                  ),
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Text( controller.similaritemdetails[1]['title'],)
-
-
-
+                    customHeight10,
+                    ExpansionTileCard(
+                      baseColor: Colors.white,
+                      title: Text(
+                        "Product Specification",
+                        style: FontStyle.black17w400,
+                      ),
+                      children: [
+                        Text(
+                          controller.similaritemdetails[1]['title'],
+                        )
+                      ],
+                    ),
+                    customHeight10,
+                    ExpansionTileCard(
+                      baseColor: Colors.white,
+                      title: Text(
+                        "Write a Review",
+                        style: FontStyle.black17w400,
+                      ),
+                      children: [
+                        Text(
+                          controller.similaritemdetails[1]['title'],
+                        )
+                      ],
+                    ),
+                    customHeight10,
+                    ExpansionTileCard(
+                      baseColor: Colors.white,
+                      title: Text(
+                        "Ask a Question",
+                        style: FontStyle.black17w400,
+                      ),
+                      children: [
+                        Text(
+                          controller.similaritemdetails[1]['title'],
+                        )
+                      ],
+                    ),
                   ],
-                
-                 ),
-                 
-                 
-                ],
+                ),
               ),
             )
           ],
