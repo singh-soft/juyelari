@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/field_validator.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
-import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_screen.dart';
 import 'package:juyelari/Features/Screens/forgot_password/forgot_password.dart';
 import 'package:juyelari/Features/Screens/login/login_controller.dart';
 import 'package:juyelari/Features/Screens/sign_up/sign_up_view.dart';

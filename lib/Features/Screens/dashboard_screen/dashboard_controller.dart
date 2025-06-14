@@ -1,36 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/provider/api_provider.dart';
 
 class DashboardController extends GetxController {
   final TextEditingController searchController = TextEditingController();
-  
+  RxList<Map<String, dynamic>> categories = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> brands = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> sliders = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> coupons = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> featuredProduct = <Map<String, dynamic>>[].obs;
+
   RxInt currentIndex = 0.obs;
-  RxList<String> imageUrls = <String>[
-    'assets/images/tanishqear.webp',
-    'assets/images/tanishq2.webp',
-     'assets/images/tanishqneck1.webp',
-    'assets/images/tanishqring2.webp',
-  ].obs;
-  List<Map<String,dynamic>> listimage=[
-    {'image':"assets/images/tanishqear.webp","name":"Earring","index":0},
-    {"image":"assets/images/tanishqring2.webp","name":"Diamond","index":1},
-    {"image":"assets/images/tanishqneck2.webp","name":"Necklace","index":2},
-    {"image":"assets/images/thumbring.png","name":"Bracelet","index":3},
-    {"image":"assets/images/earringpic.png","name":"Earrings","index":4},
-    ];
-    List<Map<String,dynamic>> gridimage=[
-    {'image':"assets/images/tanishqear.webp","name":"Ring"},
-    {"image":"assets/images/tanishqear1.webp","name":"Earring"},
-    {"image":"assets/images/tanishqear1.webp","name":"Necklace"},
-    {"image":"assets/images/tanishqring1.webp","name":"Ring"},
-    {"image":"assets/images/tanishqring2.webp","name":"Diamond Ring"},
-     {"image":"assets/images/tanishqear.webp","name":" Diamond Ring"},
-      {"image":"assets/images/tanishqneck2.webp","name":"Pendant"},
-       {"image":"assets/images/tanishqneck2.webp","name":"Pendant"},
-    
-    ];
+  RxInt currentIndex1 = 0.obs;
+  RxBool isLoading = false.obs;
 
-  CarouselSliderController sliderCarouselController = CarouselSliderController();
+  CarouselSliderController sliderCarouselController =
+      CarouselSliderController();
 
+  CarouselSliderController sliderCarouselController1 =
+      CarouselSliderController();
+  void dashboardApi() async {
+    try {
+      isLoading.value = true;
+      var response = await ApiProvider().postRequest(apiUrl: 'dashboard');
+      if (response['success'] == true && response['data'] != null) {
+        final data = response['data'];
+
+        categories.assignAll(
+            List<Map<String, dynamic>>.from(data['categories'] ?? []));
+        sliders
+            .assignAll(List<Map<String, dynamic>>.from(data['sliders'] ?? []));
+
+        brands.assignAll(List<Map<String, dynamic>>.from(data['brands'] ?? []));
+        featuredProduct
+            .assignAll(List<Map<String, dynamic>>.from(data['products'] ?? []));
+
+        CustomWidgets().toast(response['message'], Colors.green);
+        isLoading.value = false;
+      } else {
+        CustomWidgets().toast(response['message'], Colors.red);
+        isLoading.value = false;
+      }
+    } catch (e) {
+      // print(e.toString());
+    }
+  }
 }
