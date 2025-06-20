@@ -37,7 +37,7 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void loginApi() async {
-    try {
+    try {  
       isLoading.value = true;
       Map<String, dynamic> data = {
         "email": emailController.value.text,

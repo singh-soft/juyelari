@@ -8,7 +8,7 @@ class ProductDetailsController extends GetxController {
   var getimage = Get.arguments;
   var gettitle = Get.arguments;
   var getProductId = Get.arguments;
-  var allData={}.obs;
+  var allData = {}.obs;
   final staticAnchorKey = GlobalKey();
 
   @override
@@ -53,23 +53,19 @@ class ProductDetailsController extends GetxController {
   ];
   void productDetailsApi() async {
     try {
-      Map<String, dynamic> data = {
-        "product_id": getProductId
-       
-      };
+      Map<String, dynamic> data = {"product_id": getProductId };
 
-      var response =
-          await ApiProvider().postRequest(apiUrl: '/product-details',data: data);
-          print(response.toString());
+      var response = await ApiProvider()
+          .postRequest(apiUrl: '/product-details', data: data);
+      print(response.toString());
       if (response['success'] == true && response['data'] != null) {
-         allData.value = response['data'];
-         multipleImage.assignAll(List.from(response['data']['multi_images']));
+        allData.value = response['data'];
+        multipleImage.assignAll(List.from(response['data']['multi_images']));
 
-          CustomWidgets().toast(response['message'], Colors.green);
+        CustomWidgets().toast(response['message'], Colors.green);
         // isLoading.value=false;
-      }
-      else{
-         CustomWidgets().toast(response['message'], Colors.red);
+      } else {
+        CustomWidgets().toast(response['message'], Colors.red);
       }
     } catch (e) {}
   }
