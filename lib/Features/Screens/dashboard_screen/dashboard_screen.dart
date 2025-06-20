@@ -366,7 +366,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                         child: Text(
                                           product['name'] ?? '',
                                           maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
+                                          overflow: TextOverflow.ellipsis,                     
                                         ),
                                       ),
                                     ),

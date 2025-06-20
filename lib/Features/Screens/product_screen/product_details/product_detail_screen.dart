@@ -107,7 +107,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                         )
                       ],
                     ),
-                    Row(
+                    Row( 
                       children: [
                         Text(
                           ' ₹ ${controller.allData['price'].toString()}',
@@ -139,6 +139,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                     //     )
                     //   ],
                     // ),
+                    
                     Text(
                       "Product Details",
                       style: FontStyle.balck20,
@@ -150,6 +151,8 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                           data: controller.allData['long_description'].toString(),
                           style: {
                             "table": Style(
+                                padding: HtmlPaddings.all(0), // inner HTML padding hata do
+                                margin: Margins.zero,  
                               backgroundColor:
                                   const Color.fromARGB(0x50, 0xee, 0xee, 0xee),
                             ),
