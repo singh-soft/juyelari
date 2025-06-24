@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
+import 'package:juyelari/Features/Screens/login/login_view.dart';
 import 'package:juyelari/Features/Screens/on_boarding/on_boarding_screen_controller.dart';
-import 'package:juyelari/Features/provider/auth.dart';
-import 'package:juyelari/Features/res/routes/routes_name.dart';
+import 'package:juyelari/Features/Screens/sign_up/sign_up_view.dart';
+import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:onboarding/onboarding.dart';
 
 class OnBoardingScreen extends GetView<OnBoardingScreenController> {
@@ -14,7 +16,9 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => OnBoardingScreenController());
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+
+    // final verticalPadding = screenWidth > 600 ? 250.0 : 200.0;
+    // final horizontalPadding = screenWidth * 0.07;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,17 +29,14 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
               SafeArea(
                 child: Stack(
                   children: [
-                    SizedBox(
-                      height: screenHeight * 0.6,
-                      child: Image.asset(
-                        onboardingpic,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
+                    Image.asset(
+                      onboardingpic,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                     Positioned(
-                      top: screenHeight * 0.5,
-                      left: screenWidth * 0.009,
+                      top: 360,
+                      left: screenWidth * 0.007,
                       child: RotatingCircleAvatar(
                         controller: controller.rotateController,
                         imagePath: earingpic,
@@ -44,8 +45,8 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
                       ),
                     ),
                     Positioned(
-                      top: screenHeight * 0.54,
-                      left: screenWidth * 0.17,
+                      top: 420,
+                      left: screenWidth * 0.15,
                       child: RotatingCircleAvatar(
                         controller: controller.rotateController,
                         imagePath: ringpic,
@@ -54,7 +55,7 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
                       ),
                     ),
                     Positioned(
-                      top: screenHeight * 0.565,
+                      top: 420,
                       left: screenWidth * 0.42,
                       child: RotatingCircleAvatar(
                         controller: controller.rotateController,
@@ -64,8 +65,8 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
                       ),
                     ),
                     Positioned(
-                      top: screenHeight * 0.56,
-                      left: screenWidth * 0.68,
+                      top: 420,
+                      left: screenWidth * 0.69,
                       child: RotatingCircleAvatar(
                         controller: controller.rotateController,
                         imagePath: thumbring,
@@ -74,8 +75,8 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
                       ),
                     ),
                     Positioned(
-                      top: screenHeight * 0.5,
-                      right: screenWidth * 0.0,
+                      top: 360,
+                      right: screenWidth * 0.01,
                       child: RotatingCircleAvatar(
                         controller: controller.rotateController,
                         imagePath: diamondring,
@@ -84,43 +85,32 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
                       ),
                     ),
                     Positioned(
-                      top: screenHeight * 0.72,
-                      left: screenWidth * 0.3,
-                      child: Image.asset(onboardinglogo),
-                    ),
+                        top: 600,
+                        left: screenWidth * 0.3,
+                        child: Image.asset(onboardinglogo)),
                   ],
                 ),
               ),
             ],
-          ),
+          )
         ],
         buildFooter: (context, netDragDistance, pagesLength, currentIndex,
             setIndex, slideDirection) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.white,
-                ),
-                onPressed: () {
-                  if(token().toString().isNotEmpty){ 
-                    Get.toNamed(RoutesName.dashboardscreen);}
-                    else{
-                      Get.toNamed(RoutesName.loginview);
-
-                    }
-                  
-                },
-                child: Text(
-                  "Go To Next",
-                  style: TextStyle(
-                    color: CustomColor.blackColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
+              SizedBox(
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      Get.to(()=> const  LoginView());
+                    },
+                    child:  Text(
+                      "Go To Next",
+                      style: TextStyle(color: CustomColor.blackColor, fontSize: 16,fontWeight: FontWeight.bold,decoration: TextDecoration.underline),
+                    )),
               ),
             ],
           );
@@ -129,7 +119,6 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
     );
   }
 }
-
 class RotatingCircleAvatar extends StatelessWidget {
   final AnimationController controller;
   final String imagePath;
@@ -176,3 +165,4 @@ class RotatingCircleAvatar extends StatelessWidget {
     );
   }
 }
+

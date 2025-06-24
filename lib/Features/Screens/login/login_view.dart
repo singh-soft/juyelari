@@ -28,6 +28,7 @@ class LoginView extends GetView<LoginController> {
     Get.lazyPut(() => LoginController());
 
     final screenWidth = MediaQuery.of(context).size.width;
+     final screenheight = MediaQuery.of(context).size.height;
     // final verticalPadding = screenWidth > 600 ? 250.0 : 200.0;
     // final horizontalPadding = screenWidth * 0.07;
 
@@ -40,11 +41,14 @@ class LoginView extends GetView<LoginController> {
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
-              Image.asset(
-                loginpic,
-                height: 310,
-                fit: BoxFit.cover,
-                width: double.infinity,
+              SizedBox(
+                 height: screenheight * 0.36,
+                child: Image.asset(
+                  loginpic,
+                  height: 310,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
               ),
               Positioned(
                 top: 200,

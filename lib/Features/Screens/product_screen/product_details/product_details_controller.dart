@@ -10,13 +10,12 @@ class ProductDetailsController extends GetxController {
   var getProductId = Get.arguments;
   var allData = {}.obs;
   final staticAnchorKey = GlobalKey();
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
     super.onInit();
     final args = Get.arguments;
-
-    print(getProductId);
   }
 
   RxBool showAllReviews = false.obs;
@@ -53,20 +52,24 @@ class ProductDetailsController extends GetxController {
   ];
   void productDetailsApi() async {
     try {
-      Map<String, dynamic> data = {"product_id": getProductId };
+      isLoading.value = true;
+      Map<String, dynamic> data = {"product_id": getProductId['product_id']};
 
       var response = await ApiProvider()
           .postRequest(apiUrl: '/product-details', data: data);
-      print(response.toString());
+
       if (response['success'] == true && response['data'] != null) {
         allData.value = response['data'];
         multipleImage.assignAll(List.from(response['data']['multi_images']));
 
         CustomWidgets().toast(response['message'], Colors.green);
-        // isLoading.value=false;
+        isLoading.value = false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);
+        isLoading.value = false;
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

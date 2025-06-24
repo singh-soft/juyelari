@@ -175,7 +175,7 @@ class ProductScreen extends GetView<ProductController> {
                   final title = controller.itemdetails[index]['title'];
                   return InkWell(
                     onTap: () {
-                      Get.to(() => const ProductDetailScreen(),
+                      Get.to(() =>  ProductDetailScreen(),
                           arguments: {'image': imagePath, 'title': title});
                     },
                     child: Column(
