@@ -13,7 +13,7 @@ class Routes {
   static appRoutes() => [
         GetPage(
             name: RoutesName.onboardingscreen,
-            page: () => const OnBoardingScreen()),
+            page: () =>  OnBoardingScreen()),
         GetPage(name: RoutesName.loginview, page: () => const LoginView()),
         GetPage(name: RoutesName.signupview, page: () => SignUpView()),
         GetPage(

@@ -289,7 +289,7 @@ class DashboardScreen extends GetView<DashboardController> {
                           ),
                         ),
                         Container(
-                          height: 250,
+                          height: 200,
                           padding: const EdgeInsets.all(8.0),
                           color: Colors.transparent,
                           child: Obx(() {
@@ -315,7 +315,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                     InkWell(
                                       onTap: () {
                                         Get.to(
-                                            () => const ProductDetailScreen(),
+                                            () =>  ProductDetailScreen(),
                                             arguments: {
                                              "product_id":product['id']
                                             });
