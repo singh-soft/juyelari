@@ -26,6 +26,8 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
     Get.lazyPut(() => ProductDetailsController());
     controller.productDetailsApi();
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: (){},
+      child: Text("Add To Cart",),),
         backgroundColor: Colors.white,
         appBar: CustomWidgets().customAppBar(
           title: '',
@@ -380,7 +382,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                                   radius: 20,
                                                   backgroundImage: Image.asset(
                                                           "assets/images/pinkearring.jpg")
-                                                      .image,        
+                                                      .image,
                                                 ),
                                               ],
                                             ),
@@ -393,7 +395,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                                   Text(
                                                     "Veronika",
                                                     style: FontStyle.black18,
-                                                  ),  
+                                                  ),
                                                   RatingBar.builder(
                                                     itemSize: 25,
                                                     initialRating: 4.5,

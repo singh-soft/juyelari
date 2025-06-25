@@ -105,9 +105,9 @@ class OnBoardingScreen extends GetView<OnBoardingScreenController> {
                 ),
                 onPressed: () {
                   if(token().toString().isNotEmpty){ 
-                    Get.toNamed(RoutesName.dashboardscreen);}
+                    Get.offAllNamed(RoutesName.dashboardscreen);}
                     else{
-                      Get.toNamed(RoutesName.loginview);
+                      Get.offAllNamed(RoutesName.loginview);
 
                     }
                   
