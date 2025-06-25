@@ -6,8 +6,14 @@ import 'package:juyelari/Features/Custom_widgets/colors.dart';
 class FontStyle {
   static final black18 = GoogleFonts.poppins(
       color: CustomColor.blackColor, fontSize: 18, fontWeight: FontWeight.w600);
+      static final black14w500 = GoogleFonts.poppins(
+      color: CustomColor.blackColor, fontSize: 14, fontWeight: FontWeight.w500);
   static final black16 = GoogleFonts.lato(
       color: CustomColor.blackColor, fontSize: 15, fontWeight: FontWeight.w400);
+      static final blacks14w500= GoogleFonts.lato(
+      color: CustomColor.blackColor, fontSize: 14, fontWeight: FontWeight.w500);
+       static final black16bold = GoogleFonts.lato(
+      color: CustomColor.blackColor, fontSize: 16, fontWeight: FontWeight.bold);
   static final white18 = GoogleFonts.lato(
       color: CustomColor.white, fontSize: 18, fontWeight: FontWeight.w700);
   static final greycolor16 = GoogleFonts.lato(
@@ -48,16 +54,20 @@ class FontStyle {
       fontWeight: FontWeight.w600);
        static final redshade20w600 = GoogleFonts.overlock(
       color: CustomColor.redshadeColor, fontWeight: FontWeight.w600, fontSize: 25);
-      static final redshad16 = GoogleFonts.poppins(
+      static final redshad18w600 = GoogleFonts.poppins(
       color: CustomColor.redshadeColor, fontSize: 18, fontWeight: FontWeight.w600);
+      static final redshad16 = GoogleFonts.poppins(
+      color: CustomColor.redshadeColor, fontSize: 16, fontWeight: FontWeight.w600);
       static final greytextw400 = GoogleFonts.lato(
       color: CustomColor.greycolor, fontSize: 15, fontWeight: FontWeight.w400);
       static final black16w400 = GoogleFonts.aBeeZee(
       color: CustomColor.blackColor, fontWeight: FontWeight.w500, fontSize: 15);
        static final black17w400 = GoogleFonts.aBeeZee(
-      color: CustomColor.blackColor, fontWeight: FontWeight.w500, fontSize: 17);
+      color: CustomColor.blackColor, fontWeight: FontWeight.w500, fontSize: 16);
       static final redshade12 = GoogleFonts.lato(
       color: CustomColor.redshadeColor,
       fontWeight: FontWeight.bold,
       fontSize: 12);
+      static final grettext14w500= GoogleFonts.poppins(
+      color: CustomColor.greytext1, fontSize: 14, fontWeight: FontWeight.w500);
 }

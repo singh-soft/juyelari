@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 
 class CustomTextFormField2 extends StatelessWidget {
   final TextEditingController? controller;
+
   final TextInputType? keyboardType;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -15,7 +17,6 @@ class CustomTextFormField2 extends StatelessWidget {
   final Color? fillColor;
   final bool? filled;
   final TextStyle? hintStyle;
-  final TextStyle? style;
   final InputBorder? focusBorder;
   final InputBorder? enableBorder;
   final InputBorder? errorBorder;
@@ -24,82 +25,121 @@ class CustomTextFormField2 extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function()? onTap;
   final EdgeInsetsGeometry? contentPadding;
+  final TextStyle? style;
   final bool? readOnly;
   final List<TextInputFormatter>? inputFormatters;
   final TextStyle? labelStyle;
   final bool? ishighlighted;
+  final String? topLabelText;
+  final TextStyle? topLabelStyle;
+  final bool isMandatory;
 
   const CustomTextFormField2({
-    super.key,
     required this.controller,
     this.keyboardType,
     this.prefixIcon,
+    this.readOnly,
     this.suffixIcon,
     this.obscureText,
     this.maxLength,
-    this.maxLines = 1,
     this.hintText,
     this.labelText,
     this.fillColor,
     this.filled,
-    this.hintStyle,
-    this.style,
     this.focusBorder,
     this.enableBorder,
     this.errorBorder,
     this.border,
     this.validator,
     this.onChanged,
-    this.onTap,
-    this.readOnly,
-    this.inputFormatters,
     this.contentPadding,
+    this.hintStyle,
+    this.style,
+    this.maxLines = 1,
+    this.inputFormatters,
+    this.onTap,
     this.labelStyle,
     this.ishighlighted,
+    this.topLabelText,
+    this.topLabelStyle,
+    this.isMandatory = false,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: CustomColor.whiteshade,
-        borderRadius:BorderRadius.circular(50) ),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText ?? false,
-        readOnly: readOnly ?? false,
-        maxLength: maxLength,
-        maxLines: maxLines,
-        style: style,
-        validator: validator,
-        onChanged: onChanged,
-        onTap: onTap,
-        inputFormatters: inputFormatters,
-        decoration: InputDecoration(
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          hintText: hintText,
-          hintStyle: hintStyle,
-          labelText: labelText,
-          labelStyle: labelStyle,
-          fillColor: fillColor,
-          filled: filled,
-          contentPadding: contentPadding,
-          border: border ??
-              OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: ishighlighted == true
-                      ? Colors.transparent
-                      : Colors.transparent,
-                ),
-                borderRadius: BorderRadius.circular(50),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (topLabelText != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: RichText(
+              text: TextSpan(
+                text: topLabelText,
+                style: topLabelStyle ??
+                    GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                children: [
+                  if (isMandatory == true)
+                    TextSpan(
+                      text: ' *',
+                      style: GoogleFonts.poppins(
+                        color: Colors.red,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                ],
               ),
-          focusedBorder: focusBorder,
-          enabledBorder: enableBorder,
-          errorBorder: errorBorder,
+            ),
+          ),
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+               color: Colors.grey.withOpacity(0.1),
+              ),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 0,
+                  blurRadius: 0,
+                  offset: const Offset(0,1),
+                ),
+              ]),
+          child: TextFormField(
+            style: style,
+            controller: controller,
+            keyboardType: keyboardType,
+            obscureText: obscureText ?? false,
+            readOnly: readOnly ?? false,
+            maxLength: maxLength,
+            maxLines: maxLines,
+            validator: validator,
+            onChanged: onChanged,
+            inputFormatters: inputFormatters,
+            onTap: onTap,
+            decoration: InputDecoration(
+                prefixIcon: prefixIcon,
+                suffixIcon: suffixIcon,
+                hintText: hintText,
+                labelText: labelText,
+                fillColor: fillColor,
+                filled: filled,
+                border: border,
+                hintStyle: hintStyle,
+                labelStyle: labelStyle,
+                focusedBorder: focusBorder,
+                enabledBorder: enableBorder,
+                errorBorder: errorBorder,
+                contentPadding: contentPadding),
+          ),
         ),
-      ),
+      ],
     );
   }
 }

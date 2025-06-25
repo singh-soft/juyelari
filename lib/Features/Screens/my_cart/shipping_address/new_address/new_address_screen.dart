@@ -1,0 +1,243 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:juyelari/Features/Custom_widgets/colors.dart';
+import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Screens/my_cart/shipping_address/new_address/new_address_controller.dart';
+import 'package:juyelari/Features/utils/custom_font_style.dart';
+import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
+import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfield2.dart';
+
+class NewAddressScreen extends GetView<NewAddressController> {
+  const NewAddressScreen({super.key});
+  final customHeight10 = height10;
+  final customHeight5 = height5;
+  final customHeight15 = height15;
+  final customHeight25 = height25;
+  final customHeight20 = height20;
+  final customHeight30 = height30;
+  final customHeight50 = height50;
+  final customwidth5 = width5;
+
+  @override
+  Widget build(BuildContext context) {
+    Get.lazyPut(() => NewAddressController());
+    return Scaffold(
+       bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          margin: const EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.topRight,
+              colors: <Color>[
+                Colors.black,
+                Color(0xff890E29),
+                Colors.black,
+              ],
+            ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            "Add Address",
+            style: FontStyle.white18,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      appBar: CustomWidgets().customAppBar(
+        title: 'Add New Address',
+        leadingIcon: Icons.arrow_back_ios,
+        onLeadingPressed: () {
+          Get.back();
+        },
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomTextFormField2(
+                contentPadding:const  EdgeInsets.all(10.0),
+                hintText: 'Name',
+                topLabelText: 'Name',
+                isMandatory: true,
+                hintStyle: FontStyle.black16,
+                controller: controller.nameController,
+                fillColor: CustomColor.white,
+                filled: true,
+                border:  OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10                                                                                                            ),
+                  borderSide: BorderSide(
+                     color: Colors.grey.withOpacity(0.1),
+                     
+
+                  )
+                  ),
+                focusBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+                enableBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+              ),
+              customHeight10,
+              CustomTextFormField2(
+                hintText: 'Phone',
+                topLabelText: 'Phone',
+                isMandatory: true,
+                hintStyle: FontStyle.black16,
+                controller: controller.phoneController,
+                fillColor: CustomColor.white,
+                filled: true,
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
+                focusBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+                enableBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+              ),
+              customHeight10,
+              CustomTextFormField2(
+                hintText: 'Country',
+                topLabelText: 'Country',
+                isMandatory: true,
+                hintStyle: FontStyle.black16,
+                controller: controller.countryController,
+                fillColor: CustomColor.white,
+                filled: true,
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
+                focusBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+                enableBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+              ),
+              customHeight10,
+              CustomTextFormField2(
+                hintText: 'Pincode',
+                topLabelText: 'Pincode',
+                isMandatory: true,
+                hintStyle: FontStyle.black16,
+                controller: controller.pincodeController,
+                fillColor: CustomColor.white,
+                filled: true,
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
+                focusBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+                enableBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+              ),
+              customHeight10,
+              CustomTextFormField2(
+                hintText: 'Address',
+                topLabelText: 'Address',
+                isMandatory: true,
+                hintStyle: FontStyle.black16,
+                controller: controller.addressController,
+                fillColor: CustomColor.white,
+                filled: true,
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
+                focusBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+                enableBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+              ),
+              customHeight10,
+              CustomTextFormField2(
+                hintText: 'Locality/Town',
+                topLabelText: 'Locality/Town',
+                isMandatory: true,
+                hintStyle: FontStyle.black16,
+                controller: controller.localityController,
+                fillColor: CustomColor.white,
+                filled: true,
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
+                focusBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+                enableBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+              ),
+              customHeight10,
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextFormField2(
+                      hintText: 'City',
+                      topLabelText: 'City',
+                      isMandatory: true,
+                      hintStyle: FontStyle.black16,
+                      controller: controller.cityController,
+                      fillColor: CustomColor.white,
+                      filled: true,
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                      focusBorder:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                      enableBorder:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                    ),
+                  ),
+                  customwidth5,
+                  Expanded(
+                    child: CustomTextFormField2(
+                      hintText: 'State',
+                      topLabelText: 'State',
+                      isMandatory: true,
+                      hintStyle: FontStyle.black16,
+                      controller: controller.stateController,
+                      fillColor: CustomColor.white,
+                      filled: true,
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                      focusBorder:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                      enableBorder:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                    ),
+                  ),
+                ],
+              ),
+              customHeight10,
+              Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Save As', style:FontStyle.black16bold),
+                  ),
+               Obx(() => Row(
+                        children: [
+                          _buildChoiceChip('Home', controller),
+                          const SizedBox(width: 10),
+                          _buildChoiceChip('Work', controller),
+                        ],
+                      )),
+                      customHeight5,
+                       Obx(() => Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            value: controller.isDefault.value,
+                            onChanged: (val) => controller.isDefault.value = val!,
+                            activeColor: CustomColor.redshadeColor
+                          ),
+                          const Text(
+                            'Set as default address',
+                            style: TextStyle(color: Color(0xff890E29)),
+                          ),
+                        ],
+                      )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildChoiceChip(String label, NewAddressController controller) {
+    final isSelected = controller.saveAs.value == label;
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (_) => controller.saveAs.value = label,
+      selectedColor: CustomColor.greycolor,
+      labelStyle: TextStyle(color: isSelected ? Colors.white : Colors.black),
+    );
+  }
+}
