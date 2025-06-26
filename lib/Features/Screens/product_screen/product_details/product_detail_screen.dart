@@ -26,8 +26,12 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
     Get.lazyPut(() => ProductDetailsController());
     controller.productDetailsApi();
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){},
-      child: Text("Add To Cart",),),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Text(
+            "Add To Cart",
+          ),
+        ),
         backgroundColor: Colors.white,
         appBar: CustomWidgets().customAppBar(
           title: '',
@@ -367,9 +371,11 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                               height: 100,
                               child: Obx(
                                 () => ListView.builder(
-                                  itemCount:
-                                      controller.showAllReviews.value ? 5 : 1,
+                                  itemCount: controller.showAllReviews.value
+                                      ? controller.reviews.length
+                                      : 1,
                                   itemBuilder: (context, index) {
+                                    final review = controller.reviews[index];
                                     return Container(
                                         color: Colors.white,
                                         child: Row(
@@ -393,12 +399,17 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "Veronika",
+                                                    review['user']?['name'] ??
+                                                        "",
                                                     style: FontStyle.black18,
                                                   ),
                                                   RatingBar.builder(
                                                     itemSize: 25,
-                                                    initialRating: 4.5,
+                                                    initialRating:
+                                                        double.tryParse(review[
+                                                                    'rating']
+                                                                .toString()) ??
+                                                            0.0,
 
                                                     minRating: 1,
                                                     direction: Axis.horizontal,
@@ -418,7 +429,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                                     },
                                                   ),
                                                   Text(
-                                                    "Lorem ipsum dolor sit amet, consetetur sadipscinelitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed ...",
+                                                    review['comment'] ?? "",
                                                     style: FontStyle.greytext14,
                                                     maxLines: 6,
                                                     softWrap: true,

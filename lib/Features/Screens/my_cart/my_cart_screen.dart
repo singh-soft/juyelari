@@ -64,7 +64,7 @@ class MyCartScreen extends GetView<MyCartController> {
                         ),
                         IconButton(
                             onPressed: () {
-                              Get.to(()=> const ShippingAddressScreen());
+                              Get.to(() => const ShippingAddressScreen());
                             },
                             icon: const Icon(Icons.arrow_drop_down))
                       ],
@@ -136,9 +136,11 @@ class MyCartScreen extends GetView<MyCartController> {
                                         color: Colors.white,
                                         shape: BoxShape.circle,
                                       ),
-                                      padding: const EdgeInsets.all(4),             
-                                      child: const Icon(Icons.delete_outline_outlined,
-                                          size: 16, color: Colors.red),
+                                      padding: const EdgeInsets.all(4),
+                                      child: const Icon(
+                                          Icons.delete_outline_outlined,
+                                          size: 16,
+                                          color: Colors.red),
                                     ),
                                   ),
                                 )
@@ -156,13 +158,23 @@ class MyCartScreen extends GetView<MyCartController> {
                                     maxLines: 2,
                                     softWrap: true,
                                   ),
-                                  Text(product['price']!,style: FontStyle.redshad16,),
-                                  Text(product['return']!,style: FontStyle.grettext14w500,),
+                                  Text(
+                                    product['price']!,
+                                    style: FontStyle.redshad16,
+                                  ),
+                                  Text(
+                                    product['return']!,
+                                    style: FontStyle.grettext14w500,
+                                  ),
                                   Row(
                                     children: [
-                                      Text("Size: ${product['size']!}",style: FontStyle.black14w500,),
+                                      Text(
+                                        "Size: ${product['size']!}",
+                                        style: FontStyle.black14w500,
+                                      ),
                                       customwidth20,
-                                      Text("Qty: ${product['qty']!}",style: FontStyle.blacks14w500),
+                                      Text("Qty: ${product['qty']!}",
+                                          style: FontStyle.blacks14w500),
                                     ],
                                   )
                                 ],
@@ -200,7 +212,7 @@ class MyCartScreen extends GetView<MyCartController> {
                       style: FontStyle.black18,
                     ),
                     customHeight20,
-                    rowwidget(title: 'Sub Total ', value: '1749'),
+                    rowwidget(title: 'Sub Total ', value: '₹ 1749'),
                     rowwidget(title: 'Delivery Charge', value: 'Free'),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -213,7 +225,7 @@ class MyCartScreen extends GetView<MyCartController> {
                             style: FontStyle.black16,
                           ),
                           Text(
-                            "1749",
+                            "₹ 1749",
                             style: FontStyle.black16,
                           ),
                         ],
@@ -244,10 +256,10 @@ class MyCartScreen extends GetView<MyCartController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "₹1749",
+                          "₹ 1749",
                           style: FontStyle.black18,
                         ),
-                      customHeight10,
+                        customHeight10,
                         Text("(3 items)", style: FontStyle.black14),
                       ],
                     ),

@@ -1,5 +1,5 @@
 class RoutesName {
-  static const String onboardingscreen = "/onboardingscreen";
+  static const String onboardingscreen = "/";
   static const String loginview = "/loginview";
   static const String signupview = "/signupview";
   static const String forgotpassword = "/forgotpassword";
@@ -8,5 +8,6 @@ class RoutesName {
   static const String productscreen = "/productscreen";
   static const String createpasswordscreen = "/createpasswordscreen";
   static const String revieworderdetailsscreen = "/revieworderdetailsscreen";
-  static const String mycartscreen="/";
+  static const String mycartscreen="/mycartscreen";
+   static const String bottombarview="/bottombarview";
 }
