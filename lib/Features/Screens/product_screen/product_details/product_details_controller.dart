@@ -9,6 +9,7 @@ class ProductDetailsController extends GetxController {
   var gettitle = Get.arguments;
   var getProductId = Get.arguments;
   var allData = {}.obs;
+  RxList reviews = [].obs;
   final staticAnchorKey = GlobalKey();
   RxBool isLoading = false.obs;
 
@@ -61,6 +62,7 @@ class ProductDetailsController extends GetxController {
       if (response['success'] == true && response['data'] != null) {
         allData.value = response['data'];
         multipleImage.assignAll(List.from(response['data']['multi_images']));
+        reviews.assignAll(List.from(response['data']['reviews'] ?? []));
 
         CustomWidgets().toast(response['message'], Colors.green);
         isLoading.value = false;

@@ -314,10 +314,9 @@ class DashboardScreen extends GetView<DashboardController> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Get.to(
-                                            () =>  ProductDetailScreen(),
+                                        Get.to(() => ProductDetailScreen(),
                                             arguments: {
-                                             "product_id":product['id']
+                                              "product_id": product['id']
                                             });
                                       },
                                       child: Container(
@@ -366,7 +365,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                         child: Text(
                                           product['name'] ?? '',
                                           maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,                     
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),

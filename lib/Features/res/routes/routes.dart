@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:juyelari/Features/Screens/bottom_bar/bottom_bar_view.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_screen.dart';
 import 'package:juyelari/Features/Screens/forgot_password/create_password/create_password_screen.dart';
 import 'package:juyelari/Features/Screens/forgot_password/forgot_password.dart';
@@ -37,6 +38,7 @@ class Routes {
           name: RoutesName.revieworderdetailsscreen,
           page: () => const ReviewOrderDetailsScreen(),
         ),
-        GetPage(name: RoutesName.mycartscreen, page: () => const MyCartScreen())
+        GetPage(name: RoutesName.mycartscreen, page: () => const MyCartScreen()),
+         GetPage(name: RoutesName.bottombarview, page: () => const BottomBarView())
       ];
 }
