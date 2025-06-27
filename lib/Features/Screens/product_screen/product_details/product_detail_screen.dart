@@ -1,4 +1,5 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_details_controller.dart';
+import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 
@@ -23,18 +25,29 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+
     Get.lazyPut(() => ProductDetailsController());
     controller.productDetailsApi();
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Text(
-            "Add To Cart",
-          ),
-        ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onPressed: () {},
+            child: CustomContainerButton(
+              width: screenWidth * 0.5,
+              height: 50,
+              padding: const EdgeInsets.all(12.0),
+              borderRadius: BorderRadius.circular(50),
+              child: Text(
+                "Add To Cart",
+                style: FontStyle.white18,
+              ),
+            )),
         backgroundColor: Colors.white,
         appBar: CustomWidgets().customAppBar(
-          title: '',
+          title: 'Product Details',
           leadingIcon: Icons.arrow_back_ios,
           onLeadingPressed: () {
             Get.back();
@@ -60,17 +73,24 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
             ? SafeArea(
                 child: ListView(
                   children: [
-                    Container(
-                        height: 250,
-                        // width: double.infinity,
-                        decoration: const BoxDecoration(
-                            // image: DecorationImage(image: Image.asset(controller.getimage?['image'],height: double.infinity,).image)
-                            ),
-                        child: Image.network(
-                          controller.allData['image_url'].toString(),
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        )),
+                    FanCarouselImageSlider.sliderType2(
+                      sliderHeight: 220,
+                      imagesLink: controller.multipleImage.cast<String>(),
+                      isAssets: false,
+                      autoPlay: true,
+                    ),
+
+                    // Container(
+                    //     height: 250,
+                    //     // width: double.infinity,
+                    //     decoration: const BoxDecoration(
+                    //         // image: DecorationImage(image: Image.asset(controller.getimage?['image'],height: double.infinity,).image)
+                    //         ),
+                    //     child: Image.network(
+                    //       controller.allData['image_url'].toString(),
+                    //       width: double.infinity,
+                    //       fit: BoxFit.cover,
+                    //     )),
                     Container(
                       height: 380,
                       color: Colors.white,
@@ -150,7 +170,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
 
                             Text(
                               "Product Details",
-                              style: FontStyle.balck20,
+                              style: FontStyle.black18,
                             ),
                             // height10,
                             Flexible(

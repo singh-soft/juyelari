@@ -5,6 +5,7 @@ import 'package:juyelari/Features/Screens/forgot_password/create_password/create
 import 'package:juyelari/Features/Screens/forgot_password/forgot_password.dart';
 import 'package:juyelari/Features/Screens/login/login_view.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_screen.dart';
+import 'package:juyelari/Features/Screens/my_order_screen/my_order_screen.dart';
 import 'package:juyelari/Features/Screens/on_boarding/on_boarding_screen.dart';
 import 'package:juyelari/Features/Screens/otp_verification/otp_verification_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_screen.dart';
@@ -39,6 +40,7 @@ class Routes {
           page: () => const ReviewOrderDetailsScreen(),
         ),
         GetPage(name: RoutesName.mycartscreen, page: () => const MyCartScreen()),
-         GetPage(name: RoutesName.bottombarview, page: () => const BottomBarView())
+         GetPage(name: RoutesName.bottombarview, page: () => const BottomBarView()),
+           GetPage(name: RoutesName.myorderscreen, page: () =>  MyOrderScreen())
       ];
 }

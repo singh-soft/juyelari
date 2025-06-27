@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Screens/bottom_bar/bottom_bar_view.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_screen.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 import 'package:juyelari/Features/provider/auth.dart';
@@ -50,7 +51,7 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
 
       if (response['status'] == true) {
         box.write('access_token', response['access_token']);
-        Get.to(() => const DashboardScreen());
+        Get.offAll(() => const BottomBarView ());
         CustomWidgets().toast(response['message'], Colors.green);
         isLoading.value = false;
       } else {
