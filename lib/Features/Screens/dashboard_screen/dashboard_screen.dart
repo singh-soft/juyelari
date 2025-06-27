@@ -314,7 +314,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Get.to(() => ProductDetailScreen(),
+                                        Get.to(() =>const  ProductDetailScreen(),
                                             arguments: {
                                               "product_id": product['id']
                                             });

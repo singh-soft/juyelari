@@ -39,7 +39,7 @@ class MyCartScreen extends GetView<MyCartController> {
           child: Column(
             children: [
               Container(
-                height: screenheight * 0.12,
+                // height: screenheight * 0.12,
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                     color: CustomColor.yellowshade1,
@@ -212,7 +212,7 @@ class MyCartScreen extends GetView<MyCartController> {
                       style: FontStyle.black18,
                     ),
                     customHeight20,
-                    rowwidget(title: 'Sub Total ', value: '₹ 1749'),
+                    rowwidget(title: 'Sub Total ', value: '₹1749'),
                     rowwidget(title: 'Delivery Charge', value: 'Free'),
                     Padding(
                       padding: const EdgeInsets.symmetric(

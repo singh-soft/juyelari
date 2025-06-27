@@ -10,6 +10,7 @@ class CustomContainerButton extends StatelessWidget {
   final Color?gradientColors;
   final BorderRadius? borderRadius;
   final double? width;
+  final double? height;
   final EdgeInsetsGeometry? padding;
   final Widget? child;
 
@@ -21,6 +22,7 @@ class CustomContainerButton extends StatelessWidget {
       this.onTap,
       this.padding,
       this.width,
+       this.height,
       this.child});
 
   @override
