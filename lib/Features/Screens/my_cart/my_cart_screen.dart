@@ -4,6 +4,7 @@ import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
 import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_screen.dart';
+import 'package:juyelari/Features/Screens/review_order_details/review_order_details_screen.dart';
 import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
@@ -23,6 +24,7 @@ class MyCartScreen extends GetView<MyCartController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => MyCartController());
+    controller.mycartApi();
     final screenWidth = MediaQuery.of(context).size.width;
     final screenheight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -73,116 +75,145 @@ class MyCartScreen extends GetView<MyCartController> {
                 ),
               ),
               customHeight10,
-              Expanded(
-                // height: 200,
-                child: ListView.builder(
-                  itemCount: controller.products.length,
-                  itemBuilder: (context, index) {
-                    final product = controller.products[index];
-                    return Container(
-                        margin: const EdgeInsets.all(4.0),
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                            border:
-                                Border.all(color: Colors.grey.withOpacity(0.1)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: const Offset(1, 3),
-                              ),
-                            ]),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Container(
-                                    height: 120,
-                                    width: 120,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: Colors.grey.withOpacity(0.1)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.1),
-                                          spreadRadius: 2,
-                                          blurRadius: 2,
-                                          offset: const Offset(1, 3),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Image.asset(
-                                      product['image']!,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+              Obx(
+                () => Expanded(
+                  // height: 200,
+                  child: ListView.builder(
+                    itemCount: controller.cartItmes.length,
+                    itemBuilder: (context, index) {
+                      final cartItem = controller.cartItmes[index];
+                      return Container(
+                          margin: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(20.0),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                  color: Colors.grey.withOpacity(0.1)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: const Offset(1, 3),
                                 ),
-                                Positioned(
-                                  bottom: 4,
-                                  left: 4,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      // controller.removeProduct(index); // Your delete logic
-                                    },
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
+                              ]),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Obx(
+                                      () => InkWell(
+                                        onTap: controller.isLoading.value
+                                            ? null
+                                            : () {
+                                                Get.defaultDialog(
+                                                  middleText:
+                                                      'Are you sure you want to remove this item from your cart?',
+                                                  buttonColor:
+                                                      CustomColor.redshadeColor,
+                                                  textConfirm: "Yes",
+                                                  textCancel: "No",
+                                                  onConfirm: () {
+                                                    Get.back();
+                                                    controller.deleteMyCartApi(
+                                                        cartItem['product_id']
+                                                            .toString());
+                                                  },
+                                                  onCancel: () {
+                                                    Get.back();
+                                                  },
+                                                );
+                                              },
+                                        child: Container(
+                                          height: 120,
+                                          width: 120,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: Colors.grey
+                                                    .withOpacity(0.1)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 2,
+                                                blurRadius: 2,
+                                                offset: const Offset(1, 3),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Image.network(
+                                            cartItem['product_image'] ?? '',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
                                       ),
-                                      padding: const EdgeInsets.all(4),
-                                      child: const Icon(
-                                          Icons.delete_outline_outlined,
-                                          size: 16,
-                                          color: Colors.red),
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            customwidth20,
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product['title'].toString(),
-                                    style: FontStyle.black17w400,
-                                    maxLines: 2,
-                                    softWrap: true,
-                                  ),
-                                  Text(
-                                    product['price']!,
-                                    style: FontStyle.redshad16,
-                                  ),
-                                  Text(
-                                    product['return']!,
-                                    style: FontStyle.grettext14w500,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Size: ${product['size']!}",
-                                        style: FontStyle.black14w500,
+                                  Positioned(
+                                    bottom: 4,
+                                    left: 4,
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: const EdgeInsets.all(4),
+                                        child: const Icon(
+                                            Icons.delete_outline_outlined,
+                                            size: 16,
+                                            color: Colors.red),
                                       ),
-                                      customwidth20,
-                                      Text("Qty: ${product['qty']!}",
-                                          style: FontStyle.blacks14w500),
-                                    ],
+                                    ),
                                   )
                                 ],
                               ),
-                            )
-                          ],
-                        ));
-                  },
+                              customwidth20,
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      cartItem['product_name'].toString(),
+                                      style: FontStyle.black17w400,
+                                      maxLines: 2,
+                                      softWrap: true,
+                                    ),
+                                    Text(
+                                      cartItem['price']!,
+                                      style: FontStyle.redshad16,
+                                    ),
+                                    Text(
+                                      "All Issue easy returns",
+                                      style: FontStyle.grettext14w500,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Size: Free Size",
+                                          style: FontStyle.black14w500,
+                                        ),
+                                        customwidth20,
+                                        Text("Qty: ${cartItem['qty']!}",
+                                            style: FontStyle.blacks14w500),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ));
+                    },
+                  ),
                 ),
               ),
               customHeight10,
@@ -212,7 +243,10 @@ class MyCartScreen extends GetView<MyCartController> {
                       style: FontStyle.black18,
                     ),
                     customHeight20,
-                    rowwidget(title: 'Sub Total ', value: '₹1749'),
+                    rowwidget(
+                        title: 'Sub Total ',
+                        value:
+                            '${controller.totalAmount.value.toStringAsFixed(2)}'),
                     rowwidget(title: 'Delivery Charge', value: 'Free'),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -224,9 +258,11 @@ class MyCartScreen extends GetView<MyCartController> {
                             "Total Amount",
                             style: FontStyle.black16,
                           ),
-                          Text(
-                            "₹ 1749",
-                            style: FontStyle.black16,
+                          Obx(
+                            () => Text(
+                              "₹ ${controller.totalAmount.value.toStringAsFixed(2)}",
+                              style: FontStyle.black16,
+                            ),
                           ),
                         ],
                       ),
@@ -255,15 +291,23 @@ class MyCartScreen extends GetView<MyCartController> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "₹ 1749",
-                          style: FontStyle.black18,
+                        Obx(
+                          () => Text(
+                            "₹ ${controller.totalAmount.value.toStringAsFixed(2)}",
+                            style: FontStyle.black18,
+                          ),
                         ),
                         customHeight10,
-                        Text("(3 items)", style: FontStyle.black14),
+                        Obx(
+                          () => Text("(${controller.cartItmes.length} items)",
+                              style: FontStyle.black14),
+                        ),
                       ],
                     ),
                     CustomContainerButton(
+                      onTap: () {
+                        Get.to(() => const ReviewOrderDetailsScreen());
+                      },
                       width: screenWidth * 0.42,
                       padding: const EdgeInsets.all(15.0),
                       borderRadius: BorderRadius.circular(50),

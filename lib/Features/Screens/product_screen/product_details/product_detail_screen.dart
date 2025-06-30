@@ -10,6 +10,7 @@ import 'package:juyelari/Features/Screens/product_screen/product_details/product
 import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProductDetailScreen extends GetView<ProductDetailsController> {
   const ProductDetailScreen({super.key});
@@ -22,6 +23,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
   final customwidth5 = width5;
   final customwidth10 = width5;
   final customwidth20 = width20;
+  final customwidth40 = width40;
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +33,54 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
     Get.lazyPut(() => ProductDetailsController());
     controller.productDetailsApi();
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            onPressed: () {},
-            child: CustomContainerButton(
-              width: screenWidth * 0.5,
-              height: 50,
-              padding: const EdgeInsets.all(12.0),
-              borderRadius: BorderRadius.circular(50),
-              child: Text(
-                "Add To Cart",
-                style: FontStyle.white18,
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            customwidth40,
+            Expanded(
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                onPressed: () {
+                  controller.addtocartApi();
+                },
+                child: CustomContainerButton(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12.0),
+                  borderRadius: BorderRadius.circular(50),
+                  child: Obx(
+                    () => controller.isLoading.value
+                        ? Center(
+                            child: LoadingAnimationWidget.flickr(
+                                size: 30,
+                                leftDotColor: Colors.white,
+                                rightDotColor: Colors.pink),
+                          )
+                        : Text("Add To Cart",
+                            style: FontStyle.white18,
+                            textAlign: TextAlign.center),
+                  ),
+                ),
               ),
-            )),
+            ),
+            customwidth20,
+            Expanded(
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                onPressed: () {},
+                child: CustomContainerButton(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12.0),
+                  borderRadius: BorderRadius.circular(50),
+                  child: Text(
+                    "Buy Now",
+                    style: FontStyle.white18,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
         backgroundColor: Colors.white,
         appBar: CustomWidgets().customAppBar(
           title: 'Product Details',
@@ -116,17 +152,18 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     CircleAvatar(
-                                      radius: 12,
+                                      radius: 14,
                                       backgroundColor: CustomColor.pinkfavcolor,
                                       child: Icon(
                                         Icons.favorite_border_outlined,
                                         color: CustomColor.redshadeColor,
-                                        size: 16,
+                                        size: 17,
                                       ),
                                     ),
                                     customwidth10,
+                                    customwidth5,
                                     CircleAvatar(
-                                      radius: 12,
+                                      radius: 14,
                                       backgroundColor: CustomColor.pinkfavcolor,
                                       child: Image.asset(
                                           'assets/images/iconshare.png'),
@@ -135,12 +172,46 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                 )
                               ],
                             ),
+                            customHeight10,
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   ' ₹ ${controller.allData['price'].toString()}',
                                   style: FontStyle.redshadew600,
                                 ),
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 12,
+                                      backgroundColor: CustomColor.pinkfavcolor,
+                                      child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          onPressed: controller.decrement,
+                                          icon: Icon(Icons.remove,
+                                              color:
+                                                  CustomColor.redshadeColor)),
+                                    ),
+                                    customwidth10,
+                                    Obx(() => Text(
+                                          "${controller.quantity.value}",
+                                          style: TextStyle(
+                                              color: CustomColor.redshadeColor),
+                                        )),
+                                    customwidth10,
+                                    CircleAvatar(
+                                      radius: 12,
+                                      backgroundColor: CustomColor.pinkfavcolor,
+                                      child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          onPressed: controller.increment,
+                                          icon: Icon(Icons.add,
+                                              color:
+                                                  CustomColor.redshadeColor)),
+                                    ),
+                                  ],
+                                ),
+
                                 // Text(
                                 //   "'₹ 2500",
                                 //   style: FontStyle.greycolor16,
@@ -543,6 +614,8 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
                                 )
                               ],
                             ),
+                            customHeight50,
+                            customHeight50,
                           ],
                         ),
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
+import 'package:juyelari/Features/Custom_widgets/custom_image_loader.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/all_product_screen/all_product_screen.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.dart';
@@ -314,7 +315,8 @@ class DashboardScreen extends GetView<DashboardController> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Get.to(() =>const  ProductDetailScreen(),
+                                        Get.to(
+                                            () => const ProductDetailScreen(),
                                             arguments: {
                                               "product_id": product['id']
                                             });
@@ -410,7 +412,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                 child: Obx(() {
                                   if (controller.brands.isEmpty) {
                                     return const Center(
-                                        child: CircularProgressIndicator());
+                                        child: CustomImageLoader());
                                   }
                                   return CustomImageSlider(
                                     height: 220,
@@ -469,6 +471,6 @@ class DashboardScreen extends GetView<DashboardController> {
                   )
                 ],
               )
-            : Center(child: CircularProgressIndicator()));
+            : const Center(child: CustomImageLoader()));
   }
 }

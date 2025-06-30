@@ -38,7 +38,7 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void loginApi() async {
-    try {  
+    try {
       isLoading.value = true;
       Map<String, dynamic> data = {
         "email": emailController.value.text,
@@ -51,7 +51,8 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
 
       if (response['status'] == true) {
         box.write('access_token', response['access_token']);
-        Get.offAll(() => const BottomBarView ());
+
+        Get.offAll(() => const BottomBarView());
         CustomWidgets().toast(response['message'], Colors.green);
         isLoading.value = false;
       } else {
