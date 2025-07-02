@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -11,7 +14,7 @@ class DashboardController extends GetxController {
   RxList<Map<String, dynamic>> sliders = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> coupons = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> featuredProduct = <Map<String, dynamic>>[].obs;
-
+  RxMap<String, dynamic> dashboardData = <String, dynamic>{}.obs;
   RxInt currentIndex = 0.obs;
   RxInt currentIndex1 = 0.obs;
   RxBool isLoading = false.obs;
@@ -25,26 +28,33 @@ class DashboardController extends GetxController {
     try {
       isLoading.value = true;
       var response = await ApiProvider().postRequest(apiUrl: 'dashboard');
+
       if (response['success'] == true && response['data'] != null) {
         final data = response['data'];
+        dashboardData.value = data;
 
         categories.assignAll(
             List<Map<String, dynamic>>.from(data['categories'] ?? []));
         sliders
             .assignAll(List<Map<String, dynamic>>.from(data['sliders'] ?? []));
-
         brands.assignAll(List<Map<String, dynamic>>.from(data['brands'] ?? []));
         featuredProduct
             .assignAll(List<Map<String, dynamic>>.from(data['products'] ?? []));
 
         CustomWidgets().toast(response['message'], Colors.green);
-        isLoading.value = false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);
-        isLoading.value = false;
       }
+    } on SocketException {
+      CustomWidgets().toast("No Internet Connection", Colors.red);
+    } on TimeoutException {
+      CustomWidgets()
+          .toast("Request time out, Please try again later", Colors.red);
     } catch (e) {
-      // print(e.toString());
+      CustomWidgets()
+          .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
+    } finally {
+      isLoading.value = false;
     }
   }
 }

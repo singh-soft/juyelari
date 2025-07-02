@@ -20,7 +20,13 @@ class ApiProvider {
 
   Future<dynamic> getRequest({required String apiUrl}) async {
     try {
-      final response = await _dio.get(apiUrl);
+      final response = await _dio.get(apiUrl,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer ${token().toString()}',
+              'Content-Type': 'application/json',
+            },
+          ));
 
       return _handleResponse(response);
     } on DioException catch (e) {
@@ -37,7 +43,14 @@ class ApiProvider {
     Map<String, dynamic> data = const {},
   }) async {
     try {
-      final response = await _dio.post(apiUrl, data: data);
+      final response = await _dio.post(apiUrl,
+          data: data,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer ${token().toString()}',
+              'Content-Type': 'application/json',
+            },
+          ));
       return _handleResponse(response);
     } on DioException catch (e) {
       if (e.response != null) {
@@ -47,6 +60,33 @@ class ApiProvider {
       }
     }
   }
+
+  // Future<dynamic> postRequest({
+  //   required String apiUrl,
+  //   Map<String, dynamic> data = const {},
+  // }) async {
+  //   final String? authToken = await token();
+
+  //   try {
+  //     final response = await _dio.post(
+  //       apiUrl,
+  //       data: data,
+  //       options: Options(
+  //         headers: {
+  //           'Authorization': 'Bearer $authToken',
+  //           'Content-Type': 'application/json',
+  //         },
+  //       ),
+  //     );
+  //     return _handleResponse(response);
+  //   } on DioException catch (e) {
+  //     if (e.response != null) {
+  //       return _handleResponse(e.response!);
+  //     } else {
+  //       rethrow;
+  //     }
+  //   }
+  // }
 
   dynamic _handleResponse(Response response) {
     switch (response.statusCode) {
@@ -62,26 +102,6 @@ class ApiProvider {
         return Future.error('Internal server error');
       default:
         return Future.error('Unexpected error: ${response.statusCode}');
-    }
-  }
-
-  String _handleDioError(DioException e) {
-    switch (e.type) {
-      case DioExceptionType.connectionTimeout:
-      case DioExceptionType.sendTimeout:
-      case DioExceptionType.receiveTimeout:
-        return 'Connection timed out';
-      case DioExceptionType.badResponse:
-        final statusCode = e.response?.statusCode;
-        if (statusCode == 401) return 'Unauthorized';
-        if (statusCode == 404) return 'Not Found';
-        if (statusCode == 500) return 'Internal Server Error';
-        return 'Server error: $statusCode';
-      case DioExceptionType.cancel:
-        return 'Request cancelled';
-      case DioExceptionType.unknown:
-      default:
-        return 'Unexpected error: ${e.message}';
     }
   }
 }

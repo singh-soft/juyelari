@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -38,7 +41,7 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void loginApi() async {
-    try {  
+    try {
       isLoading.value = true;
       Map<String, dynamic> data = {
         "email": emailController.value.text,
@@ -51,16 +54,27 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
 
       if (response['status'] == true) {
         box.write('access_token', response['access_token']);
-        Get.offAll(() => const BottomBarView ());
+
+        Get.offAll(() => const BottomBarView());
         CustomWidgets().toast(response['message'], Colors.green);
         isLoading.value = false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);
         isLoading.value = false;
       }
-    } catch (e) {
-      CustomWidgets().toast(e.toString(), Colors.red);
-      isLoading.value = false;
+    } 
+    on SocketException {
+      CustomWidgets().toast("No Internet Connection", Colors.red);
+    } on TimeoutException{
+      CustomWidgets()
+          .toast("Request time out, Please try again later", Colors.red);
+    }
+    catch (e) {
+       CustomWidgets()
+          .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
+    
+    }finally{
+        isLoading.value = false;
     }
   }
 }
