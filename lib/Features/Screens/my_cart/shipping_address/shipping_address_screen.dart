@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
-import 'package:juyelari/Features/Screens/my_cart/shipping_address/new_address/new_address_screen.dart';
+import 'package:juyelari/Features/Screens/my_cart/shipping_address/new_address/add_new_address_screen.dart';
 import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_controller.dart';
-import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfield2.dart';
@@ -89,7 +88,7 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
               child: ListView.builder(
                 itemCount: controller.shippingAddress.length,
                 itemBuilder: (context, index) {
-                  final isSelected=controller.selectedAddressIndex.value==index;
+                  // final isSelected=controller.selectedAddressIndex.value==index;
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     color: Colors.white,
@@ -162,7 +161,7 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
               alignment: Alignment.centerRight,
               child: InkWell(
                 onTap: (){
-                  Get.to(()=> const NewAddressScreen());
+                  Get.to(()=> const AddNewAddressScreen());
                 },
                 child: Container(
                   margin: const EdgeInsets.all(10.0),

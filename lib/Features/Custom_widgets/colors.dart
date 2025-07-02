@@ -24,5 +24,6 @@ Color(0xff430815),
  static Color lightgreyy=const Color(0xff95989A);
  static Color pinkfavcolor=const Color(0xffFFEBEB);
  static Color yellowshade1=const Color(0xffECA61B).withOpacity(0.36);
+ static Color blackshade=const Color(0xff222222);
 
 }

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
@@ -78,8 +81,17 @@ class SignUpController extends GetxController with GetTickerProviderStateMixin {
         CustomWidgets().toast(response['message'], Colors.red);
          isLoading.value = false;
       }    
-    } catch (e) {
-      CustomWidgets().toast(e.toString(), Colors.red);
+    } on SocketException{
+       CustomWidgets().toast("No Internet Connection", Colors.red);
+    } on TimeoutException{
+       CustomWidgets()
+          .toast("Request time out, Please try again later", Colors.red);
+    }
+    catch (e) {
+    CustomWidgets()
+          .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
+      
+    }finally{
       isLoading.value = false;
     }
   }

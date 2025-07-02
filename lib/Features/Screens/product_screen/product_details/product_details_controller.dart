@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
@@ -13,6 +16,7 @@ class ProductDetailsController extends GetxController {
   RxList reviews = [].obs;
   final staticAnchorKey = GlobalKey();
   RxBool isLoading = false.obs;
+  RxBool isLoading1 = false.obs;
   var quantity = 1.obs;
   void increment() {
     quantity.value++;
@@ -81,8 +85,18 @@ class ProductDetailsController extends GetxController {
         CustomWidgets().toast(response['message'], Colors.red);
         isLoading.value = false;
       }
-    } catch (e) {
-      print(e.toString());
+    } 
+    on SocketException {
+      CustomWidgets().toast("No Internet Connection", Colors.red);
+    }on TimeoutException{
+       CustomWidgets()
+          .toast("Request time out, Please try again later", Colors.red);
+    }
+    catch (e) {
+     CustomWidgets()
+          .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
+    }finally{
+       isLoading.value = false;
     }
   }
 
@@ -106,8 +120,17 @@ class ProductDetailsController extends GetxController {
         CustomWidgets().toast(response['message'], Colors.red);
         isLoading.value = false;
       }
-    } catch (e) {
-      print(e.toString());
     }
+    on SocketException {
+      CustomWidgets().toast("No Internet Connection", Colors.red);
+    } 
+    on TimeoutException{
+       CustomWidgets()
+          .toast("Request time out, Please try again later", Colors.red);
+    }catch (e) {
+       CustomWidgets()
+          .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
+  }finally{
+     isLoading.value = false;
   }
-}
+  }}

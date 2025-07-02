@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
-import 'package:juyelari/Features/Screens/my_cart/shipping_address/new_address/new_address_controller.dart';
+import 'package:juyelari/Features/Screens/my_cart/shipping_address/new_address/add_new_address_controller.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfield2.dart';
 
-class NewAddressScreen extends GetView<NewAddressController> {
-  const NewAddressScreen({super.key});
+class AddNewAddressScreen extends GetView<AddNewAddressController> {
+  const AddNewAddressScreen({super.key});
   final customHeight10 = height10;
   final customHeight5 = height5;
   final customHeight15 = height15;
@@ -20,7 +20,7 @@ class NewAddressScreen extends GetView<NewAddressController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => NewAddressController());
+    Get.lazyPut(() => AddNewAddressController());
     return Scaffold(
        bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -61,6 +61,7 @@ class NewAddressScreen extends GetView<NewAddressController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomTextFormField2(
+                
                 contentPadding:const  EdgeInsets.all(10.0),
                 hintText: 'Name',
                 topLabelText: 'Name',
@@ -230,7 +231,7 @@ class NewAddressScreen extends GetView<NewAddressController> {
       ),
     );
   }
-  Widget _buildChoiceChip(String label, NewAddressController controller) {
+  Widget _buildChoiceChip(String label, AddNewAddressController controller) {
     final isSelected = controller.saveAs.value == label;
     return ChoiceChip(
       label: Text(label),

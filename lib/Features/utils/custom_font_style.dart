@@ -70,4 +70,6 @@ class FontStyle {
       fontSize: 12);
       static final grettext14w500= GoogleFonts.poppins(
       color: CustomColor.greytext1, fontSize: 14, fontWeight: FontWeight.w500);
+       static final black18w400= GoogleFonts.nunitoSans(
+      color: CustomColor.blackshade, fontSize: 18, fontWeight: FontWeight.w500);
 }

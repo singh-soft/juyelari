@@ -9,6 +9,7 @@ class CustomTextFormField2 extends StatelessWidget {
   final TextInputType? keyboardType;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final Widget? suffix;
   final bool? obscureText;
   final int? maxLength;
   final int? maxLines;
@@ -63,6 +64,7 @@ class CustomTextFormField2 extends StatelessWidget {
     this.topLabelText,
     this.topLabelStyle,
     this.isMandatory = false,
+    this.suffix,
     super.key,
   });
 
@@ -124,6 +126,7 @@ class CustomTextFormField2 extends StatelessWidget {
             inputFormatters: inputFormatters,
             onTap: onTap,
             decoration: InputDecoration(
+              suffix: suffix,
                 prefixIcon: prefixIcon,
                 suffixIcon: suffixIcon,
                 hintText: hintText,
