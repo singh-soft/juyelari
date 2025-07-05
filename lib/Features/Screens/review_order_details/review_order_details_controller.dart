@@ -70,7 +70,7 @@ class ReviewOrderDetailsController extends GetxController {
     }
   }
 
-  bool canGoToStep(int index) {
+  bool canGoToStep(int index) {               
     if (index == 1 || index == 2) {
       return isReviewDone.value;
     }

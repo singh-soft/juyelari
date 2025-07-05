@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 
 class DashboardController extends GetxController {
+  
   final TextEditingController searchController = TextEditingController();
   RxList<Map<String, dynamic>> categories = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> brands = <Map<String, dynamic>>[].obs;

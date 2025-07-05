@@ -27,8 +27,8 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenheight = MediaQuery.of(context).size.height;
+    // final screenWidth = MediaQuery.of(context).size.width;
+    // final screenheight = MediaQuery.of(context).size.height;
 
     Get.lazyPut(() => ProductDetailsController());
     controller.productDetailsApi();
@@ -39,6 +39,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
             customwidth40,
             Expanded(
               child: FloatingActionButton(
+                heroTag: "add_to_cart",
                 backgroundColor: Colors.transparent,
                 onPressed: () {
                   controller.addtocartApi();
@@ -65,6 +66,7 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
             customwidth20,
             Expanded(
               child: FloatingActionButton(
+                heroTag: "buy_now", // 👈 unique
                 backgroundColor: Colors.transparent,
                 onPressed: () {},
                 child: CustomContainerButton(
@@ -88,27 +90,27 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
           onLeadingPressed: () {
             Get.back();
           },
-          actions: [
-            Icon(Icons.favorite_outline,
-                size: 25, color: CustomColor.yellowshade),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                radius: 18,
-                backgroundColor: CustomColor.redshadeColor,
-                child: Icon(
-                  Icons.shopping_cart,
-                  color: CustomColor.white,
-                  size: 16,
-                ),
-              ),
-            ),
-          ],
+          // actions: [
+          //   Icon(Icons.favorite_outline,
+          //       size: 25, color: CustomColor.yellowshade),
+          //   Padding(
+          //     padding: const EdgeInsets.all(8.0),
+          //     child: CircleAvatar(
+          //       radius: 18,
+          //       backgroundColor: CustomColor.redshadeColor,
+          //       child: Icon(
+          //         Icons.shopping_cart,
+          //         color: CustomColor.white,
+          //         size: 16,
+          //       ),
+          //     ),
+          //   ),
+          // ],
         ),
         body: Obx(() => controller.isLoading.value
             ? const Center(child: CircularProgressIndicator())
             : controller.allData.isEmpty
-                ? const Text("No Data Found")
+                ? const Center(child:  Text("No Data Found"))
                 : SafeArea(
                     child: ListView(
                       children: [
