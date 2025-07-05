@@ -7,7 +7,6 @@ import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 
 class MyCartController extends GetxController {
- 
   final List<String> address = [
     '32 mohan Nagar samudhayak kendra',
     '22 sundar marg bhrampuri jaipur',
@@ -47,20 +46,16 @@ class MyCartController extends GetxController {
         CustomWidgets().toast(response['message'], Colors.red);
         isLoading.value = false;
       }
-    } on SocketException{
+    } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);
-
-    }on TimeoutException{
-     CustomWidgets()
+    } on TimeoutException {
+      CustomWidgets()
           .toast("Request time out, Please try again later", Colors.red);
-
-    }
-    catch (e) {
-     CustomWidgets()
+    } catch (e) {
+      CustomWidgets()
           .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
-    }finally{
-       isLoading.value = false;
-      
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -80,21 +75,16 @@ class MyCartController extends GetxController {
         CustomWidgets().toast(response['message'], Colors.red);
         isLoading.value = false;
       }
-    }
-    on SocketException{
+    } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);
-
-    }on TimeoutException{
-     CustomWidgets()
+    } on TimeoutException {
+      CustomWidgets()
           .toast("Request time out, Please try again later", Colors.red);
-
-    }
-     catch (e) {
+    } catch (e) {
       CustomWidgets()
           .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
-     }
-     finally{
-       isLoading.value = false;
-     }
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

@@ -5,6 +5,7 @@ import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/Profile_screen/profile_screen.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/all_product_screen/all_product_screen.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.dart';
+import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_screen.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
@@ -15,7 +16,7 @@ import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfiel
 class DashboardScreen extends GetView<DashboardController> {
   const DashboardScreen({super.key});
   final customHeight10 = height10;
-  final customHeight5 =height5;
+  final customHeight5 = height5;
   final customHeight15 = height15;
   final customHeight25 = height25;
   final customHeight20 = height20;
@@ -23,20 +24,27 @@ class DashboardScreen extends GetView<DashboardController> {
   final customHeight50 = height50;
   final customwidth5 = width5;
 
-
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => DashboardController());
-    final screenheight = MediaQuery.of(context).size.height;
+    final MyCartController myCartController = Get.put(MyCartController());
     controller.dashboardApi();
+    myCartController.mycartApi();
+    final screenheight = MediaQuery.of(context).size.height;
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leading:Builder(builder: (context)=>IconButton(onPressed: (){
-            Scaffold.of(context).openDrawer();
-          }, 
-          icon:const  Icon(Icons.menu,)),), 
+          leading: Builder(
+            builder: (context) => IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: const Icon(
+                  Icons.menu,
+                )),
+          ),
           leadingWidth: 50,
           title: Text(
             "Jewels",
@@ -48,17 +56,41 @@ class DashboardScreen extends GetView<DashboardController> {
               size: 28,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: CircleAvatar(
-                radius: 18,
-                backgroundColor: CustomColor.redshadeColor,
-                child: Icon(
-                  Icons.shopping_cart,
-                  color: CustomColor.white,
-                  size: 20,
-                ),
-              ),
-            ),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Obx(() {
+                  int count = myCartController.cartItmes.length;
+                  return Stack(alignment: Alignment.topRight, children: [
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundColor: CustomColor.redshadeColor,
+                      child: Icon(
+                        Icons.shopping_cart,
+                        color: CustomColor.white,
+                        size: 20,
+                      ),
+                    ),
+                    if (count > 0)
+                      Positioned(
+                        right: -4,
+                        top: -4,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '$count',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ]);
+                }))
           ],
         ),
         drawer: const ProfileScreen(),
@@ -70,7 +102,7 @@ class DashboardScreen extends GetView<DashboardController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 16,top: 5),
+                    padding: const EdgeInsets.only(left: 16, top: 5),
                     child: Row(
                       children: [
                         const Icon(Icons.location_on_outlined),
@@ -353,8 +385,9 @@ class DashboardScreen extends GetView<DashboardController> {
                               ),
                             ),
                             Container(
-                              height: screenheight*0.25,
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              height: screenheight * 0.25,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               color: Colors.transparent,
                               child: Obx(() {
                                 final allProducts = controller.featuredProduct;
