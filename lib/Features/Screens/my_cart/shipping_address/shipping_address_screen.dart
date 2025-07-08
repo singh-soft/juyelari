@@ -22,10 +22,10 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => ShippingAddressController());
-
+    final List<Map<String, dynamic>> addressList =
+        (Get.arguments as List).cast<Map<String, dynamic>>();
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: CustomWidgets().customAppBar(
         title: 'Shipping Address',
         leadingIcon: Icons.arrow_back_ios,
@@ -33,7 +33,6 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
           Get.back();
         },
       ),
-
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Container(
@@ -58,7 +57,6 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
           ),
         ),
       ),
-
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -81,69 +79,79 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
                 errorBorder: InputBorder.none,
               ),
             ),
-        
+
             // List of addresses
             SizedBox(
               height: 350,
               child: ListView.builder(
-                itemCount: controller.shippingAddress.length,
+                itemCount: addressList.length,
                 itemBuilder: (context, index) {
                   // final isSelected=controller.selectedAddressIndex.value==index;
                   return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     color: Colors.white,
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-                          child: 
-                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Obx(()=>
-                                   Radio(
-                                    value: index,
-                                    groupValue: controller.selectedAddressIndex.value,
-                                    onChanged: (val) {
-                                      controller.selectedAddress(index);
-                                    },
-                                  ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 8),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Obx(
+                                () => Radio(
+                                  value: index,
+                                  groupValue:
+                                      controller.selectedAddressIndex.value,
+                                  onChanged: (val) {
+                                    controller.selectedAddress(index);
+                                  },
                                 ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              controller.shippingAddress[index]['title'],
-                                              style: FontStyle.black16bold,
-                                            ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            "Shipping Address - ${index+1}",
+                                            style: FontStyle.black16bold,
                                           ),
-                                    
-                                          IconButton(
-                                            icon:  Icon( Icons.edit,color:CustomColor.lightgreyy,),
-        
-                                            onPressed: () {
+                                        ),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: CustomColor.lightgreyy,
+                                          ),
+                                          onPressed: () {
                                             // controller.selectedAddress(index);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                      
-                                      Text(
-                                        controller.shippingAddress[index]['details'],
-                                        style: FontStyle.black14,
-                                      ),
-                                    ],
-                                  ),
+                                            Get.to(()=>const AddNewAddressScreen(),arguments: {'id':addressList[index]['id'],
+                                            'address_tag':addressList[index]['address_tag'],'flat':addressList[index]['flat'],
+                                            'area':addressList[index]['area'],'address_line_1':addressList[index]['address_line_1'],
+                                            'address_line_2':addressList[index]['address_line_2'],'city':addressList[index]['city'],
+                                            'state':addressList[index]['state'],'country':addressList[index]['country'],
+                                            'postalcode':addressList[index]['postalcode'],'name':addressList[index]['name'],'phone':addressList[index]['phone']});
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      "${addressList[index]['address_tag'] ?? ''}, ${addressList[index]['flat'] ?? ''}, ${addressList[index]['area'] ?? ''}${addressList[index]['address_line_1'] ?? ''}, ${addressList[index]['address_line_2'] ?? ''}, ${addressList[index]['city'] ?? ""}, ${addressList[index]['state'] ?? ''}, ${addressList[index]['country'] ?? ''}, ${addressList[index]['postalcode'] ?? ''}",
+                                      style: FontStyle.black14,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        
+                        ),
                         Divider(
                           color: CustomColor.lightgrey,
                           thickness: 1,
@@ -154,14 +162,14 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
                 },
               ),
             ),
-        
+
             customHeight10,
-        
+
             Align(
               alignment: Alignment.centerRight,
               child: InkWell(
-                onTap: (){
-                  Get.to(()=> const AddNewAddressScreen());
+                onTap: () {
+                  Get.to(() => const AddNewAddressScreen());
                 },
                 child: Container(
                   margin: const EdgeInsets.all(10.0),
@@ -180,7 +188,8 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
                     ),
                   ),
                   child: const Icon(
-                    Icons.add,size: 30,
+                    Icons.add,
+                    size: 30,
                     color: Colors.white,
                   ),
                 ),

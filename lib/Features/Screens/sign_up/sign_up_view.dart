@@ -231,7 +231,7 @@ class SignUpView extends GetView<SignUpController> {
                               validator: (value) =>
                                   FieldValidator(context).area(value),
                             ),
-                            height15,
+                            height15,       
                             CustomTextFormField(
                               hintText: 'Flat No',
                               topLabelText: 'Flat No',

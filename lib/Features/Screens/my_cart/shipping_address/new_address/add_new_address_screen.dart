@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Custom_widgets/field_validator.dart';
 import 'package:juyelari/Features/Screens/my_cart/shipping_address/new_address/add_new_address_controller.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfield2.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AddNewAddressScreen extends GetView<AddNewAddressController> {
   const AddNewAddressScreen({super.key});
@@ -22,27 +24,50 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => AddNewAddressController());
     return Scaffold(
-       bottomNavigationBar: Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          margin: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.topRight,
-              colors: <Color>[
-                Colors.black,
-                Color(0xff890E29),
-                Colors.black,
-              ],
+        child: InkWell(
+          onTap: () {
+            if (controller.addressKey.currentState!.validate()) {
+              if (controller.shippingAddressData != null &&
+                  controller.shippingAddressData['id'] != null) {
+                controller.updateAddressApi();
+              } else {
+                controller.addnewAddressApi();
+              }
+            }
+          },
+          child: Container(
+            height: 60,
+            padding: const EdgeInsets.all(16.0),
+            margin: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.topRight,
+                colors: <Color>[
+                  Colors.black,
+                  Color(0xff890E29),
+                  Colors.black,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(30),
             ),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Text(
-            "Add Address",
-            style: FontStyle.white18,
-            textAlign: TextAlign.center,
+            child: Obx(
+              () => controller.isLoading.value
+                  ? Center(
+                      child: LoadingAnimationWidget.flickr(
+                          size: 30,
+                          leftDotColor: Colors.white,
+                          rightDotColor: Colors.pink),
+                    )
+                  : Text(
+                    controller.shippingAddressData != null &&
+                  controller.shippingAddressData['id'] != null?  "Update Address":"Add Address",
+                      style: FontStyle.white18,
+                      textAlign: TextAlign.center,
+                    ),
+            ),
           ),
         ),
       ),
@@ -57,180 +82,227 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomTextFormField2(
-                
-                contentPadding:const  EdgeInsets.all(10.0),
-                hintText: 'Name',
-                topLabelText: 'Name',
-                isMandatory: true,
-                hintStyle: FontStyle.black16,
-                controller: controller.nameController,
-                fillColor: CustomColor.white,
-                filled: true,
-                border:  OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10                                                                                                            ),
-                  borderSide: BorderSide(
-                     color: Colors.grey.withOpacity(0.1),
-                     
-
-                  )
-                  ),
-                focusBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-                enableBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-              ),
-              customHeight10,
-              CustomTextFormField2(
-                hintText: 'Phone',
-                topLabelText: 'Phone',
-                isMandatory: true,
-                hintStyle: FontStyle.black16,
-                controller: controller.phoneController,
-                fillColor: CustomColor.white,
-                filled: true,
-                border: const OutlineInputBorder(borderSide: BorderSide.none),
-                focusBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-                enableBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-              ),
-              customHeight10,
-              CustomTextFormField2(
-                hintText: 'Country',
-                topLabelText: 'Country',
-                isMandatory: true,
-                hintStyle: FontStyle.black16,
-                controller: controller.countryController,
-                fillColor: CustomColor.white,
-                filled: true,
-                border: const OutlineInputBorder(borderSide: BorderSide.none),
-                focusBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-                enableBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-              ),
-              customHeight10,
-              CustomTextFormField2(
-                hintText: 'Pincode',
-                topLabelText: 'Pincode',
-                isMandatory: true,
-                hintStyle: FontStyle.black16,
-                controller: controller.pincodeController,
-                fillColor: CustomColor.white,
-                filled: true,
-                border: const OutlineInputBorder(borderSide: BorderSide.none),
-                focusBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-                enableBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-              ),
-              customHeight10,
-              CustomTextFormField2(
-                hintText: 'Address',
-                topLabelText: 'Address',
-                isMandatory: true,
-                hintStyle: FontStyle.black16,
-                controller: controller.addressController,
-                fillColor: CustomColor.white,
-                filled: true,
-                border: const OutlineInputBorder(borderSide: BorderSide.none),
-                focusBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-                enableBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-              ),
-              customHeight10,
-              CustomTextFormField2(
-                hintText: 'Locality/Town',
-                topLabelText: 'Locality/Town',
-                isMandatory: true,
-                hintStyle: FontStyle.black16,
-                controller: controller.localityController,
-                fillColor: CustomColor.white,
-                filled: true,
-                border: const OutlineInputBorder(borderSide: BorderSide.none),
-                focusBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-                enableBorder:
-                    const OutlineInputBorder(borderSide: BorderSide.none),
-              ),
-              customHeight10,
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField2(
-                      hintText: 'City',
-                      topLabelText: 'City',
-                      isMandatory: true,
-                      hintStyle: FontStyle.black16,
-                      controller: controller.cityController,
-                      fillColor: CustomColor.white,
-                      filled: true,
-                      border:
-                          const OutlineInputBorder(borderSide: BorderSide.none),
-                      focusBorder:
-                          const OutlineInputBorder(borderSide: BorderSide.none),
-                      enableBorder:
-                          const OutlineInputBorder(borderSide: BorderSide.none),
-                    ),
-                  ),
-                  customwidth5,
-                  Expanded(
-                    child: CustomTextFormField2(
-                      hintText: 'State',
-                      topLabelText: 'State',
-                      isMandatory: true,
-                      hintStyle: FontStyle.black16,
-                      controller: controller.stateController,
-                      fillColor: CustomColor.white,
-                      filled: true,
-                      border:
-                          const OutlineInputBorder(borderSide: BorderSide.none),
-                      focusBorder:
-                          const OutlineInputBorder(borderSide: BorderSide.none),
-                      enableBorder:
-                          const OutlineInputBorder(borderSide: BorderSide.none),
-                    ),
-                  ),
-                ],
-              ),
-              customHeight10,
-              Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Save As', style:FontStyle.black16bold),
-                  ),
-               Obx(() => Row(
-                        children: [
-                          _buildChoiceChip('Home', controller),
-                          const SizedBox(width: 10),
-                          _buildChoiceChip('Work', controller),
-                        ],
+          child: Form(
+            key: controller.addressKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomTextFormField2(
+                  contentPadding: const EdgeInsets.all(10.0),
+                  hintText: 'Name',
+                  topLabelText: 'Name',
+                  isMandatory: true,
+                  hintStyle: FontStyle.black16,
+                  controller: controller.nameController,
+                  fillColor: CustomColor.white,
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: Colors.grey.withOpacity(0.1),
                       )),
-                      customHeight5,
-                       Obx(() => Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Checkbox(
+                  focusBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  enableBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  validator: (value) =>
+                      FieldValidator(context).nameValidate(value),
+                ),
+                customHeight10,
+                CustomTextFormField2(
+                    hintText: 'Phone',
+                    topLabelText: 'Phone',
+                    isMandatory: true,
+                    hintStyle: FontStyle.black16,
+                    controller: controller.phoneController,
+                    fillColor: CustomColor.white,
+                    filled: true,
+                    border:
+                        const OutlineInputBorder(borderSide: BorderSide.none),
+                    focusBorder:
+                        const OutlineInputBorder(borderSide: BorderSide.none),
+                    enableBorder:
+                        const OutlineInputBorder(borderSide: BorderSide.none),
+                    validator: (value) =>
+                        FieldValidator(context).mobileValidate(value)),
+                customHeight10,
+                CustomTextFormField2(
+                    hintText: 'Address Line 1',
+                    topLabelText: 'Address Line 1',
+                    isMandatory: true,
+                    hintStyle: FontStyle.black16,
+                    controller: controller.addressController1,
+                    fillColor: CustomColor.white,
+                    filled: true,
+                    border:
+                        const OutlineInputBorder(borderSide: BorderSide.none),
+                    focusBorder:
+                        const OutlineInputBorder(borderSide: BorderSide.none),
+                    enableBorder:
+                        const OutlineInputBorder(borderSide: BorderSide.none),
+                    validator: (value) =>
+                        FieldValidator(context).addressLine1(value)),
+                customHeight10,
+                CustomTextFormField2(
+                  hintText: 'Address Line 2',
+                  topLabelText: 'Address Line 2',
+                  //       isMandatory: true,
+                  hintStyle: FontStyle.black16,
+                  controller: controller.addressController2,
+                  fillColor: CustomColor.white,
+                  filled: true,
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+                  focusBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  enableBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  validator: (value) =>
+                      FieldValidator(context).addressLine2(value),
+                ),
+                customHeight10,
+                CustomTextFormField2(
+                  hintText: 'Pincode',
+                  topLabelText: 'Pincode',
+                  isMandatory: true,
+                  hintStyle: FontStyle.black16,
+                  controller: controller.pincodeController,
+                  fillColor: CustomColor.white,
+                  filled: true,
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+                  focusBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  enableBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  validator: (value) =>
+                      FieldValidator(context).postalCode(value),
+                ),
+                customHeight10,
+                CustomTextFormField2(
+                  hintText: 'Flat',
+                  topLabelText: 'Flat',
+                  // isMandatory: true,
+                  hintStyle: FontStyle.black16,
+                  controller: controller.flatController,
+                  fillColor: CustomColor.white,
+                  filled: true,
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+                  focusBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  enableBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  validator: (value) => FieldValidator(context).flat(value),
+                ),
+                customHeight10,
+                CustomTextFormField2(
+                  hintText: 'Area',
+                  topLabelText: 'Area',
+                  // isMandatory: true,
+                  hintStyle: FontStyle.black16,
+                  controller: controller.areaController,
+                  fillColor: CustomColor.white,
+                  filled: true,
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+                  focusBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  enableBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  validator: (value) => FieldValidator(context).area(value),
+                ),
+                customHeight10,
+                CustomTextFormField2(
+                  hintText: 'Country',
+                  topLabelText: 'Country',
+                  isMandatory: true,
+                  hintStyle: FontStyle.black16,
+                  controller: controller.countryController,
+                  fillColor: CustomColor.white,
+                  filled: true,
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+                  focusBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  enableBorder:
+                      const OutlineInputBorder(borderSide: BorderSide.none),
+                  validator: (value) => FieldValidator(context).country(value),
+                ),
+                customHeight10,
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextFormField2(
+                        hintText: 'City',
+                        topLabelText: 'City',
+                        isMandatory: true,
+                        hintStyle: FontStyle.black16,
+                        controller: controller.cityController,
+                        fillColor: CustomColor.white,
+                        filled: true,
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        focusBorder: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        enableBorder: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        validator: (value) =>
+                            FieldValidator(context).city(value),
+                      ),
+                    ),
+                    customwidth5,
+                    Expanded(
+                      child: CustomTextFormField2(
+                        hintText: 'State',
+                        topLabelText: 'State',
+                        isMandatory: true,
+                        hintStyle: FontStyle.black16,
+                        controller: controller.stateController,
+                        fillColor: CustomColor.white,
+                        filled: true,
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        focusBorder: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        enableBorder: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        validator: (value) =>
+                            FieldValidator(context).state(value),
+                      ),
+                    ),
+                  ],
+                ),
+                customHeight10,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Save As', style: FontStyle.black16bold),
+                ),
+                Obx(() => Row(
+                      children: [
+                        _buildChoiceChip('home', controller),
+                        const SizedBox(width: 10),
+                        _buildChoiceChip('work', controller),
+                      ],
+                    )),
+                customHeight5,
+                Obx(() => Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Checkbox(
                             value: controller.isDefault.value,
-                            onChanged: (val) => controller.isDefault.value = val!,
-                            activeColor: CustomColor.redshadeColor
-                          ),
-                          const Text(
-                            'Set as default address',
-                            style: TextStyle(color: Color(0xff890E29)),
-                          ),
-                        ],
-                      )),
-            ],
+                            onChanged: (val) =>
+                                controller.isDefault.value = val!,
+                            activeColor: CustomColor.redshadeColor),
+                        const Text(
+                          'Set as default address',
+                          style: TextStyle(color: Color(0xff890E29)),
+                        ),
+                      ],
+                    )),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
   Widget _buildChoiceChip(String label, AddNewAddressController controller) {
     final isSelected = controller.saveAs.value == label;
     return ChoiceChip(

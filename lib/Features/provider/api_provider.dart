@@ -92,7 +92,7 @@ class ApiProvider {
     switch (response.statusCode) {
       case 200:
       case 201:
-      case 400:
+      case 400 || 422:
         return response.data;
       case 401:
         return Future.error('Unauthorized access');
