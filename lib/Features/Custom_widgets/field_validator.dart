@@ -64,6 +64,13 @@ class FieldValidator {
       return null;
     }
   }
+   String? addressLine2(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please  Enter Address 1 Name';
+    } else {
+      return null;
+    }
+  }
 
   String? postalCode(String? value) {
     if (value == null || value.isEmpty) {
@@ -87,6 +94,30 @@ class FieldValidator {
     if (value == null || value.isEmpty) {
       return 'Please Enter Flat Name';
     } else {
+      return null;
+    }
+  }
+  String? city(String? value){
+    if(value ==null||value.isEmpty){
+      return 'Please Enter City Name';
+    }
+    else {
+      return null;
+    }
+  }
+  String? state(String?value){
+    if(value==null||value.isEmpty){
+      return 'Please Enter State Name';
+    }
+    else {
+      return null;
+    }
+  }
+  String?country(String?value){
+    if(value==null||value.isEmpty){
+      return 'Please Enter Country Name';
+    }
+    else {
       return null;
     }
   }

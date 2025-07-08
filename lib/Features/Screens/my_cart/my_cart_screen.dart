@@ -23,8 +23,13 @@ class MyCartScreen extends GetView<MyCartController> {
 
   @override
   Widget build(BuildContext context) {
+    
+   
+
     Get.lazyPut(() => MyCartController());
     controller.mycartApi();
+    controller.getShippingAddressApi();
+     
     final screenWidth = MediaQuery.of(context).size.width;
     final screenheight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -61,19 +66,31 @@ class MyCartScreen extends GetView<MyCartController> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Expanded(
-                                  child: Text(
-                                    "26, Duong So 2, Thao Dien Ward, An Phu, District 2, Ho Chi Minh city",
-                                    style: FontStyle.black14,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                  child:  Obx(()=>
+                                     controller.isLoading1.value?const CircularProgressIndicator():controller.addressList.isNotEmpty?
+                                           Text(
+                                              controller.formatAddress(
+                                                  controller.addressList[0]),
+                                              style: FontStyle.black14,
+                                              maxLines: 3,
+                                              overflow: TextOverflow.ellipsis,
+                                            )
+                                          : Text(
+                                              "No address found",
+                                              style: FontStyle.black14,
+                                            ),
+                                  )
+                                  
                                 ),
                                 IconButton(
-                                    onPressed: () {
-                                      Get.to(
-                                          () => const ShippingAddressScreen());
-                                    },
-                                    icon: const Icon(Icons.arrow_drop_down))
+                                  onPressed: () {
+                                    Get.to(
+                                      () => const ShippingAddressScreen(),
+                                      arguments: controller.addressList,
+                                    );
+                                  },
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                )
                               ],
                             )
                           ],
@@ -84,7 +101,7 @@ class MyCartScreen extends GetView<MyCartController> {
                         // height: 200,
                         child: Obx(
                           () => controller.cartItmes.isEmpty
-                              ? const Text("No Data Found")
+                              ? const Center(child: Text("No Data Found"))
                               : ListView.builder(
                                   itemCount: controller.cartItmes.length,
                                   itemBuilder: (context, index) {

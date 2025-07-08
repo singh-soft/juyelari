@@ -29,6 +29,7 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
         Get.put(ReviewOrderDetailsController());
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    controller.mycartApi();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -185,9 +186,12 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
               ],
             ),
           ),
-
+          // customHeight15,
           customHeight15,
-            CustomTextFormField2(
+          CustomTextFormField2(
+            onTap: () {
+              controller.couponCodeApi();
+            },
             hintText: 'Apply Coupons / Promo Code',
             topLabelText: 'Coupon Code & Promo Code',
             hintStyle: FontStyle.black16,
@@ -209,100 +213,207 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
           ),
           customHeight15,
 
-          SizedBox(
-              height: screenHeight * 0.35,
-              child: ListView.builder(
-                itemCount: controller.products.length,
-                itemBuilder: (context, index) {
-                  final product = controller.products[index];
-                  return Container(
-                    margin: const EdgeInsets.all(4.0),
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.grey.withOpacity(0.1)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          offset: const Offset(1, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            height: 120,
-                            width: 120,
+          Obx(
+            () => controller.cartItmes.isEmpty
+                ? const Text("No Data Found")
+                : SizedBox(
+                    height: screenHeight * 0.35,
+                    child: ListView.builder(
+                      itemCount: controller.cartItmes.length,
+                      itemBuilder: (context, index) {
+                        final cartItem = controller.cartItmes[index];
+                        final isSelected =
+                            controller.selectedItems.contains(cartItem);
+                        return Container(
+                            margin: const EdgeInsets.all(4.0),
+                            padding: const EdgeInsets.all(20.0),
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.grey.withOpacity(0.1)),
-                            ),
-                            child: Image.asset(
-                              product['image']!,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        width20,
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(product['title'].toString(),
-                                  style: FontStyle.black17w400, maxLines: 2),
-                              Text(product['price']!,
-                                  style: FontStyle.redshad16),
-                              Text(product['return']!,
-                                  style: FontStyle.grettext14w500),
-                              Row(
-                                children: [
-                                  Text("Size: ${product['size']!}",
-                                      style: FontStyle.black14w500),
-                                  width20,
-                                  Text("Qty: ${product['qty']!}",
-                                      style: FontStyle.blacks14w500),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                    color: Colors.grey.withOpacity(0.1)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: const Offset(1, 3),
+                                  ),
+                                ]),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Obx(
+                                        () => InkWell(
+                                          onTap: controller.isLoading.value
+                                              ? null
+                                              : () {
+                                                  Get.defaultDialog(
+                                                    middleText:
+                                                        'Are you sure you want to remove this item from your cart?',
+                                                    buttonColor: CustomColor
+                                                        .redshadeColor,
+                                                    textConfirm: "Yes",
+                                                    textCancel: "No",
+                                                    onConfirm: () {
+                                                      Get.back();
+                                                      controller.deleteMyCartApi(
+                                                          cartItem['product_id']
+                                                              .toString());
+                                                    },
+                                                    onCancel: () {
+                                                      Get.back();
+                                                    },
+                                                  );
+                                                },
+                                          child: Container(
+                                            height: 120,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.1)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.1),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 2,
+                                                  offset: const Offset(1, 3),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Image.network(
+                                              cartItem['product_image'] ?? '',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 4,
+                                      left: 4,
+                                      child: InkWell(
+                                        onTap: () {},
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          padding: const EdgeInsets.all(4),
+                                          child: const Icon(
+                                              Icons.delete_outline_outlined,
+                                              size: 16,
+                                              color: Colors.red),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                customwidth20,
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        cartItem['product_name'].toString(),
+                                        style: FontStyle.black17w400,
+                                        maxLines: 2,
+                                        softWrap: true,
+                                      ),
+                                      Text(
+                                        cartItem['price']!,
+                                        style: FontStyle.redshad16,
+                                      ),
+                                      Text(
+                                        "All Issue easy returns",
+                                        style: FontStyle.grettext14w500,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // Text(
+                                          //   "Size: Free Size",
+                                          //   style: FontStyle.black14w500,
+                                          // ),
+                                          // customwidth20,
+                                          Text("Qty: ${cartItem['qty']!}",
+                                              style: FontStyle.blacks14w500),
+                                      customwidth20,
+                                      Obx(()=>
+                                        Transform.scale(
+                                          scale: 0.8,
+                                          child: Checkbox(
+                                             value: controller.selectedItems.contains(cartItem),
+                                              visualDensity: VisualDensity.compact, 
+                                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                             onChanged: (bool? value) {
+                                               if (value == true) {
+                                                 controller.selectedItems.add(cartItem);
+                                               } else {
+                                                 controller.selectedItems.remove(cartItem);
+                                               }
+                                               controller.calculateTotal(); 
+                                             },
+                                           ),
+                                        ),
+                                       ),
+                                       
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ));
+                      },
                     ),
-                  );
-                },
-              )),
+                  ),
+          ),
 
-          const SizedBox(height: 10),
+          customHeight10,
 
           Container(
+            height: screenHeight * 0.2,
             width: double.infinity,
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: Colors.grey.withOpacity(0.1)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: const Offset(1, 3),
-                ),
-              ],
-            ),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: const Offset(1, 3),
+                  ),
+                ]),
+            // color: Colors.green,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Order Summary", style: FontStyle.black18),
-                height20,
-                rowwidget(title: 'Sub Total', value: '₹ 1799'),
+                Text(
+                  "Order Summary",
+                  style: FontStyle.black18,
+                ),
+                customHeight20,
+                Obx(
+                  () => rowwidget(
+                      title: 'Sub Total ',
+                      value:
+                          '₹ ${(controller.couponDiscount.value > 0 ? controller.newtotalAmount.value : controller.totalAmount.value).toStringAsFixed(2)}'),
+                ),
                 rowwidget(title: 'Delivery Charge', value: 'Free'),
                 Padding(
                   padding:
@@ -310,8 +421,16 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Total Amount", style: FontStyle.black16),
-                      Text("₹ 1799", style: FontStyle.black16),
+                      Text(
+                        "Total Amount",
+                        style: FontStyle.black16,
+                      ),
+                      Obx(
+                        () => Text(
+                          "₹ ${(controller.couponDiscount.value > 0 ? controller.newtotalAmount.value : controller.totalAmount.value).toStringAsFixed(2)}",
+                          style: FontStyle.black16,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -319,34 +438,38 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 10),
-
-          /// Bottom Continue Button
           Container(
             margin: const EdgeInsets.all(4.0),
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: Colors.grey.withOpacity(0.1)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: const Offset(1, 3),
-                ),
-              ],
-            ),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: const Offset(1, 3),
+                  ),
+                ]),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("₹ 1799", style: FontStyle.black18),
-                    height10,
-                    Text("(3 items)", style: FontStyle.black14),
+                    Obx(
+                      () => Text(
+                        "₹ ${(controller.couponDiscount.value > 0 ? controller.newtotalAmount.value : controller.totalAmount.value).toStringAsFixed(2)}",
+                        style: FontStyle.black18,
+                      ),
+                    ),
+                    customHeight10,
+                    Obx(
+                      () => Text("(${controller.cartItmes.length} items)",
+                          style: FontStyle.black14),
+                    ),
                   ],
                 ),
                 CustomContainerButton(
@@ -357,12 +480,15 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(15.0),
                   borderRadius: BorderRadius.circular(50),
                   child: Center(
-                    child: Text('Continue', style: FontStyle.white18),
+                    child: Text(
+                      'Continue',
+                      style: FontStyle.white18,
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );

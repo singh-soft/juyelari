@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:juyelari/Features/Screens/dashboard_screen/all_product_screen/all_product_screen.dart';
 import 'package:juyelari/Features/res/routes/routes.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
