@@ -22,6 +22,14 @@ class SignUpController extends GetxController with GetTickerProviderStateMixin {
   final TextEditingController flatNoController = TextEditingController();
   var signUpKey = GlobalKey<FormState>();
   RxBool isLoading = false.obs;
+  var isPasswordVisibility=true.obs;
+  void togglePasswordVisibility(){
+    isPasswordVisibility.value = !isPasswordVisibility.value;
+  }
+  var isConfirmPasswordVisibility=true.obs;
+  void toggleConfirmPasswordVisibility(){
+    isConfirmPasswordVisibility.value = !isConfirmPasswordVisibility.value;
+  }
   void clearFormFields() {
   nameController.clear();
   emailController.clear();
@@ -89,6 +97,7 @@ class SignUpController extends GetxController with GetTickerProviderStateMixin {
     catch (e) {
     CustomWidgets()
           .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
+          print(e.toString());
       
     }finally{
       isLoading.value = false;

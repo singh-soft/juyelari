@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 
 class AddNewAddressController extends GetxController {
@@ -22,11 +23,11 @@ class AddNewAddressController extends GetxController {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
-
+  final cartController = Get.find<MyCartController>();
   @override
 void onInit() {
   super.onInit();
-
+    
   if (shippingAddressData != null && shippingAddressData.isNotEmpty) {
     flatController.text = shippingAddressData['flat'] ?? '';
     areaController.text = shippingAddressData['area'] ?? '';
@@ -72,7 +73,7 @@ void onInit() {
       countryController.clear();
        CustomWidgets().toast(response['message'], Colors.green);
        isLoading.value=false;
-       Get.back();
+       Get.back(result: true);
      } else {
        CustomWidgets().toast(response['message'], Colors.red);
        isLoading.value=false;
@@ -121,8 +122,11 @@ void onInit() {
       stateController.clear();
       countryController.clear();
        CustomWidgets().toast(response['message'], Colors.green);
+       
        isLoading.value=false;
-       Get.back();
+       
+       Get.back(result: true);
+       
      } else {
        CustomWidgets().toast(response['message'], Colors.red);
        isLoading.value=false;

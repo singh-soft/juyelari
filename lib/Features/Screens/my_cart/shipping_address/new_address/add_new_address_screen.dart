@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
@@ -62,8 +63,10 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
                           rightDotColor: Colors.pink),
                     )
                   : Text(
-                    controller.shippingAddressData != null &&
-                  controller.shippingAddressData['id'] != null?  "Update Address":"Add Address",
+                      controller.shippingAddressData != null &&
+                              controller.shippingAddressData['id'] != null
+                          ? "Update Address"
+                          : "Add Address",
                       style: FontStyle.white18,
                       textAlign: TextAlign.center,
                     ),
@@ -117,6 +120,10 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
                     controller: controller.phoneController,
                     fillColor: CustomColor.white,
                     filled: true,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(10),
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     border:
                         const OutlineInputBorder(borderSide: BorderSide.none),
                     focusBorder:
@@ -168,6 +175,10 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
                   controller: controller.pincodeController,
                   fillColor: CustomColor.white,
                   filled: true,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(6),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
                   border: const OutlineInputBorder(borderSide: BorderSide.none),
                   focusBorder:
                       const OutlineInputBorder(borderSide: BorderSide.none),
@@ -201,6 +212,10 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
                   controller: controller.areaController,
                   fillColor: CustomColor.white,
                   filled: true,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(10),
+                    
+                  ],
                   border: const OutlineInputBorder(borderSide: BorderSide.none),
                   focusBorder:
                       const OutlineInputBorder(borderSide: BorderSide.none),
@@ -283,7 +298,7 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
                 customHeight5,
                 Obx(() => Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
+                      children: [          
                         Checkbox(
                             value: controller.isDefault.value,
                             onChanged: (val) =>

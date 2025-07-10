@@ -157,29 +157,39 @@ class SignUpView extends GetView<SignUpController> {
                                   FieldValidator(context).mobileValidate(value),
                             ),
                             height15,
-                            CustomTextFormField(
-                              hintText: 'Password',
-                              topLabelText: 'Password',
-                              isMandatory: true,
-                              controller: controller.passwordController,
-                              hintStyle: FontStyle.black16,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 5),
-                              validator: (value) => FieldValidator(context)
-                                  .passwordValidate(value),
+                            Obx(()=>
+                              CustomTextFormField(
+                                hintText: 'Password',
+                                topLabelText: 'Password',
+                                isMandatory: true,
+                                controller: controller.passwordController,
+                                hintStyle: FontStyle.black16,
+                                obscureText: controller.isPasswordVisibility.value,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 5),
+                                validator: (value) => FieldValidator(context)
+                                    .passwordValidate(value),
+                                    suffixIcon: IconButton(onPressed: controller.togglePasswordVisibility, 
+                                    icon: Icon(controller.isPasswordVisibility.value?Icons.visibility_off:Icons.visibility)),
+                              ),
                             ),
                             height15,
-                            CustomTextFormField(
-                              hintText: 'Confirm Password',
-                              topLabelText: 'Confirm Password',
-                              isMandatory: true,
-                              controller: controller.confrmPasswordController,
-                              hintStyle: FontStyle.black16,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 5),
-                              validator: (value) => FieldValidator(context)
-                                  .confirmPasswordValidate1(value,
-                                      controller.passwordController.text),
+                            Obx(()=>
+                               CustomTextFormField(
+                                hintText: 'Confirm Password',
+                                topLabelText: 'Confirm Password',
+                                isMandatory: true,
+                                controller: controller.confrmPasswordController,
+                                hintStyle: FontStyle.black16,
+                                 obscureText: controller.isConfirmPasswordVisibility.value,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 5),
+                                validator: (value) => FieldValidator(context)
+                                    .confirmPasswordValidate1(value,
+                                        controller.passwordController.text),
+                                         suffixIcon: IconButton(onPressed: controller.toggleConfirmPasswordVisibility, 
+                                    icon: Icon(controller.isConfirmPasswordVisibility.value?Icons.visibility_off:Icons.visibility)),
+                              ),
                             ),
                             height15,
                             CustomTextFormField(

@@ -18,6 +18,14 @@ class CreatePasswordController extends GetxController
   late final String email;
   late final String otp;
   RxBool isLoading = false.obs;
+   var isPasswordVisibility=true.obs;
+  void togglePasswordVisibility(){
+    isPasswordVisibility.value = !isPasswordVisibility.value;
+  }
+  var isConfirmPasswordVisibility=true.obs;
+  void toggleConfirmPasswordVisibility(){
+    isConfirmPasswordVisibility.value = !isConfirmPasswordVisibility.value;
+  }
   @override
   void onInit() {
     super.onInit();

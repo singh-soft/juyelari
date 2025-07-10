@@ -107,10 +107,10 @@ class MyCartController extends GetxController {
         for (var item in data) {
           addressList.add(Map<String, dynamic>.from(item));
         }
-        CustomWidgets().toast(response['message'], Colors.green);
+        // CustomWidgets().toast(response['message'], Colors.green);
         isLoading1.value = false;
       } else {
-        CustomWidgets().toast(response['message'], Colors.red);
+        // CustomWidgets().toast(response['message'], Colors.red);
         isLoading1.value = false;
       }
     } on SocketException {

@@ -23,13 +23,10 @@ class MyCartScreen extends GetView<MyCartController> {
 
   @override
   Widget build(BuildContext context) {
-    
-   
-
     Get.lazyPut(() => MyCartController());
     controller.mycartApi();
     controller.getShippingAddressApi();
-     
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenheight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -66,9 +63,12 @@ class MyCartScreen extends GetView<MyCartController> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Expanded(
-                                  child:  Obx(()=>
-                                     controller.isLoading1.value?const CircularProgressIndicator():controller.addressList.isNotEmpty?
-                                           Text(
+                                    child: Obx(
+                                  () => controller.isLoading1.value
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : controller.addressList.isNotEmpty
+                                          ? Text(
                                               controller.formatAddress(
                                                   controller.addressList[0]),
                                               style: FontStyle.black14,
@@ -79,15 +79,17 @@ class MyCartScreen extends GetView<MyCartController> {
                                               "No address found",
                                               style: FontStyle.black14,
                                             ),
-                                  )
-                                  
-                                ),
-                                IconButton(
+                                )),
+                                IconButton(  
                                   onPressed: () {
                                     Get.to(
                                       () => const ShippingAddressScreen(),
                                       arguments: controller.addressList,
-                                    );
+                                    )?.then((result) {
+                                      if (result == true) {
+                                        controller.getShippingAddressApi();
+                                      }
+                                    });
                                   },
                                   icon: const Icon(Icons.arrow_drop_down),
                                 )
@@ -232,14 +234,17 @@ class MyCartScreen extends GetView<MyCartController> {
                                                 children: [
                                                   Text(
                                                     cartItem['product_name']
-                                                        .toString(),
+                                                            ?.toString() ??
+                                                        '',
                                                     style:
                                                         FontStyle.black17w400,
                                                     maxLines: 2,
                                                     softWrap: true,
                                                   ),
                                                   Text(
-                                                    cartItem['price']!,
+                                                    cartItem['price']
+                                                            ?.toString() ??
+                                                        '',
                                                     style: FontStyle.redshad16,
                                                   ),
                                                   Text(
@@ -259,7 +264,7 @@ class MyCartScreen extends GetView<MyCartController> {
                                                       ),
                                                       customwidth20,
                                                       Text(
-                                                          "Qty: ${cartItem['qty']!}",
+                                                          "Qty: ${cartItem['qty']?.toString() ?? '0'}",
                                                           style: FontStyle
                                                               .blacks14w500),
                                                     ],
