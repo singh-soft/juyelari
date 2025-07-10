@@ -6,8 +6,9 @@ class ApiProvider {
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: appBaseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+     connectTimeout: const Duration(seconds: 20),
+    receiveTimeout: const Duration(seconds: 30),
+    sendTimeout: const Duration(seconds: 30),
       headers: {
         'Authorization': token().toString(),
         'Content-Type': 'application/json',

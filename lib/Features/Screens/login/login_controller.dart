@@ -16,6 +16,10 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
   final TextEditingController passwordController = TextEditingController();
   var loginKey = GlobalKey<FormState>();
   RxBool isLoading = false.obs;
+  var isPasswordVisibility=true.obs;
+  void togglePasswordVisibility(){
+    isPasswordVisibility.value=!isPasswordVisibility.value;
+  }
   final box = GetStorage();
   void clearFormFields() {
     emailController.clear();

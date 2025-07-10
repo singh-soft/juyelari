@@ -132,15 +132,23 @@ class LoginView extends GetView<LoginController> {
                                 validator: (value) => FieldValidator(context)
                                     .emailValidate(value)),
                             height15,
+                            Obx(()=>
                             CustomTextFormField(
-                                hintText: 'Password',
-                                topLabelText: 'Password',
-                                controller: controller.passwordController,
-                                hintStyle: FontStyle.black16,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 5),
-                                validator: (value) => FieldValidator(context)
-                                    .passwordValidate(value)),
+                                  hintText: 'Password',
+                                  topLabelText: 'Password',
+                                  controller: controller.passwordController,
+                                  hintStyle: FontStyle.black16,
+                                  obscureText: controller.isPasswordVisibility.value,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 5),
+                                  validator: (value) => FieldValidator(context)
+                                      .passwordValidate(value),
+                                      suffixIcon:
+                                         IconButton(onPressed:controller.togglePasswordVisibility, 
+                                        icon:Icon(controller.isPasswordVisibility.value?Icons.visibility_off:Icons.visibility)),
+                                      
+                                      ),
+                            ),
                             height30,
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
