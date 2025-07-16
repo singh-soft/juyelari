@@ -74,7 +74,7 @@ class ProductDetailsController extends GetxController {
       var response = await ApiProvider()
           .postRequest(apiUrl: 'product-details', data: data);
 
-      if (response['success'] == true && response['data'] != null) {
+      if (response['status'] == true && response['data'] != null) {
         allData.value = response['data'];
         multipleImage.assignAll(List.from(response['data']['multi_images']));
         reviews.assignAll(List.from(response['data']['reviews'] ?? []));
@@ -110,7 +110,7 @@ class ProductDetailsController extends GetxController {
       var response =
           await ApiProvider().postRequest(apiUrl: 'cart/add', data: data);
       print(response);
-      if (response['success'] == true) {
+      if (response['status'] == true) {
         Get.to(() => const MyCartScreen());
         CustomWidgets().toast(response['message'], Colors.green);
         isLoading.value = false;

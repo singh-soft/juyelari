@@ -6,6 +6,7 @@ import 'package:juyelari/Features/Screens/Profile_screen/profile_screen.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/all_product_screen/all_product_screen.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
+import 'package:juyelari/Features/Screens/my_cart/my_cart_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_screen.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
@@ -63,11 +64,14 @@ class DashboardScreen extends GetView<DashboardController> {
                     CircleAvatar(
                       radius: 18,
                       backgroundColor: CustomColor.redshadeColor,
-                      child: Icon(
+                      child: IconButton(onPressed: (){
+                        Get.to(()=> const MyCartScreen());
+                      }, 
+                      icon: Icon(
                         Icons.shopping_cart,
                         color: CustomColor.white,
                         size: 20,
-                      ),
+                      ),)
                     ),
                     if (count > 0)
                       Positioned(
@@ -478,7 +482,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                                               error,
                                                               stackTrace) =>
                                                           Image.asset(
-                                                        'assets/error.png',
+                                                        'assets/images/loginpic.png',
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),

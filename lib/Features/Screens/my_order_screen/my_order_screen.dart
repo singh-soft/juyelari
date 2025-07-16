@@ -21,9 +21,9 @@ class MyOrderScreen extends GetView<MyOrderController> {
 
   @override
   Widget build(BuildContext context) {
-    final screenheight = MediaQuery.of(context).size.height;
-
     Get.lazyPut(() => MyOrderController());
+    controller.orderListApi();
+    final screenheight = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: CustomWidgets().customAppBar(
@@ -40,7 +40,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
               customHeight10,
               Obx(
                 () => SizedBox(
-                  height: screenheight * 0.04,
+                  height: screenheight * 0.045,
                   child: Row(
                       children: List.generate(controller.myorderupdate.length,
                           (index) {
@@ -48,6 +48,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                       child: GestureDetector(
                         onTap: () {
                           controller.selectedIndex.value = index;
+                          controller.orderListApi();
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -76,114 +77,134 @@ class MyOrderScreen extends GetView<MyOrderController> {
               customHeight10,
               Expanded(
                 // height: 200,
-                child: ListView.builder(
-                  itemCount: controller.products.length,
-                  itemBuilder: (context, index) {
-                    final product = controller.products[index];
-                    return Container(
-                        margin: const EdgeInsets.all(4.0),
-                        padding: const EdgeInsets.all(20.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                            border:
-                                Border.all(color: Colors.grey.withOpacity(0.1)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset: const Offset(1, 3),
-                              ),
-                            ]),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Container(
-                                    height: 120,
-                                    width: 120,
+                child: Obx(
+                  () => controller.isLoading.value
+                      ? const Center(child: CircularProgressIndicator())
+                      : controller.allOrders.isEmpty
+                          ? const Center(child: Text("No Data Found"))
+                          : ListView.builder(
+                              controller: controller.scrollController,
+                              itemCount: controller.allOrders.length,
+                              itemBuilder: (context, index) {
+                                final order = controller.allOrders[index];
+                                final products = order['productdetails'] ?? [];
+                                // final products = order['productdetails'][0];
+                                return Container(
+                                    margin: const EdgeInsets.all(4.0),
+                                    padding: const EdgeInsets.all(20.0),
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: Colors.grey.withOpacity(0.1)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.1),
-                                          spreadRadius: 2,
-                                          blurRadius: 2,
-                                          offset: const Offset(1, 3),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(6),
+                                        border: Border.all(
+                                            color:
+                                                Colors.grey.withOpacity(0.1)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.1),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: const Offset(1, 3),
+                                          ),
+                                        ]),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              child: Container(
+                                                height: 120,
+                                                width: 120,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border.all(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.1)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.1),
+                                                      spreadRadius: 2,
+                                                      blurRadius: 2,
+                                                      offset:
+                                                          const Offset(1, 3),
+                                                    ),
+                                                  ],
+                                                ),
+                                                // child: Image.asset(
+                                                //   products['image']!,
+                                                //   fit: BoxFit.cover,
+                                                // ),
+                                              ),
+                                            ),
+                                            // Positioned(
+                                            //   bottom: 4,
+                                            //   left: 4,
+                                            //   child: GestureDetector(
+                                            //     onTap: () {
+                                            //       // controller.removeProduct(index); // Your delete logic
+                                            //     },
+                                            //     child: Container(
+                                            //       decoration: const BoxDecoration(
+                                            //         color: Colors.white,
+                                            //         shape: BoxShape.circle,
+                                            //       ),
+                                            //       padding: const EdgeInsets.all(4),
+                                            //       child: const Icon(
+                                            //           Icons.delete_outline_outlined,
+                                            //           size: 16,
+                                            //           color: Colors.red),
+                                            //     ),
+                                            //   ),
+                                            // )
+                                          ],
                                         ),
+                                        customwidth20,
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                products[0]['name'].toString(),
+                                                style: FontStyle.black17w400,
+                                                maxLines: 2,
+                                                softWrap: true,
+                                              ),
+                                              Text(
+                                                '₹${products[0]['price'].toString()}',
+                                                style: FontStyle.redshad16,
+                                              ),
+                                              Text(
+                                                "All Issue easy returns",
+                                                style: FontStyle.grettext14w500,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Size:Free Size",
+                                                    style:
+                                                        FontStyle.black14w500,
+                                                  ),
+                                                  customwidth20,
+                                                  Text(
+                                                      "Qty: ${products[0]['qty']!}",
+                                                      style: FontStyle
+                                                          .blacks14w500),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        )
                                       ],
-                                    ),
-                                    child: Image.asset(
-                                      product['image']!,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                // Positioned(
-                                //   bottom: 4,
-                                //   left: 4,
-                                //   child: GestureDetector(
-                                //     onTap: () {
-                                //       // controller.removeProduct(index); // Your delete logic
-                                //     },
-                                //     child: Container(
-                                //       decoration: const BoxDecoration(
-                                //         color: Colors.white,
-                                //         shape: BoxShape.circle,
-                                //       ),
-                                //       padding: const EdgeInsets.all(4),
-                                //       child: const Icon(
-                                //           Icons.delete_outline_outlined,
-                                //           size: 16,
-                                //           color: Colors.red),
-                                //     ),
-                                //   ),
-                                // )
-                              ],
+                                    ));
+                              },
                             ),
-                            customwidth20,
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product['title'].toString(),
-                                    style: FontStyle.black17w400,
-                                    maxLines: 2,
-                                    softWrap: true,
-                                  ),
-                                  Text(
-                                    product['price']!,
-                                    style: FontStyle.redshad16,
-                                  ),
-                                  Text(
-                                    product['return']!,
-                                    style: FontStyle.grettext14w500,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Size: ${product['size']!}",
-                                        style: FontStyle.black14w500,
-                                      ),
-                                      customwidth20,
-                                      Text("Qty: ${product['qty']!}",
-                                          style: FontStyle.blacks14w500),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ));
-                  },
                 ),
               ),
             ],

@@ -24,6 +24,7 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => AddNewAddressController());
+    controller.countryApi();
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -214,7 +215,6 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
                   filled: true,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(10),
-                    
                   ],
                   border: const OutlineInputBorder(borderSide: BorderSide.none),
                   focusBorder:
@@ -224,63 +224,192 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
                   validator: (value) => FieldValidator(context).area(value),
                 ),
                 customHeight10,
-                CustomTextFormField2(
-                  hintText: 'Country',
-                  topLabelText: 'Country',
-                  isMandatory: true,
-                  hintStyle: FontStyle.black16,
-                  controller: controller.countryController,
-                  fillColor: CustomColor.white,
-                  filled: true,
-                  border: const OutlineInputBorder(borderSide: BorderSide.none),
-                  focusBorder:
-                      const OutlineInputBorder(borderSide: BorderSide.none),
-                  enableBorder:
-                      const OutlineInputBorder(borderSide: BorderSide.none),
-                  validator: (value) => FieldValidator(context).country(value),
-                ),
+                Obx(() {
+                  final countryItems = controller.countryList
+                      .map<DropdownMenuItem<String>>((country) {
+                    return DropdownMenuItem<String>(
+                      value: country['country_name'],
+                      child: Text("${country['country_name']}"),
+                    );
+                  }).toList();
+
+                  final selected = controller.selectedCountry.value;
+                  final isValidSelection = countryItems
+                          .where((item) => item.value == selected)
+                          .length ==
+                      1;
+       
+                  return Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 0,
+                          blurRadius: 0,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      isExpanded: true,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: CustomColor.white,
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 14),
+                      ),
+                      hint: const Text("Select Country"),
+                      value: isValidSelection ? selected : null,
+                      items: countryItems,
+                      onChanged: (value) {
+                        if (value != null) {
+                          controller.selectCountry(value);
+                        }
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a country';
+                        }
+                        return null;
+                      },
+                    ),
+                  );
+                }),
                 customHeight10,
                 Row(
                   children: [
                     Expanded(
-                      child: CustomTextFormField2(
-                        hintText: 'City',
-                        topLabelText: 'City',
-                        isMandatory: true,
-                        hintStyle: FontStyle.black16,
-                        controller: controller.cityController,
-                        fillColor: CustomColor.white,
-                        filled: true,
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        focusBorder: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        enableBorder: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        validator: (value) =>
-                            FieldValidator(context).city(value),
-                      ),
+                      child: Obx(() {
+                        final selected = controller.selectedState.value;
+
+                        final stateItems = controller.stateList
+                            .map<DropdownMenuItem<String>>((state) {
+                          final value = state['state']?.toString().trim();
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value ?? ''),
+                          );
+                        }).toList();
+
+                        final validSelection = stateItems
+                                .where((item) => item.value == selected.trim())
+                                .length ==
+                            1;
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.grey.withOpacity(0.1)),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 0,
+                                blurRadius: 0,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          child: DropdownButtonFormField<String>(
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: CustomColor.white,
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none),
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide.none),
+                              enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide.none),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 14),
+                            ),
+                            hint: const Text("Select State"),
+                            value: validSelection ? selected.trim() : null,
+                            items: stateItems,
+                            onChanged: (value) {
+                              if (value != null) {
+                                controller.selectCity(value.trim());
+                              }
+                            },
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select a state';
+                              }
+                              return null;
+                            },
+                          ),
+                        );
+                      }),
                     ),
                     customwidth5,
-                    Expanded(
-                      child: CustomTextFormField2(
-                        hintText: 'State',
-                        topLabelText: 'State',
-                        isMandatory: true,
-                        hintStyle: FontStyle.black16,
-                        controller: controller.stateController,
-                        fillColor: CustomColor.white,
-                        filled: true,
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        focusBorder: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        enableBorder: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
-                        validator: (value) =>
-                            FieldValidator(context).state(value),
-                      ),
-                    ),
+                  Expanded(
+  child: Obx(() {
+    final selected = controller.selectedCity.value;
+
+    final cityItems = controller.cityList
+        .where((city) => city['city'] != null)
+        .map<DropdownMenuItem<String>>((city) {
+      final value = city['city'].toString().trim();
+      return DropdownMenuItem<String>(
+        value: value,
+        child: Text(value),
+      );
+    }).toList();
+
+    final validSelection =
+        cityItems.where((item) => item.value == selected.trim()).length == 1;
+
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 0,
+            blurRadius: 0,
+            offset: const Offset(0, 1),
+          ),
+        ],
+      ),
+      child: DropdownButtonFormField<String>(
+        isExpanded: true,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: CustomColor.white,
+          border: const OutlineInputBorder(borderSide: BorderSide.none),
+          focusedBorder: const OutlineInputBorder(borderSide: BorderSide.none),
+          enabledBorder: const OutlineInputBorder(borderSide: BorderSide.none),
+          contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12, vertical: 14),
+        ),
+        hint: const Text("Select City"),
+        value: validSelection ? selected.trim() : null,
+        items: cityItems,
+        onChanged: (value) {
+          if (value != null) {
+            controller.selectcity(value.trim());
+          }
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please select a city';
+          }
+          return null;
+        },
+      ),
+    );
+  }),
+),
                   ],
                 ),
                 customHeight10,
@@ -298,7 +427,7 @@ class AddNewAddressScreen extends GetView<AddNewAddressController> {
                 customHeight5,
                 Obx(() => Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [          
+                      children: [
                         Checkbox(
                             value: controller.isDefault.value,
                             onChanged: (val) =>
