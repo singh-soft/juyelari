@@ -34,33 +34,37 @@ class DashboardScreen extends GetView<DashboardController> {
     final screenheight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: Builder(
-            builder: (context) => IconButton(
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                icon: const Icon(
-                  Icons.menu,
-                )),
-          ),
-          leadingWidth: 50,
-          title: Text(
-            "Jewels",
-            style: FontStyle.redshade20w600,
-          ),
-          actions: [
-            const Icon(
-              Icons.search,
-              size: 28,
+        leading: Builder(
+          builder: (context) => IconButton(
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            icon: const Icon(
+              Icons.menu,
             ),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Obx(() {
-                  int count = myCartController.cartItmes.length;
-                  return Stack(alignment: Alignment.topRight, children: [
+          ),
+        ),
+        leadingWidth: 50,
+        title: Text(
+          "Jewels",
+          style: FontStyle.redshade20w600,
+        ),
+        actions: [
+          const Icon(
+            Icons.search,
+            size: 28,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Obx(
+              () {
+                int count = myCartController.cartItmes.length;
+                return Stack(
+                  alignment: Alignment.topRight,
+                  children: [
                     CircleAvatar(
                       radius: 18,
                       backgroundColor: CustomColor.redshadeColor,
@@ -93,58 +97,61 @@ class DashboardScreen extends GetView<DashboardController> {
                           ),
                         ),
                       ),
-                  ]);
-                }))
-          ],
-        ),
-        drawer: const ProfileScreen(),
-        body: Column(
-          children: [
-            Container(
-              height: 90,
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, top: 5),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.location_on_outlined),
-                        Text(
-                          "Update Delivery Pincode",
-                          style: FontStyle.greytext14,
-                        )
-                      ],
-                    ),
-                  ),
-                  height10,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: CustomTextFormField2(
-                      contentPadding: const EdgeInsets.all(8.0),
-                      controller: controller.searchController,
-                      hintText: 'Search Product',
-                      hintStyle: FontStyle.greytext14,
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: CustomColor.blackColor,
-                        size: 25,
-                      ),
-                      // fillColor: CustomColor.whiteshade,
-
-                      // filled: true,
-                      border: InputBorder.none,
-                      focusBorder: InputBorder.none,
-                      enableBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                    ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              },
             ),
-            customHeight5,
-            Expanded(
-                child: Obx(
+          )
+        ],
+      ),
+      drawer: const ProfileScreen(),
+      body: Column(
+        children: [
+          Container(
+            height: 90,
+            color: Colors.transparent,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 5),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.location_on_outlined),
+                      Text(
+                        "Update Delivery Pincode",
+                        style: FontStyle.greytext14,
+                      )
+                    ],
+                  ),
+                ),
+                height10,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: CustomTextFormField2(
+                    contentPadding: const EdgeInsets.all(8.0),
+                    controller: controller.searchController,
+                    hintText: 'Search Product',
+                    hintStyle: FontStyle.greytext14,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: CustomColor.blackColor,
+                      size: 25,
+                    ),
+                    // fillColor: CustomColor.whiteshade,
+
+                    // filled: true,
+                    border: InputBorder.none,
+                    focusBorder: InputBorder.none,
+                    enableBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          customHeight5,
+          Expanded(
+            child: Obx(
               () => controller.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
                   : controller.dashboardData.isEmpty
@@ -172,34 +179,36 @@ class DashboardScreen extends GetView<DashboardController> {
                                             ),
                                           ],
                                         ),
-                                        child: Obx(() {
-                                          return CustomImageSlider(
-                                            height: 220,
-                                            imageList: controller.sliders
-                                                .map((e) => e['image_url'])
-                                                .toList(),
-                                            imageController: controller
-                                                .sliderCarouselController,
-                                            imageUrl: controller.sliders[
-                                                controller.currentIndex
-                                                    .value]['image_url'],
-                                            onPageChanged: (index, reason) {
-                                              controller.currentIndex.value =
-                                                  index;
-                                            },
-                                          );
-                                        }),
+                                        child: Obx(
+                                          () {
+                                            return CustomImageSlider(
+                                              height: 220,
+                                              imageList: controller.sliders
+                                                  .map((e) => e['image_url'])
+                                                  .toList(),
+                                              imageController: controller
+                                                  .sliderCarouselController,
+                                              imageUrl: controller.sliders[
+                                                  controller.currentIndex
+                                                      .value]['image_url'],
+                                              onPageChanged: (index, reason) {
+                                                controller.currentIndex.value =
+                                                    index;
+                                              },
+                                            );
+                                          },
+                                        ),
                                       ),
                                       Positioned(
-                                          bottom: 28,
-                                          left: 0,
-                                          right: 0,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: List.generate(
-                                                controller.sliders.length,
-                                                (index) {
+                                        bottom: 28,
+                                        left: 0,
+                                        right: 0,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: List.generate(
+                                            controller.sliders.length,
+                                            (index) {
                                               return Obx(
                                                 () => Container(
                                                   margin: const EdgeInsets
@@ -226,8 +235,10 @@ class DashboardScreen extends GetView<DashboardController> {
                                                   ),
                                                 ),
                                               );
-                                            }),
-                                          )),
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                             height10,
@@ -243,12 +254,13 @@ class DashboardScreen extends GetView<DashboardController> {
                                           return InkWell(
                                             onTap: () {
                                               Get.to(
-                                                  () => const ProductScreen(),
-                                                  arguments: {
-                                                    'name': controller
-                                                            .categories[index]
-                                                        ['name'],
-                                                  });
+                                                () => const ProductScreen(),
+                                                arguments: {
+                                                  'name': controller
+                                                          .categories[index]
+                                                      ['name'],
+                                                },
+                                              );
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(
@@ -263,8 +275,9 @@ class DashboardScreen extends GetView<DashboardController> {
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   border: Border.all(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.15)),
+                                                    color: Colors.grey
+                                                        .withOpacity(0.15),
+                                                  ),
                                                   boxShadow: [
                                                     BoxShadow(
                                                       color: Colors.grey
@@ -354,12 +367,14 @@ class DashboardScreen extends GetView<DashboardController> {
                                     onTap: () {
                                       if (controller
                                           .featuredProduct.isNotEmpty) {
-                                        Get.to(() => const AllProductScreen(),
-                                            arguments: {
-                                              'featuredProduct': controller
-                                                  .featuredProduct
-                                                  .toList()
-                                            });
+                                        Get.to(
+                                          () => const AllProductScreen(),
+                                          arguments: {
+                                            'featuredProduct': controller
+                                                .featuredProduct
+                                                .toList()
+                                          },
+                                        );
                                       } else {
                                         CustomWidgets()
                                             .toast("No Data Found", Colors.red);
@@ -393,89 +408,41 @@ class DashboardScreen extends GetView<DashboardController> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
                               color: Colors.transparent,
-                              child: Obx(() {
-                                final allProducts = controller.featuredProduct;
-                                final limitedProducts = allProducts.length > 2
-                                    ? allProducts.sublist(0, 2)
-                                    : allProducts;
+                              child: Obx(
+                                () {
+                                  final allProducts =
+                                      controller.featuredProduct;
+                                  final limitedProducts = allProducts.length > 2
+                                      ? allProducts.sublist(0, 2)
+                                      : allProducts;
 
-                                return limitedProducts.isEmpty
-                                    ? const Center(child: Text("No Data Found"))
-                                    : GridView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: limitedProducts.length,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          mainAxisSpacing: 2,
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 1 / 1.25,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          final product =
-                                              limitedProducts[index];
-                                          return Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  Get.to(
+                                  return limitedProducts.isEmpty
+                                      ? const Center(
+                                          child: Text("No Data Found"))
+                                      : GridView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount: limitedProducts.length,
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                            mainAxisSpacing: 2,
+                                            crossAxisCount: 2,
+                                            childAspectRatio: 1 / 1.25,
+                                          ),
+                                          itemBuilder: (context, index) {
+                                            final product =
+                                                limitedProducts[index];
+                                            return Column(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    Get.to(
                                                       () =>
                                                           const ProductDetailScreen(),
                                                       arguments: {
                                                         "product_id":
                                                             product['id']
-                                                      });
-                                                },
-                                                child: Container(
-                                                  height: 200,
-                                                  width: double.infinity,
-                                                  margin:
-                                                      const EdgeInsets.all(8.0),
-                                                  decoration: BoxDecoration(
-                                                    // color: Colors.green,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border: Border.all(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.1)),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.1),
-                                                        spreadRadius: 0.2,
-                                                        blurRadius: 0.2,
-                                                        offset:
-                                                            const Offset(0, 1),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: Image.network(
-                                                      product['image_url'] ??
-                                                          '',
-                                                      fit: BoxFit.cover,
-                                                      // Show CircularProgressIndicator while loading
-                                                      loadingBuilder: (context,
-                                                          child,
-                                                          loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return const Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            strokeWidth: 2,
-                                                            valueColor:
-                                                                AlwaysStoppedAnimation<
-                                                                        Color>(
-                                                                    Colors
-                                                                        .grey),
-                                                          ),
-                                                        );
                                                       },
                                                       // Show fallback if loading fails
                                                       errorBuilder: (context,
@@ -484,28 +451,56 @@ class DashboardScreen extends GetView<DashboardController> {
                                                           Image.asset(
                                                         'assets/images/loginpic.png',
                                                         fit: BoxFit.cover,
+                                                        // Show CircularProgressIndicator while loading
+                                                        loadingBuilder: (context,
+                                                            child,
+                                                            loadingProgress) {
+                                                          if (loadingProgress ==
+                                                              null)
+                                                            return child;
+                                                          return const Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              strokeWidth: 2,
+                                                              valueColor:
+                                                                  AlwaysStoppedAnimation<
+                                                                          Color>(
+                                                                      Colors
+                                                                          .grey),
+                                                            ),
+                                                          );
+                                                        },
+                                                        // Show fallback if loading fails
+                                                        errorBuilder: (context,
+                                                                error,
+                                                                stackTrace) =>
+                                                            Image.asset(
+                                                          'assets/error.png',
+                                                          fit: BoxFit.cover,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(horizontal: 8),
-                                                  child: Text(
-                                                    product['name'] ?? '',
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8),
+                                                    child: Text(
+                                                      product['name'] ?? '',
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                              }),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                },
+                              ),
                             ),
                             height5,
                             Padding(
@@ -539,41 +534,46 @@ class DashboardScreen extends GetView<DashboardController> {
                                         ),
                                       ],
                                     ),
-                                    child: Obx(() {
-                                      if (controller.brands.isEmpty) {
-                                        return const Center(
-                                            child: Text("No Data Found"));
-                                      }
-                                      return CustomImageSlider(
-                                        height: 220,
-                                        imageList: controller.brands
-                                            .map((e) => e['image_url'])
-                                            .toList(),
-                                        imageController: controller
-                                            .sliderCarouselController1,
-                                        imageUrl: controller.brands[controller
-                                            .currentIndex1.value]['image_url'],
-                                        onPageChanged: (index, reason) {
-                                          controller.currentIndex1.value =
-                                              index;
-                                        },
-                                      );
-                                    }),
+                                    child: Obx(
+                                      () {
+                                        if (controller.brands.isEmpty) {
+                                          return const Center(
+                                              child: Text("No Data Found"));
+                                        }
+                                        return CustomImageSlider(
+                                          height: 220,
+                                          imageList: controller.brands
+                                              .map((e) => e['image_url'])
+                                              .toList(),
+                                          imageController: controller
+                                              .sliderCarouselController1,
+                                          imageUrl: controller.brands[controller
+                                              .currentIndex1
+                                              .value]['image_url'],
+                                          onPageChanged: (index, reason) {
+                                            controller.currentIndex1.value =
+                                                index;
+                                          },
+                                        );
+                                      },
+                                    ),
                                   ),
                                   Positioned(
-                                      bottom: 28,
-                                      left: 0,
-                                      right: 0,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: List.generate(
-                                            controller.brands.length, (index) {
+                                    bottom: 28,
+                                    left: 0,
+                                    right: 0,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: List.generate(
+                                        controller.brands.length,
+                                        (index) {
                                           return Obx(
                                             () => Container(
                                               margin:
                                                   const EdgeInsets.symmetric(
-                                                      horizontal: 4),
+                                                horizontal: 4,
+                                              ),
                                               width: controller.currentIndex1
                                                           .value ==
                                                       index
@@ -594,15 +594,19 @@ class DashboardScreen extends GetView<DashboardController> {
                                               ),
                                             ),
                                           );
-                                        }),
-                                      )),
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
-            ))
-          ],
-        ));
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
