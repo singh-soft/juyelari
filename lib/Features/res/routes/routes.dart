@@ -16,21 +16,33 @@ import 'package:juyelari/Features/res/routes/routes_name.dart';
 class Routes {
   static appRoutes() => [
         GetPage(
-            name: RoutesName.onboardingscreen,
-            page: () => const OnBoardingScreen()),
-        GetPage(name: RoutesName.loginview, page: () => const LoginView()),
-        GetPage(name: RoutesName.signupview, page: () => SignUpView()),
+          name: RoutesName.onboardingscreen,
+          page: () => const OnBoardingScreen(),
+        ),
         GetPage(
-            name: RoutesName.forgotpassword,
-            page: () => const ForgotPassword()),
+          name: RoutesName.loginview,
+          page: () => const LoginView(),
+        ),
         GetPage(
-            name: RoutesName.otpverficationview,
-            page: () => const OtpVerificationScreen()),
+          name: RoutesName.signupview,
+          page: () => SignUpView(),
+        ),
         GetPage(
-            name: RoutesName.dashboardscreen,
-            page: () => const DashboardScreen()),
+          name: RoutesName.forgotpassword,
+          page: () => const ForgotPassword(),
+        ),
         GetPage(
-            name: RoutesName.productscreen, page: () => const ProductScreen()),
+          name: RoutesName.otpverficationview,
+          page: () => const OtpVerificationScreen(),
+        ),
+        GetPage(
+          name: RoutesName.dashboardscreen,
+          page: () => const DashboardScreen(),
+        ),
+        GetPage(
+          name: RoutesName.productscreen,
+          page: () => const ProductScreen(),
+        ),
         GetPage(
           name: RoutesName.createpasswordscreen,
           page: () => const CreatePasswordScreen(),
@@ -39,8 +51,17 @@ class Routes {
           name: RoutesName.revieworderdetailsscreen,
           page: () => const ReviewOrderDetailsScreen(),
         ),
-        GetPage(name: RoutesName.mycartscreen, page: () => const MyCartScreen()),
-         GetPage(name: RoutesName.bottombarview, page: () => const BottomBarView()),
-           GetPage(name: RoutesName.myorderscreen, page: () =>  MyOrderScreen())
+        GetPage(
+          name: RoutesName.mycartscreen,
+          page: () => const MyCartScreen(),
+        ),
+        GetPage(
+          name: RoutesName.bottombarview,
+          page: () => const BottomBarView(),
+        ),
+        GetPage(
+          name: RoutesName.myorderscreen,
+          page: () => const MyOrderScreen(),
+        )
       ];
 }
