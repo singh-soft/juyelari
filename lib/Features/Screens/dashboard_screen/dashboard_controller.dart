@@ -30,7 +30,7 @@ class DashboardController extends GetxController {
       isLoading.value = true;
       var response = await ApiProvider().postRequest(apiUrl: 'dashboard');
 
-      if (response['success'] == true && response['data'] != null) {
+      if (response['status'] == true && response['data'] != null) {
         final data = response['data'];
         dashboardData.value = data;
 
@@ -43,8 +43,10 @@ class DashboardController extends GetxController {
             .assignAll(List<Map<String, dynamic>>.from(data['products'] ?? []));
 
         CustomWidgets().toast(response['message'], Colors.green);
+        isLoading.value=false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);
+        isLoading.value=false;
       }
     } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);

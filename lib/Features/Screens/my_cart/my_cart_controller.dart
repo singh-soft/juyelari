@@ -12,6 +12,7 @@ class MyCartController extends GetxController {
     RxBool isLoading1 = false.obs;
   var cartItmes = <Map<String, dynamic>>[].obs;
   RxDouble totalAmount = 0.0.obs;
+  var selectedItems =<Map<String,dynamic>>[].obs;
 
   void updateCity(String value) {
     selectedCity.value = value;
@@ -33,9 +34,10 @@ class MyCartController extends GetxController {
     try {
       isLoading.value = true;
       var response = await ApiProvider().getRequest(apiUrl: 'cart/my-cart');
-      if (response['success'] == true) {
+      if (response['status'] == true) {
         final data = List<Map<String, dynamic>>.from(response['data']);
         cartItmes.assignAll(data);
+        selectedItems.assignAll(data); 
 
         double total = 0;
         for (var item in data) {
@@ -75,7 +77,7 @@ class MyCartController extends GetxController {
       };
       var response = await ApiProvider()
           .postRequest(apiUrl: 'remove-from-cart', data: data);
-      if (response['success'] == true) {
+      if (response['status'] == true) {
         mycartApi();
         CustomWidgets().toast(response['message'], Colors.green);
         isLoading.value = false;
@@ -95,13 +97,25 @@ class MyCartController extends GetxController {
       isLoading.value = false;
     }
   }
+  void calculateTotal() {
+    double total = 0;
+    for (var item in selectedItems) {
+      double price = double.tryParse(
+              item['price'].toString().replaceAll('₹', '').trim()) ??
+          0;
+      int qty = int.tryParse(item['qty'].toString()) ?? 1;
+      total += price * qty;
+    }
+    totalAmount.value = total;
+    // newtotalAmount.value = total - couponDiscount.value;
+  }
 
   void getShippingAddressApi() async {
     try {
       isLoading1.value = true;
       var response =
           await ApiProvider().getRequest(apiUrl: 'shipping-address-list');
-      if (response['success'] == true) {
+      if (response['status'] == true) {
         addressList.clear();
         List<dynamic> data = response['data'];
         for (var item in data) {

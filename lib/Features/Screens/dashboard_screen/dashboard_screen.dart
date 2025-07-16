@@ -6,6 +6,7 @@ import 'package:juyelari/Features/Screens/Profile_screen/profile_screen.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/all_product_screen/all_product_screen.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
+import 'package:juyelari/Features/Screens/my_cart/my_cart_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_screen.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
@@ -67,11 +68,14 @@ class DashboardScreen extends GetView<DashboardController> {
                     CircleAvatar(
                       radius: 18,
                       backgroundColor: CustomColor.redshadeColor,
-                      child: Icon(
+                      child: IconButton(onPressed: (){
+                        Get.to(()=> const MyCartScreen());
+                      }, 
+                      icon: Icon(
                         Icons.shopping_cart,
                         color: CustomColor.white,
                         size: 20,
-                      ),
+                      ),)
                     ),
                     if (count > 0)
                       Positioned(
@@ -440,41 +444,12 @@ class DashboardScreen extends GetView<DashboardController> {
                                                         "product_id":
                                                             product['id']
                                                       },
-                                                    );
-                                                  },
-                                                  child: Container(
-                                                    height: 200,
-                                                    width: double.infinity,
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    decoration: BoxDecoration(
-                                                      // color: Colors.green,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      border: Border.all(
-                                                          color: Colors.grey
-                                                              .withOpacity(
-                                                                  0.1)),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.grey
-                                                              .withOpacity(0.1),
-                                                          spreadRadius: 0.2,
-                                                          blurRadius: 0.2,
-                                                          offset: const Offset(
-                                                              0, 1),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      child: Image.network(
-                                                        product['image_url'] ??
-                                                            '',
+                                                      // Show fallback if loading fails
+                                                      errorBuilder: (context,
+                                                              error,
+                                                              stackTrace) =>
+                                                          Image.asset(
+                                                        'assets/images/loginpic.png',
                                                         fit: BoxFit.cover,
                                                         // Show CircularProgressIndicator while loading
                                                         loadingBuilder: (context,

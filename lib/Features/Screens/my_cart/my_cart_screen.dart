@@ -4,6 +4,7 @@ import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
 import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_screen.dart';
+import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
 import 'package:juyelari/Features/Screens/review_order_details/review_order_details_screen.dart';
 import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
@@ -80,7 +81,7 @@ class MyCartScreen extends GetView<MyCartController> {
                                               style: FontStyle.black14,
                                             ),
                                 )),
-                                IconButton(  
+                                IconButton(
                                   onPressed: () {
                                     Get.to(
                                       () => const ShippingAddressScreen(),
@@ -109,171 +110,211 @@ class MyCartScreen extends GetView<MyCartController> {
                                   itemBuilder: (context, index) {
                                     final cartItem =
                                         controller.cartItmes[index];
-                                    return Container(
-                                        margin: const EdgeInsets.all(4.0),
-                                        padding: const EdgeInsets.all(20.0),
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                            border: Border.all(
-                                                color: Colors.grey
-                                                    .withOpacity(0.1)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 2,
-                                                blurRadius: 2,
-                                                offset: const Offset(1, 3),
-                                              ),
-                                            ]),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Stack(
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  child: Obx(
-                                                    () => InkWell(
-                                                      onTap:
-                                                          controller.isLoading
-                                                                  .value
-                                                              ? null
-                                                              : () {
-                                                                  Get.defaultDialog(
-                                                                    middleText:
-                                                                        'Are you sure you want to remove this item from your cart?',
-                                                                    buttonColor:
-                                                                        CustomColor
-                                                                            .redshadeColor,
-                                                                    textConfirm:
-                                                                        "Yes",
-                                                                    textCancel:
-                                                                        "No",
-                                                                    onConfirm:
-                                                                        () {
-                                                                      Get.back();
-                                                                      controller
-                                                                          .deleteMyCartApi(
-                                                                              cartItem['product_id'].toString());
-                                                                    },
-                                                                    onCancel:
-                                                                        () {
-                                                                      Get.back();
-                                                                    },
-                                                                  );
-                                                                },
-                                                      child: Container(
-                                                        height: 120,
-                                                        width: 120,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                              color: Colors.grey
-                                                                  .withOpacity(
-                                                                      0.1)),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Colors.grey
-                                                                  .withOpacity(
-                                                                      0.1),
-                                                              spreadRadius: 2,
-                                                              blurRadius: 2,
-                                                              offset:
-                                                                  const Offset(
-                                                                      1, 3),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        child: Image.network(
-                                                          cartItem[
-                                                                  'product_image'] ??
-                                                              '',
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
+                                    return InkWell(
+                                      onTap: () {
+                                        final productId=cartItem['product_id'].toString();
+                                        Get.to(()=>const ProductDetailScreen(),arguments: {'product_id':productId});
+                                      },
+                                      child: Container(
+                                          margin: const EdgeInsets.all(4.0),
+                                          padding: const EdgeInsets.all(20.0),
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                              border: Border.all(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.1)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.1),
+                                                  spreadRadius: 2,
+                                                  blurRadius: 2,
+                                                  offset: const Offset(1, 3),
                                                 ),
-                                                Positioned(
-                                                  bottom: 4,
-                                                  left: 4,
-                                                  child: InkWell(
-                                                    onTap: () {},
-                                                    child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors.white,
-                                                        shape: BoxShape.circle,
+                                              ]),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Stack(
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(12),
+                                                    child: Obx(
+                                                      () => InkWell(
+                                                        onTap:
+                                                            controller.isLoading
+                                                                    .value
+                                                                ? null
+                                                                : () {
+                                                                    Get.defaultDialog(
+                                                                      middleText:
+                                                                          'Are you sure you want to remove this item from your cart?',
+                                                                      buttonColor:
+                                                                          CustomColor
+                                                                              .redshadeColor,
+                                                                      textConfirm:
+                                                                          "Yes",
+                                                                      textCancel:
+                                                                          "No",
+                                                                      onConfirm:
+                                                                          () {
+                                                                        Get.back();
+                                                                        controller
+                                                                            .deleteMyCartApi(
+                                                                                cartItem['product_id'].toString());
+                                                                      },
+                                                                      onCancel:
+                                                                          () {
+                                                                        Get.back();
+                                                                      },
+                                                                    );
+                                                                  },
+                                                        child: Container(
+                                                          height: 120,
+                                                          width: 120,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                                color: Colors.grey
+                                                                    .withOpacity(
+                                                                        0.1)),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors.grey
+                                                                    .withOpacity(
+                                                                        0.1),
+                                                                spreadRadius: 2,
+                                                                blurRadius: 2,
+                                                                offset:
+                                                                    const Offset(
+                                                                        1, 3),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: Image.network(
+                                                            cartItem[
+                                                                    'product_image'] ??
+                                                                '',
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
                                                       ),
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              4),
-                                                      child: const Icon(
-                                                          Icons
-                                                              .delete_outline_outlined,
-                                                          size: 16,
-                                                          color: Colors.red),
                                                     ),
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                            customwidth20,
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    cartItem['product_name']
-                                                            ?.toString() ??
-                                                        '',
-                                                    style:
-                                                        FontStyle.black17w400,
-                                                    maxLines: 2,
-                                                    softWrap: true,
-                                                  ),
-                                                  Text(
-                                                    cartItem['price']
-                                                            ?.toString() ??
-                                                        '',
-                                                    style: FontStyle.redshad16,
-                                                  ),
-                                                  Text(
-                                                    "All Issue easy returns",
-                                                    style: FontStyle
-                                                        .grettext14w500,
-                                                  ),
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "Size: Free Size",
-                                                        style: FontStyle
-                                                            .black14w500,
+                                                  Positioned(
+                                                    bottom: 4,
+                                                    left: 4,
+                                                    child: InkWell(
+                                                      onTap: () {},
+                                                      child: Container(
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          color: Colors.white,
+                                                          shape: BoxShape.circle,
+                                                        ),
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                4),
+                                                        child: const Icon(
+                                                            Icons
+                                                                .delete_outline_outlined,
+                                                            size: 16,
+                                                            color: Colors.red),
                                                       ),
-                                                      customwidth20,
-                                                      Text(
-                                                          "Qty: ${cartItem['qty']?.toString() ?? '0'}",
-                                                          style: FontStyle
-                                                              .blacks14w500),
-                                                    ],
+                                                    ),
                                                   )
                                                 ],
                                               ),
-                                            ),
-                                          ],
-                                        ));
+                                              customwidth20,
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      cartItem['product_name']
+                                                              ?.toString() ??
+                                                          '',
+                                                      style:
+                                                          FontStyle.black17w400,
+                                                      maxLines: 2,
+                                                      softWrap: true,
+                                                    ),
+                                                    Text(
+                                                      cartItem['price']
+                                                              ?.toString() ??
+                                                          '',
+                                                      style: FontStyle.redshad16,
+                                                    ),
+                                                    Text(
+                                                      "All Issue easy returns",
+                                                      style: FontStyle
+                                                          .grettext14w500,
+                                                    ),
+                                                    Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        // Text(
+                                                        //   "Size: Free Size",
+                                                        //   style: FontStyle
+                                                        //       .black14w500,
+                                                        // ),
+                                                        // customwidth20,
+                                                        Text(
+                                                            "Qty: ${cartItem['qty']?.toString() ?? '0'}",
+                                                            style: FontStyle
+                                                                .blacks14w500),
+                                                        customwidth20,
+                                                        Obx(
+                                                          () => Transform.scale(
+                                                            scale: 0.8,
+                                                            child: Checkbox(
+                                                                visualDensity:
+                                                                    VisualDensity
+                                                                        .compact,
+                                                                materialTapTargetSize:
+                                                                    MaterialTapTargetSize
+                                                                        .shrinkWrap,
+                                                                value: controller
+                                                                    .selectedItems
+                                                                    .contains(
+                                                                        cartItem),
+                                                                onChanged: (bool?
+                                                                    value) {
+                                                                  if (value ==
+                                                                      true) {
+                                                                    controller
+                                                                        .selectedItems
+                                                                        .add(
+                                                                            cartItem);
+                                                                  } else {
+                                                                    controller
+                                                                        .selectedItems
+                                                                        .remove(
+                                                                            cartItem);
+                                                                  }
+                                                                  controller
+                                                                      .calculateTotal();
+                                                                }),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                    );
                                   },
                                 ),
                         ),

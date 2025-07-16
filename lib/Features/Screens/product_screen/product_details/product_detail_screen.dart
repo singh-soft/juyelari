@@ -32,6 +32,8 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
 
     Get.lazyPut(() => ProductDetailsController());
     controller.productDetailsApi();
+    final args=Get.arguments as Map<String,dynamic>;
+    final productId=args['product_id'];
     return Scaffold(
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
