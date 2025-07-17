@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:introduction_screen/introduction_screen.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
 import 'package:juyelari/Features/Screens/login/login_view.dart';
 import 'package:juyelari/Features/Screens/on_boarding/on_boarding_screen_controller.dart';
-import 'package:juyelari/Features/Screens/sign_up/sign_up_view.dart';
-import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:onboarding/onboarding.dart';
 
 class OnBoardingScreen extends GetView<OnBoardingScreenController> {

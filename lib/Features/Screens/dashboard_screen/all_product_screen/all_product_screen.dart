@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
+import 'package:juyelari/Features/Screens/dashboard_screen/all_product_screen/all_product_controller.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 
@@ -19,6 +20,7 @@ class AllProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> featuredProducts =
         (Get.arguments['featuredProduct'] as List<Map<String, dynamic>>);
+    final controller = Get.put(AllProductController());
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -83,58 +85,81 @@ class AllProductScreen extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) {
                         final product = featuredProducts[index];
+                        final productId = product['id'];
+                        if (!controller.favouriteMap.containsKey(productId)) {
+                          controller.favouriteMap[productId] = false.obs;
+                        }
                         return Column(
                           children: [
                             InkWell(
                               onTap: () {
                                 Get.to(() => const ProductDetailScreen(),
-                                    arguments: {"product_id": product['id']});
+                                    arguments: {"product_id": productId});
                               },
-                              child: Container(
-                                height: 200,
-                                width: double.infinity,
-                                margin: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  // color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: Colors.grey.withOpacity(0.1)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 0.2,
-                                      blurRadius: 0.2,
-                                      offset: const Offset(0, 1),
-                                    ),
-                                  ],
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    product['image_url'] ?? '',
-                                    fit: BoxFit.cover,
-                                    // Show CircularProgressIndicator while loading
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return const Center(
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.grey),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    height: 200,
+                                    width: double.infinity,
+                                    margin: const EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: Colors.grey.withOpacity(0.1)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.1),
+                                          spreadRadius: 0.2,
+                                          blurRadius: 0.2,
+                                          offset: const Offset(0, 1),
                                         ),
-                                      );
-                                    },
-
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Image.asset(
-                                      'assets/error.png',
-                                      fit: BoxFit.cover,
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        product['image_url'] ?? '',
+                                        fit: BoxFit.cover,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) return child;
+                                          return const Center(
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                      Colors.grey),
+                                            ),
+                                          );
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Image.asset(
+                                          'assets/error.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  Positioned(
+                                    top: 12,
+                                    right: 12,
+                                    child: Obx(() => GestureDetector(
+                                      onTap: () {
+                                        controller.toggleFavourite(productId);
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 16,
+                                        backgroundColor: Colors.white.withOpacity(0.8),
+                                        child: Icon(
+                                          controller.favouriteMap[productId]!.value ? Icons.favorite : Icons.favorite_border_outlined,
+                                          color: CustomColor.redshadeColor,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    )),
+                                  ),
+                                ],
                               ),
                             ),
                             Expanded(

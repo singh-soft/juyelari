@@ -71,13 +71,13 @@ class CustomImageCarousel extends StatelessWidget {
   final bool showIndicator;
 
   const CustomImageCarousel({
-    Key? key,
+    super.key,
     required this.imagePaths,
     this.isAssets = false,
     this.autoPlay = true,
     this.sliderHeight = 250,
     this.showIndicator = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

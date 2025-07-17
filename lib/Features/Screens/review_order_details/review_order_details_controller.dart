@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
@@ -52,7 +51,7 @@ class ReviewOrderDetailsController extends GetxController {
     try {
       isLoading.value = true;
       var response = await ApiProvider().getRequest(apiUrl: 'cart/my-cart');
-      if (response['success'] == true) {
+      if (response['status'] == true) {
         final data = List<Map<String, dynamic>>.from(response['data']);
         cartItmes.assignAll(data);
         selectedItems.assignAll(data); 
@@ -147,7 +146,7 @@ class ReviewOrderDetailsController extends GetxController {
       };
       var response = await ApiProvider()
           .postRequest(apiUrl: 'remove-from-cart', data: data);
-      if (response['success'] == true) {
+      if (response['status'] == true) {
         mycartApi();
         CustomWidgets().toast(response['message'], Colors.green);
         isLoading.value = false;

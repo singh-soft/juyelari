@@ -47,56 +47,58 @@ class MyCartScreen extends GetView<MyCartController> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
                     children: [
-                      Container(
-                        // height: screenheight * 0.12,
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                            color: CustomColor.yellowshade1,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Shipping Address",
-                              style: FontStyle.black16bold,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Expanded(
-                                    child: Obx(
-                                  () => controller.isLoading1.value
-                                      ? const Center(
-                                          child: CircularProgressIndicator())
-                                      : controller.addressList.isNotEmpty
-                                          ? Text(
-                                              controller.formatAddress(
-                                                  controller.addressList[0]),
-                                              style: FontStyle.black14,
-                                              maxLines: 3,
-                                              overflow: TextOverflow.ellipsis,
-                                            )
-                                          : Text(
-                                              "No address found",
-                                              style: FontStyle.black14,
-                                            ),
-                                )),
-                                IconButton(
-                                  onPressed: () {
-                                    Get.to(
-                                      () => const ShippingAddressScreen(),
-                                      arguments: controller.addressList,
-                                    )?.then((result) {
-                                      if (result == true) {
-                                        controller.getShippingAddressApi();
-                                      }
-                                    });
-                                  },
-                                  icon: const Icon(Icons.arrow_drop_down),
-                                )
-                              ],
-                            )
-                          ],
+                      InkWell(
+                        onTap: () {
+                          Get.to(
+                            () => const ShippingAddressScreen(),
+                            arguments: controller.addressList,
+                          )?.then((result) {
+                            if (result == true) {
+                              controller.getShippingAddressApi();
+                            }
+                          });
+                        },
+                        child: Container(
+                          // height: screenheight * 0.12,
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              color: CustomColor.yellowshade1,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Shipping Address",
+                                style: FontStyle.black16bold,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
+                                      child: Obx(
+                                    () => controller.isLoading1.value
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : controller.addressList.isNotEmpty
+                                            ? Text(
+                                                controller.formatAddress(
+                                                    controller.addressList[0]),
+                                                style: FontStyle.black14,
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              )
+                                            : Text(
+                                                "No address found",
+                                                style: FontStyle.black14,
+                                              ),
+                                  )),
+                                 const Icon(Icons.arrow_drop_down),
+                                  
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       customHeight10,
@@ -112,8 +114,13 @@ class MyCartScreen extends GetView<MyCartController> {
                                         controller.cartItmes[index];
                                     return InkWell(
                                       onTap: () {
-                                        final productId=cartItem['product_id'].toString();
-                                        Get.to(()=>const ProductDetailScreen(),arguments: {'product_id':productId});
+                                        final productId =
+                                            cartItem['product_id'].toString();
+                                        Get.to(
+                                            () => const ProductDetailScreen(),
+                                            arguments: {
+                                              'product_id': productId
+                                            });
                                       },
                                       child: Container(
                                           margin: const EdgeInsets.all(4.0),
@@ -142,7 +149,8 @@ class MyCartScreen extends GetView<MyCartController> {
                                                 children: [
                                                   ClipRRect(
                                                     borderRadius:
-                                                        BorderRadius.circular(12),
+                                                        BorderRadius.circular(
+                                                            12),
                                                     child: Obx(
                                                       () => InkWell(
                                                         onTap:
@@ -164,8 +172,7 @@ class MyCartScreen extends GetView<MyCartController> {
                                                                           () {
                                                                         Get.back();
                                                                         controller
-                                                                            .deleteMyCartApi(
-                                                                                cartItem['product_id'].toString());
+                                                                            .deleteMyCartApi(cartItem['product_id'].toString());
                                                                       },
                                                                       onCancel:
                                                                           () {
@@ -180,12 +187,14 @@ class MyCartScreen extends GetView<MyCartController> {
                                                               BoxDecoration(
                                                             color: Colors.white,
                                                             border: Border.all(
-                                                                color: Colors.grey
+                                                                color: Colors
+                                                                    .grey
                                                                     .withOpacity(
                                                                         0.1)),
                                                             boxShadow: [
                                                               BoxShadow(
-                                                                color: Colors.grey
+                                                                color: Colors
+                                                                    .grey
                                                                     .withOpacity(
                                                                         0.1),
                                                                 spreadRadius: 2,
@@ -215,11 +224,12 @@ class MyCartScreen extends GetView<MyCartController> {
                                                         decoration:
                                                             const BoxDecoration(
                                                           color: Colors.white,
-                                                          shape: BoxShape.circle,
+                                                          shape:
+                                                              BoxShape.circle,
                                                         ),
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                4),
+                                                            const EdgeInsets
+                                                                .all(4),
                                                         child: const Icon(
                                                             Icons
                                                                 .delete_outline_outlined,
@@ -251,7 +261,8 @@ class MyCartScreen extends GetView<MyCartController> {
                                                       cartItem['price']
                                                               ?.toString() ??
                                                           '',
-                                                      style: FontStyle.redshad16,
+                                                      style:
+                                                          FontStyle.redshad16,
                                                     ),
                                                     Text(
                                                       "All Issue easy returns",
@@ -288,8 +299,9 @@ class MyCartScreen extends GetView<MyCartController> {
                                                                     .selectedItems
                                                                     .contains(
                                                                         cartItem),
-                                                                onChanged: (bool?
-                                                                    value) {
+                                                                onChanged:
+                                                                    (bool?
+                                                                        value) {
                                                                   if (value ==
                                                                       true) {
                                                                     controller
@@ -349,8 +361,8 @@ class MyCartScreen extends GetView<MyCartController> {
                             customHeight20,
                             rowwidget(
                                 title: 'Sub Total ',
-                                value:
-                                    '${controller.totalAmount.value.toStringAsFixed(2)}'),
+                                value: controller.totalAmount.value
+                                    .toStringAsFixed(2)),
                             rowwidget(title: 'Delivery Charge', value: 'Free'),
                             Padding(
                               padding: const EdgeInsets.symmetric(

@@ -10,44 +10,45 @@ class AddNewAddressController extends GetxController {
   var saveAs = 'home'.obs;
   var isDefault = false.obs;
   RxBool isLoading = false.obs;
+  RxBool countryLoading = false.obs;
+  RxBool stateLoading = false.obs;
+  RxBool cityLoading = false.obs;
   RxList countryList = [].obs;
   RxList stateList = [].obs;
-  RxList cityList=[].obs;
+  RxList cityList = [].obs;
   RxString selectedCountry = ''.obs;
   RxString selectedState = ''.obs;
-  RxString selectedCity=''.obs;
+  RxString selectedCity = ''.obs;
   void selectState(String value) {
     selectedState.value = value;
     stateController.text = value;
-   
   }
 
   void selectcity(String value) {
     selectedCity.value = value;
     cityController.text = value;
-   
   }
 
-
- void selectCity(String selectedName) {
-  selectedCity.value = selectedName;
-  cityController.text = selectedName; 
-  int index = stateList.indexWhere((c) => c['state'] == selectedName);
-  if (index != -1) {
-    int selectedId = stateList[index]['id'];
-    cityApi(selectedId); 
-  } else {}
-}
-
-void selectCountry(String selectedName) {
-  selectedCountry.value = selectedName;
-  int index = countryList.indexWhere((c) => c['country_name'] == selectedName);
-
-  if (index != -1) {
-    int selectedId = countryList[index]['id'];
-    stateApi(selectedId); 
+  void selectCity(String selectedName) {
+    selectedCity.value = selectedName;
+    cityController.text = selectedName;
+    int index = stateList.indexWhere((c) => c['state'] == selectedName);
+    if (index != -1) {
+      int selectedId = stateList[index]['id'];
+      cityApi(selectedId);
+    } else {}
   }
-}
+
+  void selectCountry(String selectedName) {
+    selectedCountry.value = selectedName;
+    int index =
+        countryList.indexWhere((c) => c['country_name'] == selectedName);
+
+    if (index != -1) {
+      int selectedId = countryList[index]['id'];
+      stateApi(selectedId);
+    }
+  }
 
   var shippingAddressData = Get.arguments;
   var addressKey = GlobalKey<FormState>();
@@ -95,9 +96,9 @@ void selectCountry(String selectedName) {
         "address_line_1": addressController1.value.text,
         "address_line_2": addressController2.value.text,
         "address_tag": saveAs.toString(),
-        "city": cityController.value.text,
-        "state": stateController.value.text,
-        "country": countryController.value.text
+        "city": selectedCity.value,
+        "state": selectedState.value,
+        "country": selectedCountry.value,
       };
       isLoading.value = true;
       var response = await ApiProvider()
@@ -145,9 +146,9 @@ void selectCountry(String selectedName) {
         "address_line_1": addressController1.value.text,
         "address_line_2": addressController2.value.text,
         "address_tag": saveAs.toString(),
-        "city": cityController.value.text,
-        "state": stateController.value.text,
-        "country": countryController.value.text,
+       "city": selectedCity.value,
+        "state": selectedState.value,
+        "country": selectedCountry.value,
       };
       isLoading.value = true;
       var response = await ApiProvider()
@@ -187,16 +188,22 @@ void selectCountry(String selectedName) {
 
   void countryApi() async {
     try {
+      countryLoading.value = true;
       var response = await ApiProvider().getRequest(apiUrl: 'countries');
-      print(response);
       if (response['status'] == true) {
-        // int index;
         countryList.value = response['data'];
-        // stateApi(countryList[index]['id']);
-
+        if (countryList.isNotEmpty) {
+        final firstCountry = countryList[0];
+        selectedCountry.value = firstCountry['country_name'] ?? '';
+        countryController.text = firstCountry['country_name'] ?? '';
+        final int countryId = firstCountry['id'];
+        stateApi(countryId);
+      }
         CustomWidgets().toast(response['message'], Colors.green);
+        countryLoading.value = false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);
+        countryLoading.value = false;
       }
     } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);
@@ -204,62 +211,78 @@ void selectCountry(String selectedName) {
       CustomWidgets()
           .toast("Request time out, Please try again later", Colors.red);
     } catch (e) {
+      countryLoading.value = false;
       CustomWidgets()
           .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
     } finally {
-      isLoading.value = false;
+      countryLoading.value = false;
     }
   }
-
-
 
   void stateApi(int id) async {
-    try {       
-     
-      var response = await ApiProvider().getRequest(apiUrl: 'states?country_id=$id',);
+    try {
+      stateLoading.value = true;
+      var response = await ApiProvider().getRequest(
+        apiUrl: 'states?country_id=$id',
+      );
       if (response['status'] == true) {
         stateList.value = response['data'];
-
+        if (stateList.isNotEmpty && (shippingAddressData == null || shippingAddressData.isEmpty)) {
+        final firstState = stateList[0];
+        selectedState.value = firstState['state'] ?? '';
+        stateController.text = firstState['state'] ?? '';
+        final int stateId = firstState['id'];
+        cityApi(stateId);
+      }
         CustomWidgets().toast(response['message'], Colors.green);
+        stateLoading.value = false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);
+        stateLoading.value = false;
       }
     } on SocketException {
-      CustomWidgets().toast("No Internet Connection", Colors.red); 
+      CustomWidgets().toast("No Internet Connection", Colors.red);
     } on TimeoutException {
       CustomWidgets()
           .toast("Request time out, Please try again later", Colors.red);
     } catch (e) {
+      stateLoading.value = false;
       CustomWidgets()
           .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
     } finally {
-      isLoading.value = false;
+      stateLoading.value = false;
     }
   }
 
-
-  void cityApi(int id)async{
+  void cityApi(int id) async {
     try {
-      var response=await ApiProvider().getRequest(apiUrl:'cities?state_id=$id');
-      print(response.toString());
-      if(response['status'] == true){
-        cityList.value=response['data'];
-        CustomWidgets().toast(response['message'], Colors.green);
-      }else{
-         CustomWidgets().toast(response['message'], Colors.red);
+      cityLoading.value = true;
+      var response =
+          await ApiProvider().getRequest(apiUrl: 'cities?state_id=$id');
+      if (response['status'] == true) {
+        cityList.value = response['data'];
+         if (cityList.isNotEmpty && (shippingAddressData == null || shippingAddressData.isEmpty)) {
+        final firstCity = cityList[0];
+        selectedCity.value = firstCity['city'] ?? '';
+        cityController.text = firstCity['city'] ?? '';
       }
-      
-    }on SocketException {
+        CustomWidgets().toast(response['message'], Colors.green);
+        cityLoading.value = false;
+      } else {
+        CustomWidgets().toast(response['message'], Colors.red);
+        cityLoading.value = false;
+      }
+    } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);
-    }on TimeoutException {
+    } on TimeoutException {
       CustomWidgets()
           .toast("Request time out, Please try again later", Colors.red);
-    }  catch (e) {
+    } catch (e) {
+      cityLoading.value = false;
       CustomWidgets()
           .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
     } finally {
-      isLoading.value = false;
+      cityLoading.value = false;
     }
-
   }
 }

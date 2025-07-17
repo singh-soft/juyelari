@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/forgot_password/create_password/create_password_screen.dart';
-import 'package:juyelari/Features/Screens/login/login_view.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 
 class OtpVerficationController extends GetxController
@@ -40,7 +39,6 @@ class OtpVerficationController extends GetxController
       };
       var response = await ApiProvider()
           .postRequest(apiUrl: 'forgot-password/verify-otp', data: data);
-      print(response);
       if (response['status'] == true) {
         Get.to(() => const CreatePasswordScreen(), arguments: {
           "otp": otpcontroller.value.text,

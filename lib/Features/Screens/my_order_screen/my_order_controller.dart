@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
@@ -8,27 +10,27 @@ class MyOrderController extends GetxController {
   var selectedIndex = 0.obs;
   var allOrders = <Map<String, dynamic>>[].obs;
   var filteredOrder = <Map<String, dynamic>>[].obs;
-  final dataList=[].obs;
-   RxInt currentPage = 1.obs;
+  final dataList = [].obs;
+  RxInt currentPage = 1.obs;
   RxInt lastPage = 1.obs;
   RxBool isLoading = false.obs;
   RxBool isMoreLoading = false.obs;
   ScrollController scrollController = ScrollController();
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   orderListApi(reset: true); // First load
-  //   scrollController.addListener(_scrollListener);
-  // }
+  RxBool isMoreDataAvailable = true.obs;
+  @override
+  void onInit() {
+    super.onInit();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+              scrollController.position.maxScrollExtent - 200 &&
+          !isLoading.value &&
+          isMoreDataAvailable.value) {
+        orderListApi(isLoadMore: true);
+      }
+    });
 
-  // void _scrollListener() {
-  //   if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 300) {
-  //     if (!isMoreLoading.value && currentPage.value < lastPage.value) {
-  //       currentPage.value += 1;
-  //       orderListApi(reset: false);
-  //     }
-  //   }
-  // }
+    orderListApi();
+  }
   // final List<Map<String, String>> products = [
   //   {
   //     'title': 'Classic Gold Bangle with Leaf Design',
@@ -89,51 +91,75 @@ class MyOrderController extends GetxController {
   //       allOrders.assignAll(List<Map<String, dynamic>>.from(dataList ?? []));
   //       CustomWidgets().toast(response['message'], Colors.green);
   //     } else {
-  //       allOrders.clear(); 
+  //       allOrders.clear();
   //       CustomWidgets().toast(response['message'], Colors.red);
   //     }
   //   } catch (e) {
-  //     allOrders.clear(); 
+  //     allOrders.clear();
   //     print(e.toString());
   //     // isLoading.value = false;
   //   }
   // }
 
+  void orderListApi({bool isLoadMore = false}) async {
+    try {
+      if (!isLoadMore) {
+        isLoading.value = true;
+        currentPage.value = 1;
+        isMoreDataAvailable.value = true;
+      }
 
-  void orderListApi() async {
-  try {
-    Map<String, dynamic> data = {
-      "order_status": selectedIndex.value == 0
-          ? "Delivered"
-          : selectedIndex.value == 1
-              ? "pending"
-              : selectedIndex.value == 2
-                  ? "Cancelled"
-                  : '',
-    };
+      Map<String, dynamic> data = {
+        "order_status": selectedIndex.value == 0
+            ? "Delivered"
+            : selectedIndex.value == 1
+                ? "pending"
+                : selectedIndex.value == 2
+                    ? "Cancelled"
+                    : '',
+        "page": currentPage.value,
+      };
 
-    var response = await ApiProvider().postRequest(
-      apiUrl: 'orders/list',
-      data: data,
-    );
-    allOrders.clear(); 
+      var response = await ApiProvider().postRequest(
+        apiUrl: 'orders/list',
+        data: data,
+      );
 
-    if (response['status'] == true && response['data'] is Map) {
-      final dataList = response['data']['data'];
-      allOrders.assignAll(List<Map<String, dynamic>>.from(dataList ?? []));
-      CustomWidgets().toast(response['message'], Colors.green);
-    } else if (response['data'] is List) {
-      allOrders.clear();
-      CustomWidgets().toast(response['message'], Colors.red);
-    } else {
-      CustomWidgets().toast(response['message'], Colors.red);
+      if (response['status'] == true && response['data'] is Map) {
+        final jsonData = response['data'];
+        final List<dynamic> dataList = jsonData['data'] ?? [];
+
+        if (!isLoadMore) {
+          allOrders.clear();
+        }
+
+        allOrders.addAll(List<Map<String, dynamic>>.from(dataList));
+
+        final int lastPage = jsonData['last_page'] ?? 1;
+        if (currentPage.value >= lastPage) {
+          isMoreDataAvailable.value = false;
+        }
+
+        currentPage.value++;
+      } else {
+        if (!isLoadMore) {
+          allOrders.clear();
+        }
+        CustomWidgets().toast(response['message'], Colors.red);
+      }
+    } on SocketException {
+      CustomWidgets().toast("No Internet Connection", Colors.red);
+    } on TimeoutException {
+      CustomWidgets()
+          .toast("Request time out, Please try again later", Colors.red);
+    } catch (e) {
+      CustomWidgets()
+          .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
+    } finally {
+      isLoading.value = false;
     }
-  } catch (e) {
-    allOrders.clear();
-    CustomWidgets().toast("Something went wrong", Colors.red);
   }
 }
-
 
 //  void orderListApi({bool reset = false}) async {
 //     try {
@@ -179,5 +205,3 @@ class MyOrderController extends GetxController {
 //       isMoreLoading.value = false;
 //     }
 //   }
-}
-

@@ -28,7 +28,7 @@ class BottomBarView extends GetView<BottomBarController> {
               BottomNavigationBarItem(icon: Icon(Icons.home_outlined,size:25,), label: 'Home', ),
               BottomNavigationBarItem(icon: Icon(Icons.favorite_border_outlined,size: 25), label: 'favourite ',),
               BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined,size: 25), label: 'My Order',),
-              BottomNavigationBarItem(icon: Icon(Icons.person_2_outlined,size: 25), label: 'Profile',),
+              BottomNavigationBarItem(icon: Icon(Icons.local_shipping,size: 25), label: 'Add Shipping',),
             ]),
         body: 
            controller.pages[controller.currentIndex.value]),

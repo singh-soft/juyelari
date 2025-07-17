@@ -10,7 +10,11 @@ token(){
     return box.read('device_token') ?? '';
   }
 
-    deviceName(){
+  deviceName(){
     return box.read('platform_type') ?? '';
+  }
+
+  userId(){
+    return box.read('id') ?? '';
   }
   
