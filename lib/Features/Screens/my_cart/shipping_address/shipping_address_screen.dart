@@ -119,129 +119,64 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
                     ),
 
                     // List of addresses
-                    ListView.builder(
-                      itemCount: controller.addressList.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        // final isSelected=controller.selectedAddressIndex.value==index;
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 8),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                    controller.addressList.isEmpty
+                        ? const Center(child: Text("No Data Found"))
+                        : ListView.builder(
+                            itemCount: controller.addressList.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              // final isSelected=controller.selectedAddressIndex.value==index;
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                color: Colors.white,
+                                child: Column(
                                   children: [
-                                    Obx(
-                                      () => Radio(
-                                        value: index,
-                                        groupValue: controller
-                                            .selectedAddressIndex.value,
-                                        onChanged: (val) {
-                                          controller.selectedAddress1(index);
-                                        },
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 8),
+                                      child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  "Shipping Address - ${index + 1}",
-                                                  style: FontStyle.black16bold,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 20),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
+                                          Obx(
+                                            () => Radio(
+                                              value: index,
+                                              groupValue: controller
+                                                  .selectedAddressIndex.value,
+                                              onChanged: (val) {
+                                                controller
+                                                    .selectedAddress1(index);
+                                              },
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  // mainAxisAlignment:
+                                                  //     MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    IconButton(
-                                                      visualDensity:
-                                                          VisualDensity.compact,
-                                                      padding: EdgeInsets.zero,
-                                                      constraints:
-                                                          const BoxConstraints(),
-                                                      icon: Icon(
-                                                        Icons.edit,
-                                                        color: CustomColor
-                                                            .lightgreyy,
+                                                    Expanded(
+                                                      child: Text(
+                                                        "Shipping Address - ${index + 1}",
+                                                        style: FontStyle
+                                                            .black16bold,
                                                       ),
-                                                      onPressed: () {
-                                                        Get.to(
-                                                            () =>
-                                                                const AddNewAddressScreen(),
-                                                            arguments: {
-                                                              'id': controller
-                                                                      .addressList[
-                                                                  index]['id'],
-                                                              'address_tag':
-                                                                  controller.addressList[
-                                                                          index]
-                                                                      [
-                                                                      'address_tag'],
-                                                              'flat': controller
-                                                                      .addressList[
-                                                                  index]['flat'],
-                                                              'area': controller
-                                                                      .addressList[
-                                                                  index]['area'],
-                                                              'address_line_1':
-                                                                  controller.addressList[
-                                                                          index]
-                                                                      [
-                                                                      'address_line_1'],
-                                                              'address_line_2':
-                                                                  controller.addressList[
-                                                                          index]
-                                                                      [
-                                                                      'address_line_2'],
-                                                              'city': controller
-                                                                      .addressList[
-                                                                  index]['city'],
-                                                              'state': controller
-                                                                      .addressList[
-                                                                  index]['state'],
-                                                              'country': controller
-                                                                      .addressList[
-                                                                  index]['country'],
-                                                              'postalcode': controller
-                                                                          .addressList[
-                                                                      index][
-                                                                  'postalcode'],
-                                                              'name': controller
-                                                                      .addressList[
-                                                                  index]['name'],
-                                                              'phone': controller
-                                                                      .addressList[
-                                                                  index]['phone'],
-                                                            })?.then((result) {
-                                                          if (result == true) {
-                                                            controller
-                                                                .getShippingAddressApi();
-                                                          }
-                                                        });
-                                                      },
                                                     ),
-                                                    Obx(() => controller
-                                                                .deletingIndex
-                                                                .value ==
-                                                            index
-                                                        ? const CircularProgressIndicator()
-                                                        : IconButton(
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          IconButton(
                                                             visualDensity:
                                                                 VisualDensity
                                                                     .compact,
@@ -250,84 +185,168 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
                                                             constraints:
                                                                 const BoxConstraints(),
                                                             icon: Icon(
-                                                                Icons.delete,
-                                                                color: CustomColor
-                                                                    .lightgreyy),
+                                                              Icons.edit,
+                                                              color: CustomColor
+                                                                  .lightgreyy,
+                                                            ),
                                                             onPressed: () {
-                                                              Get.defaultDialog(
-                                                                middleText:
-                                                                    'Are you sure you want to remove this item from shipping address?',
-                                                                buttonColor:
-                                                                    CustomColor
-                                                                        .redshadeColor,
-                                                                textConfirm:
-                                                                    "Yes",
-                                                                textCancel:
-                                                                    "No",
-                                                                onConfirm: () {
-                                                                  if (Get.isDialogOpen ??
-                                                                      false) {
-                                                                    Get.back();
-                                                                  }
-
-                                                                  controller.deleteShippingAddressApi(
-                                                                      controller
-                                                                              .addressList[index]
-                                                                          [
-                                                                          'id'],
-                                                                      index);
-                                                                },
-                                                                onCancel: () {
-                                                                  if (Get.isDialogOpen ??
-                                                                      false) {
-                                                                    Get.back();
-                                                                  }
-                                                                },
-                                                              );
+                                                              Get.to(
+                                                                  () =>
+                                                                      const AddNewAddressScreen(),
+                                                                  arguments: {
+                                                                    'id': controller
+                                                                            .addressList[
+                                                                        index]['id'],
+                                                                    'address_tag':
+                                                                        controller.addressList[index]
+                                                                            [
+                                                                            'address_tag'],
+                                                                    'flat': controller
+                                                                            .addressList[index]
+                                                                        [
+                                                                        'flat'],
+                                                                    'area': controller
+                                                                            .addressList[index]
+                                                                        [
+                                                                        'area'],
+                                                                    'address_line_1':
+                                                                        controller.addressList[index]
+                                                                            [
+                                                                            'address_line_1'],
+                                                                    'address_line_2':
+                                                                        controller.addressList[index]
+                                                                            [
+                                                                            'address_line_2'],
+                                                                    'city': controller
+                                                                            .addressList[index]
+                                                                        [
+                                                                        'city'],
+                                                                    'state': controller
+                                                                            .addressList[index]
+                                                                        [
+                                                                        'state'],
+                                                                    'country': controller
+                                                                            .addressList[index]
+                                                                        [
+                                                                        'country'],
+                                                                    'postalcode':
+                                                                        controller.addressList[index]
+                                                                            [
+                                                                            'postalcode'],
+                                                                    'name': controller
+                                                                            .addressList[index]
+                                                                        [
+                                                                        'name'],
+                                                                    'phone': controller
+                                                                            .addressList[index]
+                                                                        [
+                                                                        'phone'],
+                                                                  })?.then(
+                                                                  (result) {
+                                                                if (result ==
+                                                                    true) {
+                                                                  controller
+                                                                      .getShippingAddressApi();
+                                                                }
+                                                              });
                                                             },
-                                                          )),
+                                                          ),
+                                                          Obx(() => controller
+                                                                      .deletingIndex
+                                                                      .value ==
+                                                                  index
+                                                              ? const CircularProgressIndicator()
+                                                              : IconButton(
+                                                                  visualDensity:
+                                                                      VisualDensity
+                                                                          .compact,
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .zero,
+                                                                  constraints:
+                                                                      const BoxConstraints(),
+                                                                  icon: Icon(
+                                                                      Icons
+                                                                          .delete,
+                                                                      color: CustomColor
+                                                                          .lightgreyy),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Get.defaultDialog(
+                                                                      middleText:
+                                                                          'Are you sure you want to remove this item from shipping address?',
+                                                                      buttonColor:
+                                                                          CustomColor
+                                                                              .redshadeColor,
+                                                                      textConfirm:
+                                                                          "Yes",
+                                                                      textCancel:
+                                                                          "No",
+                                                                      onConfirm:
+                                                                          () {
+                                                                        if (Get.isDialogOpen ??
+                                                                            false) {
+                                                                          Get.back();
+                                                                        }
+
+                                                                        controller.deleteShippingAddressApi(
+                                                                            controller.addressList[index]['id'],
+                                                                            index);
+                                                                      },
+                                                                      onCancel:
+                                                                          () {
+                                                                        if (Get.isDialogOpen ??
+                                                                            false) {
+                                                                          Get.back();
+                                                                        }
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                )),
+                                                        ],
+                                                      ),
+                                                    )
                                                   ],
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                          Obx(
-                                            () => controller.isLoading1.value
-                                                ? const CircularProgressIndicator()
-                                                : controller
-                                                        .addressList.isNotEmpty
-                                                    ? Text(
-                                                        controller.formatAddress(
-                                                            controller
-                                                                    .addressList[
-                                                                index]),
-                                                        style:
-                                                            FontStyle.black14,
-                                                        maxLines: 3,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      )
-                                                    : Text(
-                                                        "No address found",
-                                                        style:
-                                                            FontStyle.black14,
-                                                      ),
+                                                Obx(
+                                                  () => controller
+                                                          .isLoading1.value
+                                                      ? const CircularProgressIndicator()
+                                                      : controller.addressList
+                                                              .isNotEmpty
+                                                          ? Text(
+                                                              controller.formatAddress(
+                                                                  controller
+                                                                          .addressList[
+                                                                      index]),
+                                                              style: FontStyle
+                                                                  .black14,
+                                                              maxLines: 3,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            )
+                                                          : Text(
+                                                              "No address found",
+                                                              style: FontStyle
+                                                                  .black14,
+                                                            ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
+                                    Divider(
+                                      color: CustomColor.lightgrey,
+                                      thickness: 1,
+                                    ),
                                   ],
                                 ),
-                              ),
-                              Divider(
-                                color: CustomColor.lightgrey,
-                                thickness: 1,
-                              ),
-                            ],
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
                   ],
                 ),
               ),

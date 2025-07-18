@@ -41,16 +41,16 @@ class ShippingAddressController extends GetxController {
       isLoading1.value = true;
       var response =
           await ApiProvider().getRequest(apiUrl: 'shipping-address-list');
-      if (response['success'] == true) {
+      if (response['status'] == true) {
         addressList.clear();
         List<dynamic> data = response['data'];
         for (var item in data) {
           addressList.add(Map<String, dynamic>.from(item));
         }
-        // CustomWidgets().toast(response['message'], Colors.green);
+        CustomWidgets().toast(response['message'], Colors.green);
         isLoading1.value = false;
       } else {
-        // CustomWidgets().toast(response['message'], Colors.red);
+        CustomWidgets().toast(response['message'], Colors.red);
         isLoading1.value = false;
       }
     } on SocketException {

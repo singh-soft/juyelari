@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_controller.dart';
-import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_image_slider/custom_image_carousel.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';

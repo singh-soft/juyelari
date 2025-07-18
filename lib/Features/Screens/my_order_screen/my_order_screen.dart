@@ -84,10 +84,27 @@ class MyOrderScreen extends GetView<MyOrderController> {
                           ? const Center(child: Text("No Data Found"))
                           : ListView.builder(
                               controller: controller.scrollController,
-                              itemCount: controller.allOrders.length,
+                              itemCount: controller.allOrders.length +
+                                  1, // +1 for loader
+
                               itemBuilder: (context, index) {
+                                if (index == controller.allOrders.length) {
+                                  return Obx(
+                                      () => controller.isMoreDataAvailable.value
+                                          ? const Padding(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Center(
+                                                  child:
+                                                      CircularProgressIndicator()),
+                                            )
+                                          : const SizedBox.shrink());
+                                }
+
                                 final order = controller.allOrders[index];
                                 final products = order['productdetails'] ?? [];
+
+                                // Your existing card/widget logic here
+
                                 // final products = order['productdetails'][0];
                                 return Container(
                                     margin: const EdgeInsets.all(4.0),

@@ -8,7 +8,6 @@ import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.
 import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
-import 'package:juyelari/Features/Screens/product_screen/product_screen.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_image_slider/custom_image_carousel.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
@@ -62,17 +61,18 @@ class DashboardScreen extends GetView<DashboardController> {
                   int count = myCartController.cartItmes.length;
                   return Stack(alignment: Alignment.topRight, children: [
                     CircleAvatar(
-                      radius: 18,
-                      backgroundColor: CustomColor.redshadeColor,
-                      child: IconButton(onPressed: (){
-                        Get.to(()=> const MyCartScreen());
-                      }, 
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: CustomColor.white,
-                        size: 20,
-                      ),)
-                    ),
+                        radius: 18,
+                        backgroundColor: CustomColor.redshadeColor,
+                        child: IconButton(
+                          onPressed: () {
+                            Get.to(() => const MyCartScreen());
+                          },
+                          icon: Icon(
+                            Icons.shopping_cart,
+                            color: CustomColor.white,
+                            size: 20,
+                          ),
+                        )),
                     if (count > 0)
                       Positioned(
                         right: -4,
@@ -242,13 +242,13 @@ class DashboardScreen extends GetView<DashboardController> {
                                         itemBuilder: (context, index) {
                                           return InkWell(
                                             onTap: () {
-                                              Get.to(
-                                                  () => const ProductScreen(),
-                                                  arguments: {
-                                                    'name': controller
-                                                            .categories[index]
-                                                        ['name'],
-                                                  });
+                                              // Get.to(
+                                              //     () => const ProductScreen(),
+                                              //     arguments: {
+                                              //       'name': controller
+                                              //               .categories[index]
+                                              //           ['name'],
+                                              //     });
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(
@@ -415,6 +415,12 @@ class DashboardScreen extends GetView<DashboardController> {
                                         itemBuilder: (context, index) {
                                           final product =
                                               limitedProducts[index];
+                                          final productId = product['id'];
+                                          // if (!controller.favouriteMap
+                                          //     .containsKey(productId)) {
+                                          //   controller.favouriteMap[productId] =
+                                          //       false.obs;
+                                          // }
                                           return Column(
                                             children: [
                                               InkWell(
@@ -423,70 +429,104 @@ class DashboardScreen extends GetView<DashboardController> {
                                                       () =>
                                                           const ProductDetailScreen(),
                                                       arguments: {
-                                                        "product_id":
-                                                            product['id']
+                                                        "product_id": productId
                                                       });
                                                 },
-                                                child: Container(
-                                                  height: 200,
-                                                  width: double.infinity,
-                                                  margin:
-                                                      const EdgeInsets.all(8.0),
-                                                  decoration: BoxDecoration(
-                                                    // color: Colors.green,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    border: Border.all(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.1)),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.1),
-                                                        spreadRadius: 0.2,
-                                                        blurRadius: 0.2,
-                                                        offset:
-                                                            const Offset(0, 1),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: Image.network(
-                                                      product['image_url'] ??
-                                                          '',
-                                                      fit: BoxFit.cover,
-                                                      // Show CircularProgressIndicator while loading
-                                                      loadingBuilder: (context,
-                                                          child,
-                                                          loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return const Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            strokeWidth: 2,
-                                                            valueColor:
-                                                                AlwaysStoppedAnimation<
-                                                                        Color>(
-                                                                    Colors
-                                                                        .grey),
+                                                child: Stack(
+                                                  children: [
+                                                    Container(
+                                                      height: 200,
+                                                      width: double.infinity,
+                                                      margin:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        border: Border.all(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    0.1)),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.grey
+                                                                .withOpacity(
+                                                                    0.1),
+                                                            spreadRadius: 0.2,
+                                                            blurRadius: 0.2,
+                                                            offset:
+                                                                const Offset(
+                                                                    0, 1),
                                                           ),
-                                                        );
-                                                      },
-                                                      // Show fallback if loading fails
-                                                      errorBuilder: (context,
-                                                              error,
-                                                              stackTrace) =>
-                                                          Image.asset(
-                                                        'assets/images/loginpic.png',
-                                                        fit: BoxFit.cover,
+                                                        ],
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        child: Image.network(
+                                                          product['image_url'] ??
+                                                              '',
+                                                          fit: BoxFit.cover,
+                                                          loadingBuilder: (context,
+                                                              child,
+                                                              loadingProgress) {
+                                                            if (loadingProgress ==
+                                                                null) {
+                                                              return child;
+                                                            }
+                                                            return const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                strokeWidth: 2,
+                                                                valueColor:
+                                                                    AlwaysStoppedAnimation<
+                                                                            Color>(
+                                                                        Colors
+                                                                            .grey),
+                                                              ),
+                                                            );
+                                                          },
+                                                          errorBuilder: (context,
+                                                                  error,
+                                                                  stackTrace) =>
+                                                              Image.asset(
+                                                            'assets/images/loginpic.png',
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
+                                                    Positioned(
+                                                      top: 12,
+                                                      right: 12,
+                                                      child: Obx(() {
+                                                        final isFav = controller
+                                                                .favouriteMap[
+                                                                    productId]
+                                                                ?.value ??
+                                                            false;
+
+                                                        return IconButton(
+                                                          icon: Icon(
+                                                            isFav
+                                                                ? Icons.favorite
+                                                                : Icons
+                                                                    .favorite_border,
+                                                            color: isFav
+                                                                ? Colors.red
+                                                                : Colors.grey,
+                                                          ),
+                                                          onPressed: () {
+                                                            controller
+                                                                .addtofavourite(
+                                                                    productId); // Correct now
+                                                          },
+                                                        );
+                                                      }),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                               Expanded(

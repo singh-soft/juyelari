@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:juyelari/Features/Custom_widgets/colors.dart';
 
 class CustomTextFormField2 extends StatelessWidget {
   final TextEditingController? controller;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/field_validator.dart';
 import 'package:juyelari/Features/Custom_widgets/images.dart';
 import 'package:juyelari/Features/Screens/sign_up/sign_up_controller.dart';
