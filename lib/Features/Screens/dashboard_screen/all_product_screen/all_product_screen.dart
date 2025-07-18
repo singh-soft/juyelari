@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
-import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
-import 'package:juyelari/Features/Screens/dashboard_screen/all_product_screen/all_product_controller.dart';
+import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 
@@ -18,9 +17,16 @@ class AllProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> featuredProducts =
-        (Get.arguments['featuredProduct'] as List<Map<String, dynamic>>);
-    final controller = Get.put(AllProductController());
+    final controller = Get.find<DashboardController>();
+    final featuredProducts = controller.featuredProduct;
+    // Initialize favouriteMap based on is_wishlist
+    for (var product in featuredProducts) {
+      final productId = product['id'];
+      final isWishlist = product['is_wishlist'] == 1;
+      if (!controller.favouriteMap.containsKey(productId)) {
+        controller.favouriteMap[productId] = RxBool(isWishlist);
+      }
+    }
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -87,19 +93,19 @@ class AllProductScreen extends StatelessWidget {
                         final product = featuredProducts[index];
                         final productId = product['id'];
                         if (!controller.favouriteMap.containsKey(productId)) {
-                          controller.favouriteMap[productId] = false.obs;
+                          controller.favouriteMap[productId] = RxBool(product['is_wishlist'] == 1);
                         }
                         return Column(
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.to(() => const ProductDetailScreen(),
-                                    arguments: {"product_id": productId});
+                                // controller.toggleFavourite(productId);
+                                controller.addtofavourite(productId); 
                               },
                               child: Stack(
                                 children: [
                                   Container(
-                                    height: 200,
+                                    height: Get.height * 0.22,
                                     width: double.infinity,
                                     margin: const EdgeInsets.all(8.0),
                                     decoration: BoxDecoration(
@@ -144,20 +150,23 @@ class AllProductScreen extends StatelessWidget {
                                   Positioned(
                                     top: 12,
                                     right: 12,
-                                    child: Obx(() => GestureDetector(
-                                      onTap: () {
-                                        controller.toggleFavourite(productId);
-                                      },
-                                      child: CircleAvatar(
-                                        radius: 16,
-                                        backgroundColor: Colors.white.withOpacity(0.8),
-                                        child: Icon(
-                                          controller.favouriteMap[productId]!.value ? Icons.favorite : Icons.favorite_border_outlined,
-                                          color: CustomColor.redshadeColor,
-                                          size: 20,
+                                    child: Obx(() {
+                                      final isFav = controller.favouriteMap[productId]?.value ?? false;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          controller.addtofavourite(productId);
+                                        },
+                                        child: CircleAvatar(
+                                          radius: 16,
+                                          backgroundColor: Colors.white.withOpacity(0.8),
+                                          child: Icon(
+                                            isFav ? Icons.favorite : Icons.favorite_border_outlined,
+                                            color: CustomColor.redshadeColor,
+                                            size: 20,
+                                          ),
                                         ),
-                                      ),
-                                    )),
+                                      );
+                                    }),
                                   ),
                                 ],
                               ),

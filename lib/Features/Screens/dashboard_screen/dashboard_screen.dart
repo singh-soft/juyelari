@@ -7,7 +7,9 @@ import 'package:juyelari/Features/Screens/dashboard_screen/all_product_screen/al
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_screen.dart';
+import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_controller.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
+import 'package:juyelari/Features/Screens/product_screen/product_screen.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_image_slider/custom_image_carousel.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
@@ -31,6 +33,9 @@ class DashboardScreen extends GetView<DashboardController> {
     controller.dashboardApi();
     myCartController.mycartApi();
     final screenheight = MediaQuery.of(context).size.height;
+
+ final ShippingAddressController shippingAddressController = Get.put(ShippingAddressController());
+    shippingAddressController.getShippingAddressApi();
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -110,10 +115,49 @@ class DashboardScreen extends GetView<DashboardController> {
                     child: Row(
                       children: [
                         const Icon(Icons.location_on_outlined),
-                        Text(
-                          "Update Delivery Pincode",
-                          style: FontStyle.greytext14,
+                        // Text(
+                        //   "Update Delivery Pincode",
+                        //   style: FontStyle.greytext14,
+                        // )
+
+                        Expanded(
+                          child: Obx(
+                            () => shippingAddressController.isLoading1.value
+                                ? Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "Loading...",
+                                      style: FontStyle.black14,
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  )
+                                : shippingAddressController.addressList.isNotEmpty
+                                    ? Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          shippingAddressController.defaultAddress != null
+                                              ? shippingAddressController.formatAddress(
+                                                  shippingAddressController.defaultAddress!)
+                                              : shippingAddressController.formatAddress(
+                                                  shippingAddressController.addressList[0]),
+                                          style: FontStyle.black14,
+                                          textAlign: TextAlign.start,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          softWrap: true,
+                                        ),
+                                      )
+                                    : Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Update Delivery Pincode",
+                                          style: FontStyle.black14,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ),
+                          ),
                         )
+                                  
                       ],
                     ),
                   ),
@@ -242,13 +286,11 @@ class DashboardScreen extends GetView<DashboardController> {
                                         itemBuilder: (context, index) {
                                           return InkWell(
                                             onTap: () {
-                                              // Get.to(
-                                              //     () => const ProductScreen(),
-                                              //     arguments: {
-                                              //       'name': controller
-                                              //               .categories[index]
-                                              //           ['name'],
-                                              //     });
+                                              Get.to(
+                                                  () => const ProductScreen(),
+                                                  arguments:  controller
+                                                            .categories[index],
+                                                  );
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(
@@ -521,7 +563,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                                           onPressed: () {
                                                             controller
                                                                 .addtofavourite(
-                                                                    productId); // Correct now
+                                                                    productId); 
                                                           },
                                                         );
                                                       }),
