@@ -38,6 +38,8 @@ class FontStyle {
       color: CustomColor.greytext, fontWeight: FontWeight.w400, fontSize: 14);
   static final black14 = GoogleFonts.nunitoSans(
       color: CustomColor.blackColor, fontWeight: FontWeight.w400, fontSize: 14);
+        static final black12 = GoogleFonts.nunitoSans(
+      color: CustomColor.blackColor, fontWeight: FontWeight.w400, fontSize: 12);
   static final whitew500 = GoogleFonts.raleway(
       color: CustomColor.white, fontWeight: FontWeight.w500, fontSize: 14);
   static final greyshadetextw400 = GoogleFonts.poppins(

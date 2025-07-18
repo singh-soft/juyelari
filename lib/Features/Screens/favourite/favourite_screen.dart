@@ -140,24 +140,24 @@ class FavouriteScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                top: 12,
-                                right: 12,
-                                child: Obx(() => GestureDetector(
-                                  onTap: () {
-                                    controller.toggleFavourite(productId);
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 16,
-                                    backgroundColor: Colors.white.withOpacity(0.8),
-                                    child: Icon(
-                                      controller.favouriteMap[productId]!.value ? Icons.favorite : Icons.favorite_border_outlined,
-                                      color: CustomColor.redshadeColor,
-                                      size: 20,
-                                    ),
-                                  ),
-                                )),
-                              ),
+                              // Positioned(
+                              //   top: 12,
+                              //   right: 12,
+                              //   child: Obx(() => GestureDetector(
+                              //     onTap: () {
+                              //       controller.toggleFavourite(productId);
+                              //     },
+                              //     child: CircleAvatar(
+                              //       radius: 16,
+                              //       backgroundColor: Colors.white.withOpacity(0.8),
+                              //       child: Icon(
+                              //         controller.favouriteMap[productId]!.value ? Icons.favorite : Icons.favorite_border_outlined,
+                              //         color: CustomColor.redshadeColor,
+                              //         size: 20,
+                              //       ),
+                              //     ),
+                              //   )),
+                              // ),
                             ],
                           ),
                         ),

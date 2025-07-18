@@ -21,7 +21,6 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => ShippingAddressController());
-    controller.getShippingAddressApi();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomWidgets().customAppBar(
@@ -70,25 +69,47 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
           ]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          margin: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.topRight,
-              colors: <Color>[
-                Colors.black,
-                Color(0xff890E29),
-                Colors.black,
-              ],
+        child: InkWell(
+          onTap: () {
+            if (controller.addressList.isNotEmpty &&
+                controller.selectedAddressIndex.value < controller.addressList.length) {
+              final selectedId = controller.addressList[controller.selectedAddressIndex.value]['id'];
+              if (selectedId != null) {
+                controller.changeDefaultAddressApi(selectedId);
+              }
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            margin: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.topRight,
+                colors: <Color>[
+                  Colors.black,
+                  Color(0xff890E29),
+                  Colors.black,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(30),
             ),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Text(
-            "Delviery Here",
-            style: FontStyle.white18,
-            textAlign: TextAlign.center,
+            child: Obx(() => controller.isLoading2.value
+                ? SizedBox(
+                    height: 28,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                  )
+                : Text(
+                    "Deliver Here",
+                    style: FontStyle.white18,
+                    textAlign: TextAlign.center,
+                  ),
+            ),
           ),
         ),
       ),

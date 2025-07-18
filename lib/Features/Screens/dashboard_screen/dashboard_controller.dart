@@ -74,18 +74,15 @@ class DashboardController extends GetxController {
 void addtofavourite(int productId) async {
   try {
     isLoading.value = true;
-
-    // Get previous value from map or default to false
     final bool previousValue = favouriteMap[productId]?.value ?? false;
-
-    // Optimistically toggle and update map
     favouriteMap[productId] = (!previousValue).obs;
+    print("Previous Value: $previousValue");
 
     Map<String, dynamic> data = {
       "product_id": productId,
-      "is_like": !previousValue ? 1 : 0, // send 1 if adding to wishlist
+      "is_like": !previousValue ? 1 : 0, 
     };
-
+    print("Data to send: $data");
     var response = await ApiProvider().postRequest(
       apiUrl: 'wishlist',
       data: data,
@@ -95,7 +92,6 @@ void addtofavourite(int productId) async {
       dashboardApi();
       CustomWidgets().toast(response['message'], Colors.green);
     } else {
-      // revert state on failure
       favouriteMap[productId] = previousValue.obs;
       CustomWidgets().toast(response['message'], Colors.red);
     }
@@ -104,7 +100,7 @@ void addtofavourite(int productId) async {
   } on TimeoutException {
     CustomWidgets().toast("Request timed out. Please try again.", Colors.red);
   } catch (e) {
-    favouriteMap[productId] = (favouriteMap[productId]?.value ?? false).obs; // revert again on error
+    favouriteMap[productId] = (favouriteMap[productId]?.value ?? false).obs; 
     CustomWidgets().toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
   } finally {
     isLoading.value = false;
@@ -114,10 +110,6 @@ void addtofavourite(int productId) async {
 
 
 void toggleFavourite(int productId) {
-  if (!favouriteMap.containsKey(productId)) {
-    favouriteMap[productId] = false.obs;
-  }
-
-  favouriteMap[productId]!.value = !favouriteMap[productId]!.value;
+  addtofavourite(productId);
 }
 }
