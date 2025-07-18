@@ -11,7 +11,14 @@ class ReviewOrderDetailsController extends GetxController {
   var currentStep = 0.obs;
   var selectedIndex = 0.obs;
   RxBool isLoading = false.obs;
+   RxBool isLoadingApply = false.obs;
   RxDouble couponDiscount = 0.0.obs;
+  RxBool isSelectedPayment=false.obs;
+  void togglePayment() {
+    isSelectedPayment.value = !isSelectedPayment.value;
+  }
+
+   var couponKey = GlobalKey<FormState>();
 
   var cartItmes = <Map<String, dynamic>>[].obs;
   RxDouble totalAmount = 0.0.obs;
@@ -19,6 +26,11 @@ class ReviewOrderDetailsController extends GetxController {
   var selectedItems = <Map<String, dynamic>>[].obs;
 
   var isReviewDone = false.obs;
+  var showPaymentSection = false.obs;
+
+void togglePaymentSection() {
+  showPaymentSection.value = true;
+}
 
   void completeReview() {
     isReviewDone.value = true;
@@ -47,31 +59,40 @@ class ReviewOrderDetailsController extends GetxController {
     return index <= steps.length - 1;
   }
 
-  void mycartApi() async {
+   void mycartApi() async {
     try {
       isLoading.value = true;
+
       var response = await ApiProvider().getRequest(apiUrl: 'cart/my-cart');
       if (response['status'] == true) {
-        final data = List<Map<String, dynamic>>.from(response['data']);
-        cartItmes.assignAll(data);
-        selectedItems.assignAll(data); 
+        final List data = response['data'];
 
-        double total = 0;
-        for (var item in data) {
-          double price = double.tryParse(
-                  item['price'].toString().replaceAll('₹', '').trim()) ??
-              0;
-          int qty = int.tryParse(item['qty'].toString()) ?? 1;
-          total += price * qty;
+        if (data.isEmpty) {
+          cartItmes.clear();
+          selectedItems.clear();
+          totalAmount.value = 0.0;
+        } else {
+          final cartList = List<Map<String, dynamic>>.from(data);
+          cartItmes.assignAll(cartList);
+          selectedItems.assignAll(cartList);
+
+          double total = 0;
+          for (var item in cartList) {
+            double price = double.tryParse(
+                    item['price'].toString().replaceAll('₹', '').trim()) ??
+                0;
+            int qty = int.tryParse(item['qty'].toString()) ?? 1;
+            total += price * qty;
+          }
+          totalAmount.value = total;
         }
-        totalAmount.value = total;
-        // final data=response['data'];
-        // cartItmes.assignAll(List<Map<String, dynamic>>.from(response['data']));
+
         CustomWidgets().toast(response['message'], Colors.green);
-        isLoading.value = false;
       } else {
+        cartItmes.clear();
+        selectedItems.clear();
+        totalAmount.value = 0.0;
         CustomWidgets().toast(response['message'], Colors.red);
-        isLoading.value = false;
       }
     } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);
@@ -110,7 +131,7 @@ class ReviewOrderDetailsController extends GetxController {
 
   void couponCodeApi() async {
     try {
-      isLoading.value = true;
+      isLoadingApply.value = true;
       Map<String, dynamic> data = {"coupon_code": couponController.value.text};
       var response =
           await ApiProvider().postRequest(apiUrl: 'apply-coupon', data: data);
@@ -120,10 +141,10 @@ class ReviewOrderDetailsController extends GetxController {
         newtotalAmount.value = totalAmount.value - couponDiscount.value;
 
         CustomWidgets().toast(response['message'], Colors.green);
-        isLoading.value = false;
+        isLoadingApply.value = false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);
-        isLoading.value = false;
+        isLoadingApply.value = false;
       }
     } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);
@@ -134,7 +155,7 @@ class ReviewOrderDetailsController extends GetxController {
       CustomWidgets()
           .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
     } finally {
-      isLoading.value = false;
+      isLoadingApply.value = false;
     }
   }
 
