@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/my_cart/my_cart_controller.dart';
+import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_controller.dart';
 import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
 import 'package:juyelari/Features/Screens/review_order_details/review_order_details_screen.dart';
@@ -26,7 +27,9 @@ class MyCartScreen extends GetView<MyCartController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => MyCartController());
     controller.mycartApi();
-    controller.getShippingAddressApi();
+    // controller.getShippingAddressApi();
+
+    final ShippingAddressController shippingAddressController = Get.put(ShippingAddressController());
 
     final screenWidth = MediaQuery.of(context).size.width;
     final screenheight = MediaQuery.of(context).size.height;
@@ -77,13 +80,16 @@ class MyCartScreen extends GetView<MyCartController> {
                                 children: [
                                   Expanded(
                                       child: Obx(
-                                    () => controller.isLoading1.value
+                                    () => shippingAddressController.isLoading1.value
                                         ? const Center(
                                             child: CircularProgressIndicator())
-                                        : controller.addressList.isNotEmpty
+                                        : shippingAddressController.addressList.isNotEmpty
                                             ? Text(
-                                                controller.formatAddress(
-                                                    controller.addressList[0]),
+                                                shippingAddressController.defaultAddress != null
+                                                    ? shippingAddressController.formatAddress(
+                                                        shippingAddressController.defaultAddress!)
+                                                    :shippingAddressController.formatAddress(
+                                                    shippingAddressController.addressList[0]),
                                                 style: FontStyle.black14,
                                                 maxLines: 3,
                                                 overflow: TextOverflow.ellipsis,
@@ -94,6 +100,7 @@ class MyCartScreen extends GetView<MyCartController> {
                                               ),
                                   )),
                                   const Icon(Icons.arrow_drop_down),
+
                                 ],
                               )
                             ],

@@ -6,6 +6,7 @@ import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 
 class MyCartController extends GetxController {
+
   final List<Map<String, dynamic>> addressList = [];
   final selectedCity = 'Mumbai'.obs;
   RxBool isLoading = false.obs;
@@ -18,7 +19,7 @@ class MyCartController extends GetxController {
     selectedCity.value = value;
   }
 
-  String formatAddress(Map<String, dynamic> address) {
+ String formatAddress(Map<String, dynamic> address) {
     return [
       address['address_tag'],
       address['flat'],
@@ -29,9 +30,9 @@ class MyCartController extends GetxController {
       address['state'],
       address['country'],
       address['postalcode'],
-    ].where((e) => e != null && e.toString().trim().isNotEmpty).join(', ');
-  }
 
+    ].whereType<String>().where((e) => e.trim().isNotEmpty).join(', ');
+  }
   void mycartApi() async {
     try {
       isLoading.value = true;

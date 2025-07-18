@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.dart';
+import 'package:juyelari/Features/Screens/favourite/favourite_controller.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_controller.dart';
+import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
+import 'package:juyelari/Features/provider/api_provider.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_image_slider/custom_image_carousel.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
@@ -17,14 +21,23 @@ class ProductScreen extends GetView<ProductController> {
   final customHeight30 = height30;
   final customHeight50 = height50;
   final customwidth5 = width5;
+  
 
   @override
   Widget build(BuildContext context) {
+    final DashboardController dashboardController = Get.put(DashboardController());
+        final FavouriteController favouriteController = Get.put(FavouriteController());
+
+    
+    // Ensure ApiProvider is registered before ProductController uses it
+    if (!Get.isRegistered<ApiProvider>()) {
+      Get.put(ApiProvider());
+    }
     Get.lazyPut(() => ProductController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomWidgets().customAppBar(
-        title: controller.getname?['name'] ?? 'Unnamed',
+        title: controller.categoryData?['name'] ?? '',
         leadingIcon: Icons.arrow_back_ios,
         onLeadingPressed: () {
           Get.back();
@@ -72,48 +85,66 @@ class ProductScreen extends GetView<ProductController> {
             height10,
             Stack(
               children: [
-                Obx(
-                  () => Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: CustomImageSlider(
-                      imageList: controller.imageUrls,
-                      imageController: controller.sliderCarouselController,
-                      imageUrl:
-                          controller.imageUrls[controller.currentIndex.value],
-                      onPageChanged: (index, reason) {
-                        controller.currentIndex.value = index;
-                      },
-                    ),
-                  ),
-                ),
-                Positioned(
-                    bottom: 25,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:
-                          List.generate(controller.imageUrls.length, (index) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          width:
-                              controller.currentIndex.value == index ? 10 : 8,
-                          height:
-                              controller.currentIndex.value == index ? 10 : 8,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: controller.currentIndex.value == index
-                                ? CustomColor.blackColor
-                                : Colors.white,
-                          ),
-                        );
-                      }),
-                    )),
+                Obx(() {
+                                          return CustomImageSlider(
+                                            height: 220,
+                                            imageList: dashboardController.sliders
+                                                .map((e) => e['image_url'])
+                                                .toList(),
+                                            imageController: dashboardController
+                                                .sliderCarouselController,
+                                            imageUrl: dashboardController.sliders[
+                                                controller.currentIndex
+                                                    .value]['image_url'],
+                                            onPageChanged: (index, reason) {
+                                              controller.currentIndex.value =
+                                                  index;
+                                            },
+                                          );
+                                        }),
+                      Positioned(
+                              bottom: 28,
+                                          left: 0,
+                                          right: 0,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: List.generate(
+                                                dashboardController.sliders.length,
+                                                (index) {
+                                              return Obx(
+                                                () => Container(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(horizontal: 4),
+                                                  width: controller.currentIndex
+                                                              .value ==
+                                                          index
+                                                      ? 10
+                                                      : 8,
+                                                  height: controller
+                                                              .currentIndex
+                                                              .value ==
+                                                          index
+                                                      ? 10
+                                                      : 8,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: controller
+                                                                .currentIndex
+                                                                .value ==
+                                                            index
+                                                        ? CustomColor.blackColor
+                                                        : Colors.white,
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                          )),
               ],
             ),
             height10,
             Text(
-              "Earrings",
+              controller.categoryData?['name'] ?? '',
               style: FontStyle.redshad16,
             ),
             Text(
@@ -123,43 +154,182 @@ class ProductScreen extends GetView<ProductController> {
             height10,
             SizedBox(
               height: 40,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: controller.servicetext.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(4.0),
-                      margin: const EdgeInsets.all(2.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                              color: CustomColor.greycolor.withOpacity(0.2),
-                              width: 1),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: Colors.grey.withOpacity(0.1),
-                          //     spreadRadius: 0,
-                          //     blurRadius: 0,
-                          //     offset: const Offset(0, 2),
-                          //   ),
-                          // ],
-                          color: CustomColor.white),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        child: Text(
-                          controller.servicetext[index],
-                          style: FontStyle.greyshadetextw400,
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (controller.errorMessage.isNotEmpty) {
+                  return Center(child: Text(controller.errorMessage.value, style: TextStyle(color: Colors.red)));
+                } else if (controller.filterText.isEmpty) {
+                  return Center(child: Text('No filters available'));
+                }
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: controller.filterText.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(4.0),
+                        margin: const EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                                color: CustomColor.greycolor.withOpacity(0.2),
+                                width: 1),
+                            color: CustomColor.white),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: Text(
+                            controller.filterText[index],
+                            style: FontStyle.greyshadetextw400,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                );
+              }),
             ),
             height20,
+            // Product Grid
+            Expanded(
+              child: Obx(() {
+                if (controller.isProductLoading.value && controller.products.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (controller.errorMessage.isNotEmpty && controller.products.isEmpty) {
+                  return Center(child: Text(controller.errorMessage.value, style: TextStyle(color: Colors.red)));
+                } else if (controller.products.isEmpty) {
+                  return const Center(child: Text('No products available'));
+                }
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scrollInfo) {
+                    if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+                        controller.hasMoreProducts.value &&
+                        !controller.isProductLoading.value) {
+                      controller.fetchProducts(loadMore: true);
+                    }
+                    return false;
+                  },
+                  child: GridView.builder(
+                    padding: const EdgeInsets.only(top: 8),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.7,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                    ),
+                    itemCount: controller.products.length + (controller.hasMoreProducts.value ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == controller.products.length) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      final product = controller.products[index];
+                      final productId = product['id'];
+                      return Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.to(() => const ProductDetailScreen(), arguments: {"product_id": productId});
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  margin: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        spreadRadius: 0.2,
+                                        blurRadius: 0.2,
+                                        offset: const Offset(0, 1),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      product['image_url'] ?? '',
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                                          ),
+                                        );
+                                      },
+                                      errorBuilder: (context, error, stackTrace) => Image.asset(
+                                        'assets/images/pic bangles.jpg',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 12,
+                                  right: 12,
+                                  child: Obx(() => GestureDetector(
+                                    onTap: () {
+                                      favouriteController.toggleFavourite(productId);
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 16,
+                                      backgroundColor: Colors.white.withOpacity(0.8),
+                                      child: Icon(
+                                        favouriteController.favouriteMap[productId]?.value == true
+                                            ? Icons.favorite
+                                            : Icons.favorite_border_outlined,
+                                        color: CustomColor.redshadeColor,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  )),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      product['name'] ?? '',
+                                      style: FontStyle.black12,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                  height5,
+                                  Flexible(
+                                    child: Text(
+                                      '₹ ${product['price'] ?? '0'}',
+                                      style: FontStyle.redshade12,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                 
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              }),
+            ),
           ],
         ),
       ),
