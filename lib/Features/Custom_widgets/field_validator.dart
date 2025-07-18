@@ -121,6 +121,14 @@ class FieldValidator {
       return null;
     }
   }
+  String?couponCode(String?value){
+    if(value==null||value.isEmpty){
+      return 'Please Enter Coupons/Promo Code';
+    }
+    else {
+      return null;
+    }
+  }
 
 //   String? name1Validate(String? value) {
 //     if (value == null || value.isEmpty) {

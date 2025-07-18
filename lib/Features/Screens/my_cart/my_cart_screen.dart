@@ -98,10 +98,9 @@ class MyCartScreen extends GetView<MyCartController> {
                                                 "No address found",
                                                 style: FontStyle.black14,
                                               ),
-                                  )
-                                  ),
-                                 const Icon(Icons.arrow_drop_down),
-                                  
+                                  )),
+                                  const Icon(Icons.arrow_drop_down),
+
                                 ],
                               )
                             ],
@@ -110,9 +109,7 @@ class MyCartScreen extends GetView<MyCartController> {
                       ),
                       customHeight10,
                       Expanded(
-                        // height: 200,
-                        child: Obx(
-                          () => controller.cartItmes.isEmpty
+                        child:  controller.cartItmes.isEmpty
                               ? const Center(child: Text("No Data Found"))
                               : ListView.builder(
                                   itemCount: controller.cartItmes.length,
@@ -166,6 +163,8 @@ class MyCartScreen extends GetView<MyCartController> {
                                                                 ? null
                                                                 : () {
                                                                     Get.defaultDialog(
+                                                                      barrierDismissible:
+                                                                          false,
                                                                       middleText:
                                                                           'Are you sure you want to remove this item from your cart?',
                                                                       buttonColor:
@@ -183,7 +182,7 @@ class MyCartScreen extends GetView<MyCartController> {
                                                                       },
                                                                       onCancel:
                                                                           () {
-                                                                        Get.back();
+                                                                        // Get.back();
                                                                       },
                                                                     );
                                                                   },
@@ -217,6 +216,29 @@ class MyCartScreen extends GetView<MyCartController> {
                                                                     'product_image'] ??
                                                                 '',
                                                             fit: BoxFit.cover,
+                                                            loadingBuilder:
+                                                                (context, child,
+                                                                    loadingProgress) {
+                                                              if (loadingProgress ==
+                                                                  null) {
+                                                                return child;
+                                                              }
+                                                              return const SizedBox(
+                                                                height: 120,
+                                                                width: 120,
+                                                                child: Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    strokeWidth:
+                                                                        2,
+                                                                    valueColor: AlwaysStoppedAnimation<
+                                                                            Color>(
+                                                                        Colors
+                                                                            .grey),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
                                                         ),
                                                       ),
@@ -225,23 +247,54 @@ class MyCartScreen extends GetView<MyCartController> {
                                                   Positioned(
                                                     bottom: 4,
                                                     left: 4,
-                                                    child: InkWell(
-                                                      onTap: () {},
-                                                      child: Container(
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          color: Colors.white,
-                                                          shape:
-                                                              BoxShape.circle,
+                                                    child: Obx(()=>
+                                                       InkWell(
+                                                        onTap:
+                                                            controller.isLoading
+                                                                    .value
+                                                                ? null
+                                                                : () {
+                                                                    Get.defaultDialog(
+                                                                      barrierDismissible:
+                                                                          false,
+                                                                      middleText:
+                                                                          'Are you sure you want to remove this item from your cart?',
+                                                                      buttonColor:
+                                                                          CustomColor
+                                                                              .redshadeColor,
+                                                                      textConfirm:
+                                                                          "Yes",
+                                                                      textCancel:
+                                                                          "No",
+                                                                      onConfirm:     
+                                                                          () {
+                                                                        Get.back();
+                                                                        controller
+                                                                            .deleteMyCartApi(
+                                                                                cartItem['product_id'].toString());
+                                                                      },
+                                                                      onCancel:
+                                                                          () {
+                                                                        // Get.back();
+                                                                      },
+                                                                    );
+                                                                  },
+                                                        child: Container(
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            color: Colors.white,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(4),
+                                                          child: const Icon(
+                                                              Icons
+                                                                  .delete_outline_outlined,
+                                                              size: 16,
+                                                              color: Colors.red),
                                                         ),
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(4),
-                                                        child: const Icon(
-                                                            Icons
-                                                                .delete_outline_outlined,
-                                                            size: 16,
-                                                            color: Colors.red),
                                                       ),
                                                     ),
                                                   )
@@ -337,10 +390,10 @@ class MyCartScreen extends GetView<MyCartController> {
                                   },
                                 ),
                         ),
-                      ),
+                      
                       customHeight10,
                       Container(
-                        height: screenheight * 0.2,
+                        // height: screenheight * 0.2,
                         width: double.infinity,
                         margin: const EdgeInsets.all(4.0),
                         padding: const EdgeInsets.all(10.0),
@@ -368,8 +421,8 @@ class MyCartScreen extends GetView<MyCartController> {
                             customHeight20,
                             rowwidget(
                                 title: 'Sub Total ',
-                                value: controller.totalAmount.value
-                                    .toStringAsFixed(2)),
+                                value:
+                                    "₹${controller.totalAmount.value.toStringAsFixed(2)}"),
                             rowwidget(title: 'Delivery Charge', value: 'Free'),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -382,10 +435,13 @@ class MyCartScreen extends GetView<MyCartController> {
                                     "Total Amount",
                                     style: FontStyle.black16,
                                   ),
-                                  Obx(
-                                    () => Text(
-                                      "₹ ${controller.totalAmount.value.toStringAsFixed(2)}",
-                                      style: FontStyle.black16,
+                                  Flexible(
+                                    child: Obx(
+                                      () => Text(
+                                        "₹ ${controller.totalAmount.value.toStringAsFixed(2)}",
+                                        style: FontStyle.black16,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -413,22 +469,25 @@ class MyCartScreen extends GetView<MyCartController> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Obx(
-                                  () => Text(
-                                    "₹ ${controller.totalAmount.value.toStringAsFixed(2)}",
-                                    style: FontStyle.black18,
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Obx(
+                                    () => Text(
+                                      "₹ ${controller.totalAmount.value.toStringAsFixed(2)}",
+                                      style: FontStyle.black18,
+                                       overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                ),
-                                customHeight10,
-                                Obx(
-                                  () => Text(
-                                      "(${controller.cartItmes.length} items)",
-                                      style: FontStyle.black14),
-                                ),
-                              ],
+                                  customHeight10,
+                                  Obx(
+                                    () => Text(
+                                        "(${controller.cartItmes.length} items)",
+                                        style: FontStyle.black14),
+                                  ),
+                                ],
+                              ),
                             ),
                             CustomContainerButton(
                               onTap: () {
