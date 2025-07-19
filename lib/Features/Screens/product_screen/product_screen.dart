@@ -153,7 +153,7 @@ class ProductScreen extends GetView<ProductController> {
             ),
             height10,
             SizedBox(
-              height: 40,
+              height: 48,
               child: Obx(() {
                 if (controller.isLoading.value) {
                   return Center(child: CircularProgressIndicator());
@@ -162,33 +162,62 @@ class ProductScreen extends GetView<ProductController> {
                 } else if (controller.filterText.isEmpty) {
                   return Center(child: Text('No filters available'));
                 }
-                return ListView.builder(
+                return Obx(() => ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: controller.filterText.length,
                   itemBuilder: (context, index) {
+                    final isSelected = controller.selectedFilterIndex.value == index;
+                    final range = controller.filterText[index].split('-');
+                    final minPrice = range[0];
+                    final maxPrice = range.length > 1 ? range[1] : '';
+                    final chipText = (minPrice.isNotEmpty && maxPrice.isNotEmpty)
+                        ? '₹$minPrice - ₹$maxPrice'
+                        : (minPrice.isNotEmpty ? '₹$minPrice' : (maxPrice.isNotEmpty ? '₹$maxPrice' : controller.filterText[index]));
                     return Padding(
                       padding: const EdgeInsets.all(2.0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(4.0),
-                        margin: const EdgeInsets.all(2.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: CustomColor.greycolor.withOpacity(0.2),
-                                width: 1),
-                            color: CustomColor.white),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: Text(
-                            controller.filterText[index],
-                            style: FontStyle.greyshadetextw400,
+                      child: Obx(() {
+                        final isSelected = controller.selectedFilterIndex.value == index;
+                        return InkWell(
+                          onTap: () {
+                            if (isSelected) {
+                              controller.selectedFilterIndex.value = -1;
+                              controller.selectedMinPrice.value = '';
+                              controller.selectedMaxPrice.value = '';
+                            } else {
+                              controller.selectedFilterIndex.value = index;
+                              controller.selectedMinPrice.value = minPrice;
+                              controller.selectedMaxPrice.value = maxPrice;
+                            }
+                            controller.products.clear();
+                            controller.currentPage.value = 1;
+                            controller.fetchProducts();
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(horizontal: 18, ),
+                            margin: const EdgeInsets.all(2.0),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                    color: isSelected ? CustomColor.redshadeColor : CustomColor.greycolor.withOpacity(0.2),
+                                    width: 2),
+                                color: isSelected ? CustomColor.redshadeColor.withOpacity(0.7) : CustomColor.white,
+                                boxShadow: isSelected ? [BoxShadow(color: CustomColor.redshadeColor.withOpacity(0.2), blurRadius: 6, spreadRadius: 1)] : []),
+                            child: Center(
+                              child: Text(
+                                chipText,
+                                style: isSelected ? FontStyle.white18 : FontStyle.greyshadetextw400,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     );
                   },
-                );
+                ));
               }),
             ),
             height20,

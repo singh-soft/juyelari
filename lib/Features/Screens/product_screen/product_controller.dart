@@ -13,13 +13,12 @@ class ProductController extends GetxController {
   RxBool hasMoreProducts = true.obs;
 
   Future<void> fetchProducts({bool loadMore = false}) async {
-    if (isProductLoading.value || !hasMoreProducts.value) return;
+    // if (isProductLoading.value || !hasMoreProducts.value) return;
     isProductLoading.value = true;
     errorMessage.value = '';
     final userIdValue = await userId();
     final categoryIdValue = categoryData?['id'] ?? '';
     final page = loadMore ? currentPage.value + 1 : 1;
-    print('user_id: $userIdValue, category_id: $categoryIdValue, page: $page');
     final apiUrl = 'product-list';  
     final body = {
       'user_id': userIdValue,
@@ -47,7 +46,7 @@ class ProductController extends GetxController {
         hasMoreProducts.value = response['data']['next_page_url'] != null;
       } else {
         if (!loadMore) products.value = [];
-        errorMessage.value = 'No products found.';
+        // errorMessage.value = 'No products found.';
         hasMoreProducts.value = false;
       }
     } catch (e) {
@@ -88,7 +87,6 @@ class ProductController extends GetxController {
     try {
       isLoading.value = true;
       errorMessage.value = '';
-      print('Fetching filter ranges from API: filter');
       final response = await Get.find<ApiProvider>().getRequest(apiUrl: 'filter');
       if (response['status'] == true && response['price_ranges'] != null) {
         final List ranges = response['price_ranges'];

@@ -5,6 +5,7 @@ import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/Profile_screen/profile_screen_controller.dart';
 import 'package:juyelari/Features/Screens/bottom_bar/bottom_bar_controller.dart';
+import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_screen.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 
@@ -70,7 +71,7 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                 height30,
                 customContainerTile(
                     title: 'My Order',
-                    subtitle: 'Already have 12 orders',
+                    subtitle: 'See your all orders',
                     onTap: () {
                       final bottomBarController = Get.find<BottomBarController>();
                       bottomBarController.changeIndex(2);
@@ -79,13 +80,17 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                 height20,
                 customContainerTile(
                     title: 'My Shipping addresses',
-                    subtitle: '3 ddresses',
-                    onTap: () {}),
+                    subtitle: 'Add or edit your addresses',
+                    onTap: () {
+                      Get.to(()=> const  ShippingAddressScreen());
+                    }),
                 height20,
                 customContainerTile(
                     title: 'Payment methods',
-                    subtitle: 'Visa  **34',
-                    onTap: () {}),
+                    subtitle: 'Add or edit your payment methods',
+                    onTap: () {
+                      
+                    }),
                 height20,
                 customContainerTile(
                     title: 'My Reviews',
