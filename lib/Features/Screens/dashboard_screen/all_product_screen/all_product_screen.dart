@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Screens/dashboard_screen/dashboard_controller.dart';
+import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 
@@ -100,7 +101,12 @@ class AllProductScreen extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 // controller.toggleFavourite(productId);
-                                controller.addtofavourite(productId); 
+                                        Get.to(
+                                            () => const ProductDetailScreen(),
+                                            arguments: {
+                                              'product_id': productId
+                                            });
+                               
                               },
                               child: Stack(
                                 children: [

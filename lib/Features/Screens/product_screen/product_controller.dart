@@ -4,6 +4,9 @@ import 'package:juyelari/Features/provider/api_provider.dart';
 import 'package:juyelari/Features/provider/auth.dart';
 
 class ProductController extends GetxController {
+  RxInt selectedFilterIndex = (-1).obs;
+  RxString selectedMinPrice = ''.obs;
+  RxString selectedMaxPrice = ''.obs;
   RxList<Map<String, dynamic>> products = <Map<String, dynamic>>[].obs;
   RxInt currentPage = 1.obs;
   RxBool isProductLoading = false.obs;
@@ -17,14 +20,14 @@ class ProductController extends GetxController {
     final categoryIdValue = categoryData?['id'] ?? '';
     final page = loadMore ? currentPage.value + 1 : 1;
     print('user_id: $userIdValue, category_id: $categoryIdValue, page: $page');
-    final apiUrl = 'product-list';
-    print('API URL: $apiUrl');
+    final apiUrl = 'product-list';  
     final body = {
       'user_id': userIdValue,
       'category_id': categoryIdValue,
       'page': page,
+      if (selectedMinPrice.value.isNotEmpty) 'min_price': selectedMinPrice.value,
+      if (selectedMaxPrice.value.isNotEmpty) 'max_price': selectedMaxPrice.value,
     };
-    print('POST body: $body');
     try {
       final response = await Get.find<ApiProvider>().postRequest(apiUrl: apiUrl, data: body);
       if (response['status'] == true && response['data'] != null && response['data']['data'] != null) {

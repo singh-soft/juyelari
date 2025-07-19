@@ -58,6 +58,8 @@ class LoginController extends GetxController with GetTickerProviderStateMixin {
       if (response['status'] == true) {
         box.write('access_token', response['access_token']);
         box.write('id', response['user']['id']);
+        box.write('user_name', response['user']['name']);
+        box.write('user_email', response['user']['email']);
 
         Get.offAll(() => const BottomBarView());
         CustomWidgets().toast(response['message'], Colors.green);
