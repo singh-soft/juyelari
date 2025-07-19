@@ -18,3 +18,11 @@ token(){
     return box.read('id') ?? '';
   }
   
+  userName(){
+    return box.read('user_name') ?? '';
+  }
+  
+  userEmail(){
+    return box.read('user_email') ?? '';
+  }
+  

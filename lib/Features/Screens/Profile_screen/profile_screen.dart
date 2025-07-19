@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/Profile_screen/profile_screen_controller.dart';
+import 'package:juyelari/Features/Screens/bottom_bar/bottom_bar_controller.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 
@@ -18,6 +20,9 @@ class ProfileScreen extends GetView<ProfileScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
+    final userName = box.read('user_name') ?? '';
+    final userEmail = box.read('user_email') ?? '';
     Get.lazyPut(() => ProfileScreenController);
     return Scaffold(
         appBar: CustomWidgets().customAppBar(
@@ -36,7 +41,12 @@ class ProfileScreen extends GetView<ProfileScreenController> {
               children: [
                 const CircleAvatar(
                   radius: 35,
-                  backgroundImage: AssetImage("assets/images/profilepic.avif"),
+                  backgroundColor: Colors.grey,
+                  child: Icon(
+                    Icons.person,
+                    size: 40,
+                    color: Colors.white,
+                  ),
                 ),
                 width10,
                 width5,
@@ -44,11 +54,11 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Mona Nagar",
+                      userName,
                       style: FontStyle.black18w400,
                     ),
                     Text(
-                      "mona123@singhsoft.com",
+                      userEmail,
                       style: FontStyle.greyshade14,
                     )
                   ],
@@ -61,7 +71,11 @@ class ProfileScreen extends GetView<ProfileScreenController> {
                 customContainerTile(
                     title: 'My Order',
                     subtitle: 'Already have 12 orders',
-                    onTap: () {}),
+                    onTap: () {
+                      final bottomBarController = Get.find<BottomBarController>();
+                      bottomBarController.changeIndex(2);
+                      Get.back();
+                    }),
                 height20,
                 customContainerTile(
                     title: 'My Shipping addresses',
@@ -116,7 +130,9 @@ class ProfileScreen extends GetView<ProfileScreenController> {
           style: FontStyle.greyshade14,
         ),
         trailing: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              onTap?.call();  
+            },
             icon: Icon(
               Icons.chevron_right,
               color: CustomColor.greyshade,
