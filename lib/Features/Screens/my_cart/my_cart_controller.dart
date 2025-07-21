@@ -6,11 +6,11 @@ import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 
 class MyCartController extends GetxController {
-
   final List<Map<String, dynamic>> addressList = [];
   final selectedCity = 'Mumbai'.obs;
   RxBool isLoading = false.obs;
   RxBool isLoading1 = false.obs;
+  RxBool isLoadingbutton=false.obs;
   var cartItmes = <Map<String, dynamic>>[].obs;
   RxDouble totalAmount = 0.0.obs;
   var selectedItems = <Map<String, dynamic>>[].obs;
@@ -19,7 +19,7 @@ class MyCartController extends GetxController {
     selectedCity.value = value;
   }
 
- String formatAddress(Map<String, dynamic> address) {
+  String formatAddress(Map<String, dynamic> address) {
     return [
       address['address_tag'],
       address['flat'],
@@ -30,9 +30,9 @@ class MyCartController extends GetxController {
       address['state'],
       address['country'],
       address['postalcode'],
-
     ].whereType<String>().where((e) => e.trim().isNotEmpty).join(', ');
   }
+
   void mycartApi() async {
     try {
       isLoading.value = true;
@@ -87,7 +87,6 @@ class MyCartController extends GetxController {
       Map<String, dynamic> data = {
         "product_id": id,
       };
-      print("Product id=$id");
       var response = await ApiProvider()
           .postRequest(apiUrl: 'remove-from-cart', data: data);
       if (response['status'] == true) {

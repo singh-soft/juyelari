@@ -95,7 +95,7 @@ class ShippingAddressScreen extends GetView<ShippingAddressController> {
               borderRadius: BorderRadius.circular(30),
             ),
             child: Obx(() => controller.isLoading2.value
-                ? SizedBox(
+                ? const SizedBox(
                     height: 28,
                     child: Center(
                       child: CircularProgressIndicator(
