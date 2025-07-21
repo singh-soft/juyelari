@@ -26,7 +26,6 @@ class ProductScreen extends GetView<ProductController> {
   @override
   Widget build(BuildContext context) {
     final DashboardController dashboardController = Get.put(DashboardController());
-        final FavouriteController favouriteController = Get.put(FavouriteController());
 
     
     // Ensure ApiProvider is registered before ProductController uses it
@@ -305,13 +304,13 @@ class ProductScreen extends GetView<ProductController> {
                                   right: 12,
                                   child: Obx(() => GestureDetector(
                                     onTap: () {
-                                      favouriteController.toggleFavourite(productId);
+                                      controller.addtofavourite(productId);
                                     },
                                     child: CircleAvatar(
                                       radius: 16,
                                       backgroundColor: Colors.white.withOpacity(0.8),
                                       child: Icon(
-                                        favouriteController.favouriteMap[productId]?.value == true
+                                        controller.favouriteMap[productId]?.value == true
                                             ? Icons.favorite
                                             : Icons.favorite_border_outlined,
                                         color: CustomColor.redshadeColor,
