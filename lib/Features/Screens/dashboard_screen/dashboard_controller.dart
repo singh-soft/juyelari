@@ -19,6 +19,7 @@ class DashboardController extends GetxController {
   RxInt currentIndex = 0.obs;
   RxInt currentIndex1 = 0.obs;
   RxBool isLoading = false.obs;
+  // RxMap<int, bool> wishListLoader = <int, bool>{}.obs;
   RxBool isFavourite = false.obs;
 
   CarouselSliderController sliderCarouselController =
@@ -73,7 +74,7 @@ class DashboardController extends GetxController {
 
 void addtofavourite(int productId) async {
   try {
-    isLoading.value = true;
+    // wishListLoader[productId] = true;
     final bool previousValue = favouriteMap[productId]?.value ?? false;
     favouriteMap[productId] = (!previousValue).obs;
     print("Previous Value: $previousValue");
@@ -89,7 +90,7 @@ void addtofavourite(int productId) async {
     );
 
     if (response['status'] == true) {
-      dashboardApi();
+      // dashboardApi();
       CustomWidgets().toast(response['message'], Colors.green);
     } else {
       favouriteMap[productId] = previousValue.obs;
@@ -103,7 +104,7 @@ void addtofavourite(int productId) async {
     favouriteMap[productId] = (favouriteMap[productId]?.value ?? false).obs; 
     CustomWidgets().toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
   } finally {
-    isLoading.value = false;
+    // wishListLoader[productId] = false;
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
@@ -79,6 +80,7 @@ class FavouriteScreen extends StatelessWidget {
                       const SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisSpacing: 10,
                     crossAxisCount: 2,
+                    crossAxisSpacing: 10,
                     childAspectRatio: 1 / 1.24,
                   ),
                   itemBuilder: (context, index) {
@@ -88,77 +90,94 @@ class FavouriteScreen extends StatelessWidget {
                     if (!controller.favouriteMap.containsKey(productId)) {
                       controller.favouriteMap[productId] = true.obs;
                     }
-                    return Column(
+                    return Container(
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            Get.to(() => const ProductDetailScreen(),
-                                arguments: {"product_id": productId});
-                          },
-                          child: Stack(
-                            children: [
-                              Container(
-                                height: 200,
-                                width: double.infinity,
-                                margin: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: Colors.grey.withOpacity(0.1)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      spreadRadius: 0.2,
-                                      blurRadius: 0.2,
-                                      offset: const Offset(0, 1),
-                                    ),
-                                  ],
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    product['product_image'] ?? '',
-                                    fit: BoxFit.cover,
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return const Center(
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.grey),
-                                        ),
-                                      );
-                                    },
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Image.asset(
-                                      'assets/images/pic bangles.jpg',
+                        Container(
+                          height: 150,
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(() => const ProductDetailScreen(),
+                                  arguments: {"product_id": productId});
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 180,
+                                  width: double.infinity,
+                                  margin: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: Colors.grey.withOpacity(0.1)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        spreadRadius: 0.2,
+                                        blurRadius: 0.2,
+                                        offset: const Offset(0, 1),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      product['product_image'] ?? '',
                                       fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.grey),
+                                          ),
+                                        );
+                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Image.asset(
+                                        'assets/images/pic bangles.jpg',
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              // Positioned(
-                              //   top: 12,
-                              //   right: 12,
-                              //   child: Obx(() => GestureDetector(
-                              //     onTap: () {
-                              //       controller.toggleFavourite(productId);
-                              //     },
-                              //     child: CircleAvatar(
-                              //       radius: 16,
-                              //       backgroundColor: Colors.white.withOpacity(0.8),
-                              //       child: Icon(
-                              //         controller.favouriteMap[productId]!.value ? Icons.favorite : Icons.favorite_border_outlined,
-                              //         color: CustomColor.redshadeColor,
-                              //         size: 20,
-                              //       ),
-                              //     ),
-                              //   )),
-                              // ),
-                            ],
+                                // Positioned(
+                                //   top: 12,
+                                //   right: 12,
+                                //   child: Obx(() => GestureDetector(
+                                //     onTap: () {
+                                //       controller.toggleFavourite(productId);
+                                //     },
+                                //     child: CircleAvatar(
+                                //       radius: 16,
+                                //       backgroundColor: Colors.white.withOpacity(0.8),
+                                //       child: Icon(
+                                //         controller.favouriteMap[productId]!.value ? Icons.favorite : Icons.favorite_border_outlined,
+                                //         color: CustomColor.redshadeColor,
+                                //         size: 20,
+                                //       ),
+                                //     ),
+                                //   )),
+                                // ),
+                              ],
+                            ),
                           ),
                         ),
                         Expanded(
@@ -171,12 +190,16 @@ class FavouriteScreen extends StatelessWidget {
                               overflow: TextOverflow.visible,
                               softWrap: true,
                               maxLines: 2,
+                               
                             ),
                           ),
                         ),
                       ],
-                    );
-                  },
+                    )
+                ,
+                    ) ;
+                    
+                      },
                 ),
               )
             ],

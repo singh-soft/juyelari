@@ -543,30 +543,26 @@ class DashboardScreen extends GetView<DashboardController> {
                                                     Positioned(
                                                       top: 12,
                                                       right: 12,
-                                                      child: Obx(() {
-                                                        final isFav = controller
-                                                                .favouriteMap[
-                                                                    productId]
-                                                                ?.value ??
-                                                            false;
-
-                                                        return IconButton(
-                                                          icon: Icon(
-                                                            isFav
-                                                                ? Icons.favorite
-                                                                : Icons
-                                                                    .favorite_border,
-                                                            color: isFav
-                                                                ? Colors.red
-                                                                : Colors.grey,
-                                                          ),
-                                                          onPressed: () {
-                                                            controller
-                                                                .addtofavourite(
-                                                                    productId); 
-                                                          },
-                                                        );
-                                                      }),
+                                                      child:Obx(() {
+                                              final isFav = controller.favouriteMap[productId]?.value ?? false;
+                                              // final isLoading = controller.wishListLoader[productId] == true;
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  controller.addtofavourite(productId);
+                                                },
+                                                // onTap: isLoading ? null : () => controller.addtofavourite(productId),
+                                                child: CircleAvatar(
+                                                  radius: 16,
+                                                  backgroundColor: Colors.white.withOpacity(0.8),
+                                                  child: Icon(
+                                                          isFav ? Icons.favorite : Icons.favorite_border_outlined,
+                                                          color: isFav ? Colors.red : Colors.grey,
+                                                          size: 20,
+                                                                ),
+                                                        ),
+                                                        
+                                                      );
+                                                    }),
                                                     ),
                                                   ],
                                                 ),
