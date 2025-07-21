@@ -64,6 +64,7 @@ class DashboardController extends GetxController {
       CustomWidgets()
           .toast("Request time out, Please try again later", Colors.red);
     } catch (e) {
+      print(e.toString());
       CustomWidgets()
           .toast(e.toString().replaceFirst('Exception: ', ''), Colors.red);
     } finally {
