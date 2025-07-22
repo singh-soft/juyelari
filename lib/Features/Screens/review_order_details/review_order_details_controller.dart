@@ -213,7 +213,7 @@ void goToStep(int index) {
           await ApiProvider().postRequest(apiUrl: 'orders/create', data: data);
       print(response.toString());
       if (response['status'] == true) {
-        CustomWidgets().toast(response['message'], Colors.green);
+        // CustomWidgets().toast(response['message'], Colors.green);
         Get.dialog(
           barrierDismissible: false,
             Dialog(

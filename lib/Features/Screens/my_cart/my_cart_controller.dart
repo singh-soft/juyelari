@@ -61,7 +61,7 @@ class MyCartController extends GetxController {
           totalAmount.value = total;
         }
 
-        CustomWidgets().toast(response['message'], Colors.green);
+        // CustomWidgets().toast(response['message'], Colors.green);
       } else {
         cartItmes.clear();
         selectedItems.clear();

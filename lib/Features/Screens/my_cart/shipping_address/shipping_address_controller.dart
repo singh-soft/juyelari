@@ -79,7 +79,7 @@ class ShippingAddressController extends GetxController {
         } else if (addressList.isNotEmpty) {
           selectedAddressIndex.value = 0;
         }
-        CustomWidgets().toast(response['message'], Colors.green);
+        // CustomWidgets().toast(response['message'], Colors.green);
         isLoading1.value = false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);

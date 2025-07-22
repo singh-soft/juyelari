@@ -85,10 +85,11 @@ class ProductDetailsController extends GetxController {
         reviews.assignAll(List.from(response['data']['reviews'] ?? []));
         isFavourite.value = (response['data']['is_wishlist'] ?? 0) == 1;
 
-        CustomWidgets().toast(response['message'], Colors.green);
-      } else {
-        CustomWidgets().toast(response['message'], Colors.red);
-      }
+        // CustomWidgets().toast(response['message'], Colors.green);
+      } 
+      // else {
+      //   CustomWidgets().toast(response['message'], Colors.red);
+      // }
     } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);
     } on TimeoutException {
