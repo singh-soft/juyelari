@@ -430,161 +430,124 @@ class DashboardScreen extends GetView<DashboardController> {
                                 ],
                               ),
                             ),
-                            Container(
-                              height: screenheight * 0.25,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              color: Colors.transparent,
-                              child: Obx(() {
-                                final allProducts = controller.featuredProduct;
-                                final limitedProducts = allProducts.length > 2
-                                    ? allProducts.sublist(0, 2)
-                                    : allProducts;
+                           
+                           LayoutBuilder(
+                                            builder: (context, constraints) {
+                                              final isSmall = constraints.maxWidth < 400;
+                                              return Container(
+                                                height: isSmall ? screenheight * 0.32 : screenheight * 0.25,
+                                                padding: EdgeInsets.symmetric(horizontal: isSmall ? 4 : 8),
+                                                color: Colors.transparent,
+                                                child: Obx(() {
+                                                  final allProducts = controller.featuredProduct;
+                                                  final limitedProducts = allProducts.length > 2
+                                                      ? allProducts.sublist(0, 2)
+                                                      : allProducts;
 
-                                return limitedProducts.isEmpty
-                                    ? const Center(child: Text("No Data Found"))
-                                    : GridView.builder(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        itemCount: limitedProducts.length,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          mainAxisSpacing: 2,
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 1 / 1.25,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          final product =
-                                              limitedProducts[index];
-                                          final productId = product['id'];
-                                          // if (!controller.favouriteMap
-                                          //     .containsKey(productId)) {
-                                          //   controller.favouriteMap[productId] =
-                                          //       false.obs;
-                                          // }
-                                          return Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  Get.to(
-                                                      () =>
-                                                          const ProductDetailScreen(),
-                                                      arguments: {
-                                                        "product_id": productId
-                                                      });
-                                                },
-                                                child: Stack(
-                                                  children: [
-                                                    Container(
-                                                      height: 200,
-                                                      width: double.infinity,
-                                                      margin:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        border: Border.all(
-                                                            color: Colors.grey
-                                                                .withOpacity(
-                                                                    0.1)),
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.grey
-                                                                .withOpacity(
-                                                                    0.1),
-                                                            spreadRadius: 0.2,
-                                                            blurRadius: 0.2,
-                                                            offset:
-                                                                const Offset(
-                                                                    0, 1),
+                                                  return limitedProducts.isEmpty
+                                                      ? const Center(child: Text("No Data Found"))
+                                                      : GridView.builder(
+                                                          shrinkWrap: true,
+                                                          physics: const NeverScrollableScrollPhysics(),
+                                                          itemCount: limitedProducts.length,
+                                                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                            mainAxisSpacing: isSmall ? 1 : 2,
+                                                            crossAxisCount: 2,
+                                                            childAspectRatio: isSmall ? 1 / 1.5 : 1 / 1.25,
                                                           ),
-                                                        ],
-                                                      ),
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        child: Image.network(
-                                                          product['image_url'] ??
-                                                              '',
-                                                          fit: BoxFit.cover,
-                                                          loadingBuilder: (context,
-                                                              child,
-                                                              loadingProgress) {
-                                                            if (loadingProgress ==
-                                                                null) {
-                                                              return child;
-                                                            }
-                                                            return const Center(
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                strokeWidth: 2,
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .grey),
-                                                              ),
+                                                          itemBuilder: (context, index) {
+                                                            final product = limitedProducts[index];
+                                                            final productId = product['id'];
+                                                            return Column(
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    Get.to(() => const ProductDetailScreen(), arguments: {"product_id": productId});
+                                                                  },
+                                                                  child: Stack(
+                                                                    children: [
+                                                                      Container(
+                                                                        height: isSmall ? 120 : 200,
+                                                                        width: double.infinity,
+                                                                        margin: EdgeInsets.all(isSmall ? 4.0 : 8.0),
+                                                                        decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(10),
+                                                                          border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                              color: Colors.grey.withOpacity(0.1),
+                                                                              spreadRadius: 0.2,
+                                                                              blurRadius: 0.2,
+                                                                              offset: const Offset(0, 1),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        child: ClipRRect(
+                                                                          borderRadius: BorderRadius.circular(10),
+                                                                          child: Image.network(
+                                                                            product['image_url'] ?? '',
+                                                                            fit: BoxFit.cover,
+                                                                            loadingBuilder: (context, child, loadingProgress) {
+                                                                              if (loadingProgress == null) {
+                                                                                return child;
+                                                                              }
+                                                                              return const Center(
+                                                                                child: CircularProgressIndicator(
+                                                                                  strokeWidth: 2,
+                                                                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                            errorBuilder: (context, error, stackTrace) => Image.asset(
+                                                                              'assets/images/loginpic.png',
+                                                                              fit: BoxFit.cover,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Positioned(
+                                                                        top: 12,
+                                                                        right: 12,
+                                                                        child: Obx(() {
+                                                                          final isFav = controller.favouriteMap[productId]?.value ?? false;
+                                                                          return GestureDetector(
+                                                                            onTap: () {
+                                                                              controller.addtofavourite(productId);
+                                                                            },
+                                                                            child: CircleAvatar(
+                                                                              radius: 16,
+                                                                              backgroundColor: Colors.white.withOpacity(0.8),
+                                                                              child: Icon(
+                                                                                isFav ? Icons.favorite : Icons.favorite_border_outlined,
+                                                                                color: isFav ? Colors.red : Colors.grey,
+                                                                                size: 20,
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Expanded(
+                                                                  child: Padding(
+                                                                    padding: EdgeInsets.symmetric(horizontal: isSmall ? 4 : 8),
+                                                                    child: Text(
+                                                                      product['name'] ?? '',
+                                                                      maxLines: 2,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      style: TextStyle(fontSize: isSmall ? 12 : 14),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             );
                                                           },
-                                                          errorBuilder: (context,
-                                                                  error,
-                                                                  stackTrace) =>
-                                                              Image.asset(
-                                                            'assets/images/loginpic.png',
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      top: 12,
-                                                      right: 12,
-                                                      child:Obx(() {
-                                              final isFav = controller.favouriteMap[productId]?.value ?? false;
-                                              // final isLoading = controller.wishListLoader[productId] == true;
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  controller.addtofavourite(productId);
-                                                },
-                                                // onTap: isLoading ? null : () => controller.addtofavourite(productId),
-                                                child: CircleAvatar(
-                                                  radius: 16,
-                                                  backgroundColor: Colors.white.withOpacity(0.8),
-                                                  child: Icon(
-                                                          isFav ? Icons.favorite : Icons.favorite_border_outlined,
-                                                          color: isFav ? Colors.red : Colors.grey,
-                                                          size: 20,
-                                                                ),
-                                                        ),
-                                                        
-                                                      );
-                                                    }),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(horizontal: 8),
-                                                  child: Text(
-                                                    product['name'] ?? '',
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                              }),
-                            ),
+                                                        );
+                                                }),
+                                              );
+                                            },
+                                          ),
                             height5,
                             Padding(
                               padding: const EdgeInsets.only(left: 12),
@@ -598,7 +561,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                 ],
                               ),
                             ),
-                            height10,
+                            height5,
                             Container(
                               height: 240,
                               color: Colors.transparent,

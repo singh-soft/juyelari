@@ -91,7 +91,7 @@ class FavouriteScreen extends StatelessWidget {
                       controller.favouriteMap[productId] = true.obs;
                     }
                     return Container(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(6.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -116,7 +116,7 @@ class FavouriteScreen extends StatelessWidget {
                             child: Stack(
                               children: [
                                 Container(
-                                  height: 180,
+                                    height: 120,
                                   width: double.infinity,
                                   margin: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
@@ -195,7 +195,7 @@ class FavouriteScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )
+                                          )
                 ,
                     ) ;
                     

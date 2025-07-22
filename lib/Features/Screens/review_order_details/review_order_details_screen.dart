@@ -42,73 +42,82 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
         onLeadingPressed: () => Get.back(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Obx(
-        () => Container(
-          height: screenHeight * 0.102,
-          margin: const EdgeInsets.all(4.0),
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: Colors.grey.withOpacity(0.1)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 2,
-                blurRadius: 2,
-                offset: const Offset(1, 3),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Obx(() => Text(
-                          "₹ ${(controller.couponDiscount.value > 0 ? controller.newtotalAmount.value : controller.totalAmount.value).toStringAsFixed(2)}",
-                          style: FontStyle.black18,
-                          overflow: TextOverflow.ellipsis,
-                        )),
-                    Obx(() => Text("(${controller.cartItmes.length} items)",
-                        style: FontStyle.black14)),
-                  ],
+      floatingActionButton: Container(
+        alignment: Alignment.bottomCenter,
+        child: Obx(
+          () => Container(
+            height: screenHeight * 0.102,
+            margin: const EdgeInsets.all(4.0),
+            padding: const EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: Colors.grey.withOpacity(0.1)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: const Offset(1, 3),
                 ),
-              ),
-              CustomContainerButton(
-                onTap: () {
-                  if (!controller.showPaymentSection.value) {
-                    controller.completeReview();
-                    controller.goToStep(2);
-                    controller.togglePaymentSection();
-                  } else {
-                    final selectedId = controller
-                        .shippingAddressController
-                        .addressList[controller.selectedAddressIndex.value]
-                            ['id']
-                        ?.toString();
-
-                    if (selectedId == null || selectedId.isEmpty) {
-                      CustomWidgets().toast("Address ID not found", Colors.red);
-                      return;
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Obx(() => Text(
+                            "₹ ${(controller.couponDiscount.value > 0 ? controller.newtotalAmount.value : controller.totalAmount.value).toStringAsFixed(2)}",
+                            style: FontStyle.black18,
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Obx(() => Text("(${controller.cartItmes.length} items)",
+                          style: FontStyle.black14)),
+                    ],
+                  ),
+                ),
+                CustomContainerButton(
+                  onTap: () {
+                    print("-------------------------------");
+                    if (!controller.showPaymentSection.value) {
+                      controller.completeReview();
+                      if(controller.currentStep.value < 1) {
+                        controller.goToStep(1);
+                      }else{
+                        controller.goToStep(2);
+                      }
+                      controller.togglePaymentSection();
+                    } else {
+                      final selectedId = controller
+                          .shippingAddressController
+                          .addressList[controller.selectedAddressIndex.value]
+                              ['id']
+                          ?.toString();
+        
+                      if (selectedId == null || selectedId.isEmpty) {
+                        CustomWidgets().toast("Address ID not found", Colors.red);
+                        return;
+                      }
+                       controller.goToStep(2);
+                      controller.createOrdreApi(selectedId);
                     }
-                    controller.createOrdreApi(selectedId);
-                  }
-                },
-                height: screenHeight * 0.2,
-                width: screenWidth * 0.42,
-                padding: const EdgeInsets.all(15.0),
-                borderRadius: BorderRadius.circular(50),
-                child: Center(
-                    child: Text(
-                  controller.showPaymentSection.value ? 'Pay' : 'Continue',
-                  style: FontStyle.white18,
-                )),
-              ),
-            ],
+                  },
+                  height: screenHeight * 0.2,
+                  width: screenWidth * 0.42,
+                  padding: const EdgeInsets.all(15.0),
+                  borderRadius: BorderRadius.circular(50),
+                  child: Center(
+                      child: Text(
+                    controller.showPaymentSection.value ? 'Pay' : 'Continue',
+                    style: FontStyle.white18,
+                  )),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -121,70 +130,61 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// Step Indicator
-                Row(
-                  children:
-                      List.generate(controller.steps.length * 2 - 1, (index) {
-                    if (index.isOdd) {
-                      return const Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 4),
-                          child: DottedLine(
-                            dashLength: 5,
-                            dashColor: Colors.grey,
-                            lineThickness: 2,
-                          ),
-                        ),
-                      );
-                    } else {
-                      int stepIndex = index ~/ 2;
-                      bool isDone = controller.currentStep.value > stepIndex;
-                      bool isActive = controller.currentStep.value == stepIndex;
+        Obx(() => Row(
 
-                      return Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              if (controller.canGoToStep(stepIndex)) {
-                                controller.goToStep(stepIndex);
-                              }
-                            },
-                            child: CircleAvatar(
-                              radius: 18,
-                              backgroundColor: isDone
-                                  ? Colors.green
-                                  : isActive
-                                      ? Colors.blue
-                                      : Colors.grey[300],
-                              child: isDone
-                                  ? const Icon(Icons.check,
-                                      color: Colors.white, size: 18)
-                                  : Text(
-                                      "${stepIndex + 1}",
-                                      style: TextStyle(
-                                        color: isActive
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            controller.steps[stepIndex],
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: isActive
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: isActive ? Colors.blue : Colors.black,
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                  }),
-                ),
-                const SizedBox(height: 10),
+  children: [
+    // Step 1: Review
+          _buildStep(
+            stepIndex: 0,
+            title: controller.steps[0],
+            isDone: controller.isReviewDone.value,
+            isActive: controller.currentStep.value == 0,
+          ),
+
+    // Dotted line between Step 1 and Step 2
+      const Expanded(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4),
+          child: DottedLine(
+            dashLength: 5,
+            dashColor: Colors.grey,
+            lineThickness: 2,
+          ),
+        ),
+      ),
+
+    // Step 2: Payment
+    _buildStep(
+      stepIndex: 1,
+      title: controller.steps[1],
+      isDone: controller.currentStep.value > 1,
+      isActive: controller.currentStep.value == 1,
+    ),
+
+    // Dotted line between Step 2 and Step 3
+    const Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 4),
+        child: DottedLine(
+          dashLength: 5,
+          dashColor: Colors.grey,
+          lineThickness: 2,
+        ),
+      ),
+    ),
+
+    // Step 3: Order Placed
+    _buildStep(
+      stepIndex: 2,
+      title: controller.steps[2],
+      isDone: controller.currentStep.value > 2,
+      isActive: controller.currentStep.value == 2,
+    ),
+  ],
+)),
+
+  
+   const SizedBox(height: 10),
                 Container(
                   padding: const EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
@@ -614,3 +614,42 @@ Widget rowwidget({required String title, required String value}) {
     ),
   );
 }
+Widget _buildStep({
+  required int stepIndex,
+  required String title,
+  required bool isDone,
+  required bool isActive,
+}) {
+  print('StepIndex: $stepIndex, isDone: $isDone, isActive: $isActive');
+  return Column(
+    children: [
+      CircleAvatar(
+        radius: 18,
+        backgroundColor: isDone
+            ? Colors.green
+            : isActive
+                ? Colors.blue
+                : Colors.grey[300],
+        child: isDone
+            ? const Icon(Icons.check, color: Colors.white, size: 18)
+            : Text(
+                "${stepIndex + 1}",
+                style: TextStyle(
+                  color: isActive ? Colors.white : Colors.black,
+                  fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+      ),
+      const SizedBox(height: 6),
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+          color: isActive ? Colors.blue : Colors.black,
+        ),
+      ),
+    ],
+  );
+}
+
