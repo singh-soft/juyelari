@@ -145,7 +145,7 @@ class MyOrderController extends GetxController {
         if (!isLoadMore) {
           allOrders.clear();
         }
-        CustomWidgets().toast(response['message'], Colors.red);
+        // CustomWidgets().toast(response['message'], Colors.red);
       }
     } on SocketException {
       CustomWidgets().toast("No Internet Connection", Colors.red);

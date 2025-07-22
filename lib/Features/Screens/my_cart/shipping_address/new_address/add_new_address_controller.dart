@@ -199,10 +199,10 @@ class AddNewAddressController extends GetxController {
         final int countryId = firstCountry['id'];
         stateApi(countryId);
       }
-        CustomWidgets().toast(response['message'], Colors.green);
+        // CustomWidgets().toast(response['message'], Colors.green);
         countryLoading.value = false;
       } else {
-        CustomWidgets().toast(response['message'], Colors.red);
+        // CustomWidgets().toast(response['message'], Colors.red);
         countryLoading.value = false;
       }
     } on SocketException {
@@ -234,10 +234,10 @@ class AddNewAddressController extends GetxController {
         final int stateId = firstState['id'];
         cityApi(stateId);
       }
-        CustomWidgets().toast(response['message'], Colors.green);
+        // CustomWidgets().toast(response['message'], Colors.green);
         stateLoading.value = false;
       } else {
-        CustomWidgets().toast(response['message'], Colors.red);
+        // CustomWidgets().toast(response['message'], Colors.red);
         stateLoading.value = false;
       }
     } on SocketException {
@@ -266,10 +266,10 @@ class AddNewAddressController extends GetxController {
         selectedCity.value = firstCity['city'] ?? '';
         cityController.text = firstCity['city'] ?? '';
       }
-        CustomWidgets().toast(response['message'], Colors.green);
+        // CustomWidgets().toast(response['message'], Colors.green);
         cityLoading.value = false;
       } else {
-        CustomWidgets().toast(response['message'], Colors.red);
+        // CustomWidgets().toast(response['message'], Colors.red);
         cityLoading.value = false;
       }
     } on SocketException {

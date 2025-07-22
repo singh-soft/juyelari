@@ -53,7 +53,7 @@ class DashboardController extends GetxController {
         int isWishlist = int.tryParse(product['is_wishlist'].toString()) ?? 0;
         favouriteMap[productId] = (isWishlist == 1).obs;
       }
-        CustomWidgets().toast(response['message'], Colors.green);
+        // CustomWidgets().toast(response['message'], Colors.green);
         isLoading.value = false;
       } else {
         CustomWidgets().toast(response['message'], Colors.red);
