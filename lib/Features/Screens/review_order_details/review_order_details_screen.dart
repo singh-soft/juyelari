@@ -34,7 +34,9 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     controller.mycartApi();
 
-    return Scaffold(
+    return Stack(
+      children: [
+  Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomWidgets().customAppBar(
         title: 'Review Your Order',
@@ -598,8 +600,22 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
+    ),
+       Obx(() => controller.isLoading.value
+        ? Container(
+            color: Colors.black.withOpacity(0.3),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : const SizedBox.shrink(),
+    ),
+    
+  
+      ],
     );
-  }
+    
+   }
 }
 
 Widget rowwidget({required String title, required String value}) {

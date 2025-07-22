@@ -215,7 +215,8 @@ void goToStep(int index) {
       if (response['status'] == true) {
         CustomWidgets().toast(response['message'], Colors.green);
         Get.dialog(
-  Dialog(
+          barrierDismissible: false,
+            Dialog(
     backgroundColor: Colors.transparent,
     child: Stack(
       clipBehavior: Clip.none,
