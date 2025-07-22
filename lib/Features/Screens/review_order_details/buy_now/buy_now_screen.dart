@@ -6,6 +6,7 @@ import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Custom_widgets/field_validator.dart';
 import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_screen.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_detail_screen.dart';
+import 'package:juyelari/Features/Screens/review_order_details/buy_now/buy_now_controller.dart';
 import 'package:juyelari/Features/Screens/review_order_details/review_order_details_controller.dart';
 import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
@@ -13,8 +14,8 @@ import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
 import 'package:juyelari/Features/utils/custom_textformfield/custom_textformfield2.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class ReviewOrderDetailsScreen extends StatelessWidget {
-  const ReviewOrderDetailsScreen({super.key});
+class BuyNowScreen extends StatelessWidget {
+  const BuyNowScreen({super.key});
   final customHeight10 = height10;
   final customHeight15 = height15;
   final customHeight25 = height25;
@@ -26,14 +27,15 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
   final customwidth20 = width20;
   final customwidth40 = width40;
 
+
   @override
   Widget build(BuildContext context) {
-    final ReviewOrderDetailsController controller =
-        Get.put(ReviewOrderDetailsController());
-    controller.mycartApi();
+    final BuyNowController controller =
+        Get.put(BuyNowController());
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
   
     return Stack(
       children: [
@@ -406,53 +408,54 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
                                                           ),
                                                         ),
                                                       ),
-                                                      Positioned(
-                                                        bottom: 4,
-                                                        left: 4,
-                                                        child: InkWell(
-                                                          onTap:
-                                                              controller
-                                                                      .isLoading
-                                                                      .value
-                                                                  ? null
-                                                                  : () {
-                                                                      Get.defaultDialog(
-                                                                        barrierDismissible:
-                                                                            false,
-                                                                        middleText:
-                                                                            'Are you sure you want to remove this item from your cart?',
-                                                                        buttonColor:
-                                                                            CustomColor.redshadeColor,
-                                                                        textConfirm:
-                                                                            "Yes",
-                                                                        textCancel:
-                                                                            "No",
-                                                                        onConfirm:
-                                                                            () {
-                                                                          Get.back();
-                                                                          controller
-                                                                              .deleteMyCartApi(cartItem['product_id'].toString());
-                                                                        },
-                                                                        onCancel:
-                                                                            () {
-                                                                          // Get.back();
-                                                                        },
-                                                                      );
-                                                                    },
-                                                          child:
-                                                              const CircleAvatar(
-                                                            backgroundColor:
-                                                                Colors.white,
-                                                            radius: 12,
-                                                            child: Icon(
-                                                                Icons
-                                                                    .delete_outline_outlined,
-                                                                size: 16,
-                                                                color:
-                                                                    Colors.red),
-                                                          ),
-                                                        ),
-                                                      ),
+                                                      // Positioned(
+                                                      //   bottom: 4,
+                                                      //   left: 4,
+                                                      //   child: InkWell(
+                                                      //     onTap:
+                                                      //         controller
+                                                      //                 .isLoading
+                                                      //                 .value
+                                                      //             ? null
+                                                      //             : () {
+                                                      //                 Get.defaultDialog(
+                                                      //                   barrierDismissible:
+                                                      //                       false,
+                                                      //                   middleText:
+                                                      //                       'Are you sure you want to remove this item from your cart?',
+                                                      //                   buttonColor:
+                                                      //                       CustomColor.redshadeColor,
+                                                      //                   textConfirm:
+                                                      //                       "Yes",
+                                                      //                   textCancel:
+                                                      //                       "No",
+                                                      //                   onConfirm:
+                                                      //                       () {
+                                                      //                     Get.back();
+                                                      //                     controller
+                                                      //                         .deleteMyCartApi(cartItem['product_id'].toString());
+                                                      //                   },
+                                                      //                   onCancel:
+                                                      //                       () {
+                                                      //                     // Get.back();
+                                                      //                   },
+                                                      //                 );
+                                                      //               },
+                                                      //     child:
+                                                      //         const CircleAvatar(
+                                                      //       backgroundColor:
+                                                      //           Colors.white,
+                                                      //       radius: 12,
+                                                      //       child: Icon(
+                                                      //           Icons
+                                                      //               .delete_outline_outlined,
+                                                      //           size: 16,
+                                                      //           color:
+                                                      //               Colors.red),
+                                                      //     ),
+                                                      //   ),
+                                                      // ),
+                                              
                                                     ],
                                                   ),
                                                   customwidth20,
@@ -486,36 +489,36 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
                                                                 style: FontStyle
                                                                     .blacks14w500),
                                                             customwidth20,
-                                                            Obx(
-                                                              () => Transform
-                                                                  .scale(
-                                                                scale: 0.8,
-                                                                child: Checkbox(
-                                                                  value: controller
-                                                                      .selectedItems
-                                                                      .contains(
-                                                                          cartItem),
-                                                                  onChanged:
-                                                                      (bool?
-                                                                          value) {
-                                                                    if (value ==
-                                                                        true) {
-                                                                      controller
-                                                                          .selectedItems
-                                                                          .add(
-                                                                              cartItem);
-                                                                    } else {
-                                                                      controller
-                                                                          .selectedItems
-                                                                          .remove(
-                                                                              cartItem);
-                                                                    }
-                                                                    controller
-                                                                        .calculateTotal();
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            ),
+                                                            // Obx(
+                                                            //   () => Transform
+                                                            //       .scale(
+                                                            //     scale: 0.8,
+                                                            //     child: Checkbox(
+                                                            //       value: controller
+                                                            //           .selectedItems
+                                                            //           .contains(
+                                                            //               cartItem),
+                                                            //       onChanged:
+                                                            //           (bool?
+                                                            //               value) {
+                                                            //         if (value ==
+                                                            //             true) {
+                                                            //           controller
+                                                            //               .selectedItems
+                                                            //               .add(
+                                                            //                   cartItem);
+                                                            //         } else {
+                                                            //           controller
+                                                            //               .selectedItems
+                                                            //               .remove(
+                                                            //                   cartItem);
+                                                            //         }
+                                                            //         controller
+                                                            //             .calculateTotal();
+                                                            //       },
+                                                            //     ),
+                                                            //   ),
+                                                            // ),
                                                           ],
                                                         )
                                                       ],
@@ -535,7 +538,7 @@ class ReviewOrderDetailsScreen extends StatelessWidget {
                           children: [
                             RadioMenuButton(
                                 value: true,
-                                groupValue: controller.isSelectedPayment.value,
+                                groupValue: true,
                                 onChanged: (value) {
                                   controller.togglePayment();
                                 },

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
 import 'package:juyelari/Features/Screens/product_screen/product_details/product_details_controller.dart';
+import 'package:juyelari/Features/Screens/review_order_details/buy_now/buy_now_screen.dart';
 import 'package:juyelari/Features/utils/custom_container_button/custom_container_button.dart';
 import 'package:juyelari/Features/utils/custom_font_style.dart';
 import 'package:juyelari/Features/utils/custom_spaces/custom_spaces.dart';
@@ -65,7 +66,22 @@ class ProductDetailScreen extends GetView<ProductDetailsController> {
             child: FloatingActionButton(
               heroTag: "buy_now", // 👈 unique
               backgroundColor: Colors.transparent,
-              onPressed: () {},
+              onPressed: () {
+                      Get.to(
+                      () => BuyNowScreen(),
+                      arguments: {
+                        "product": {
+                          "product_id": controller.allData['id'],
+                          "product_name": controller.allData['name'],
+                          "product_image": controller.allData['image_url'],
+                          "qty": controller.quantity.value, 
+                          "price": controller.allData['price'],
+                          "total_amount": ((double.tryParse(controller.allData['price'].toString()) ?? 0) * controller.quantity.value).toStringAsFixed(2),
+                        }
+                      },
+                    );
+
+              },
               child: CustomContainerButton(
                 width: double.infinity,
                 padding: const EdgeInsets.all(12.0),

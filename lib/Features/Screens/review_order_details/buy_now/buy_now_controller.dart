@@ -8,7 +8,33 @@ import 'package:juyelari/Features/Screens/bottom_bar/bottom_bar_view.dart';
 import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_controller.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 
-class ReviewOrderDetailsController extends GetxController {
+class BuyNowController extends GetxController {
+
+
+  @override
+void onInit() {
+  super.onInit();
+
+  final arguments = Get.arguments as Map<String, dynamic>?;
+  if (arguments != null && arguments['product'] != null) {
+    final product = arguments['product'];
+
+    final item = {
+      "product_id": product['product_id'],
+      "product_name": product['product_name'],
+      "product_image": product['product_image'],
+      "qty": product['qty'],
+      "price": product['price'].toString(),
+      "total_amount": product['total_amount'].toString(),
+    };
+
+    cartItmes.add(item);
+    selectedItems.add(item);
+
+    print("Product added to cart: $item");
+    calculateTotal();
+    }
+}
   final ShippingAddressController shippingAddressController =
       Get.put(ShippingAddressController());
   final TextEditingController couponController = TextEditingController();
@@ -25,14 +51,15 @@ class ReviewOrderDetailsController extends GetxController {
   }
 
   var couponKey = GlobalKey<FormState>();
+  RxDouble newtotalAmount = 0.0.obs;
+ 
+  var isReviewDone = false.obs;
+  var showPaymentSection = false.obs;
 
   var cartItmes = <Map<String, dynamic>>[].obs;
   RxDouble totalAmount = 0.0.obs;
-  RxDouble newtotalAmount = 0.0.obs;
   var selectedItems = <Map<String, dynamic>>[].obs;
 
-  var isReviewDone = false.obs;
-  var showPaymentSection = false.obs;
 
   List<Map<String, dynamic>> get productDetails {
     return cartItmes.map((item) {
