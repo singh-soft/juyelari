@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juyelari/Features/Custom_widgets/colors.dart';
 import 'package:juyelari/Features/Custom_widgets/custom_widgets.dart';
+import 'package:juyelari/Features/Screens/bottom_bar/bottom_bar_view.dart';
 import 'package:juyelari/Features/Screens/my_cart/shipping_address/shipping_address_controller.dart';
 import 'package:juyelari/Features/provider/api_provider.dart';
 
@@ -18,7 +19,7 @@ class ReviewOrderDetailsController extends GetxController {
   RxBool isLoadingApply = false.obs;
   RxDouble couponDiscount = 0.0.obs;
   RxBool isSelectedPayment = false.obs;
-  RxInt selectedAddressIndex = 0.obs;
+  RxInt selectedAddressIndex = 0.obs; 
   void togglePayment() {
     isSelectedPayment.value = !isSelectedPayment.value;
   }
@@ -56,20 +57,21 @@ class ReviewOrderDetailsController extends GetxController {
   void nextStep() {
     if (canGoToStep(currentStep.value + 1)) {
       currentStep++;
-    }
   }
+}
 
-  void previousStep() {
+void previousStep() {
     if (currentStep > 0) currentStep--;
-  }
+}
 
-  void goToStep(int index) {
+void goToStep(int index) {
     if (canGoToStep(index)) {
-      currentStep.value = index;
-    }
+    currentStep.value = index;
   }
+}
 
   bool canGoToStep(int index) {
+    print( "Current Step: ${currentStep.value}, Index: $index");
     if (index == 1 || index == 2) {
       return isReviewDone.value;
     }
@@ -256,9 +258,12 @@ class ReviewOrderDetailsController extends GetxController {
                   ),
                 ),
                 onPressed: () {
-                  Get.back(); // close dialog
-                  Get.offAllNamed('/dashboardscreen'); // or redirect
-                },
+                  Get.back(); 
+                  // Get.offAllNamed('/dashboardscreen'); 
+                          Get.offAll(() => const BottomBarView());
+
+                  
+                  },
                 child: const Text("OK", style: TextStyle(color: Colors.white)),
               ),
             ],

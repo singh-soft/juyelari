@@ -49,6 +49,12 @@ class CustomImageSlider extends StatelessWidget {
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
+                  imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                    'assets/images/picnecklace1.jpg',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
                 ),
                 // FadeInImage.assetNetwork(
                 //   placeholder: loginpic,
